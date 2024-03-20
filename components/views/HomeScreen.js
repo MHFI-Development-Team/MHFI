@@ -1,23 +1,26 @@
-import { View, Text, Pressable, StyleSheet, Image } from "react-native"
+import { View, Text, Pressable, StyleSheet, Image, FlatList, SafeAreaView, ScrollView } from "react-native"
 
 import ArrowRight from "../../assets/svg/arrow-right"
 import WalkingGoalIcon from "../../assets/achievements/walking_goal";
 
 import { global_style_function } from "../../assets/style";
 import { useResponsive } from "react-native-responsive-hook";
+import { TouchableOpacity } from "react-native";
+import Greetings from "../../utils/Greetings";
 
 export default function HomeScreen() {
     const styles = useStyles();
   return (
     <View style={styles.background}>
         <View style={styles.topBar}>
-            <Pressable onPress={() => {}}>
+            <TouchableOpacity onPress={() => {}}>
             <Image
                 style={styles.topBarAvatar}
                 source={require("../../assets/placeholder.png")}
             ></Image>
-            </Pressable>
-            <Text style={styles.topBarText}>Good morning, <Text style={styles.italic}>Abdul</Text></Text>
+            </TouchableOpacity>
+            
+            <Text style={styles.topBarText}><Greetings/>,<Text> Abdul</Text></Text>
       </View>
 
         <View style={{...styles.dailyGoalsWrapper}}>
@@ -25,33 +28,36 @@ export default function HomeScreen() {
                 <Text style={{ ...styles.dailyGoalsText, ...styles.heading, ...styles.colorLight }}>
                     Your daily goals
                 </Text>
-                <Pressable>
+                <TouchableOpacity activeOpacity={0.80}>
                     <ArrowRight></ArrowRight>
-                </Pressable>
+                </TouchableOpacity>
             </View>
-            <View style={{...styles.dailyGoalsAchievements}}>
-                <Pressable>
+
+            <SafeAreaView style={{...styles.dailyGoalsAchievements}}>
+              <ScrollView style = {styles.flatList} horizontal = {true}>
+                <TouchableOpacity activeOpacity={0.80}>
                     <WalkingGoalIcon />
                     <View style={{...styles.dailyGoalsAchievementText}}>
                         <Text style={{...styles.colorLight}}>Daily steps</Text>
                         <Text style={{...styles.dailyGoalsAchievementValue, ...styles.colorLight}}>200 / 10,000</Text>
                     </View>
-                </Pressable>
-                <Pressable>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={0.80}>
                     <WalkingGoalIcon />
                     <View style={{...styles.dailyGoalsAchievementText}}>
                         <Text style={{...styles.colorLight}}>Daily steps</Text>
                         <Text style={{...styles.dailyGoalsAchievementValue, ...styles.colorLight}}>200 / 10,000</Text>
                     </View>
-                </Pressable>
-                <Pressable>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={0.80}>
                     <WalkingGoalIcon />
                     <View style={{...styles.dailyGoalsAchievementText}}>
                         <Text style={{...styles.colorLight}}>Daily steps</Text>
                         <Text style={{...styles.dailyGoalsAchievementValue, ...styles.colorLight}}>200 / 10,000</Text>
                     </View>
-                </Pressable>
-            </View>
+                </TouchableOpacity>
+                </ScrollView>
+            </SafeAreaView>
         </View>
     </View>
   )
@@ -61,6 +67,7 @@ const useStyles = () => {
     const { rem, vh, vw } = useResponsive();
   
     const styles = StyleSheet.create({ 
+        
         ...global_style_function(),
         dailyGoalsAchievements: {
             display: 'flex',
@@ -70,6 +77,11 @@ const useStyles = () => {
         dailyGoalsAchievementText: {
             marginTop: vh(0.429)
         },
+
+        flatList: {
+          height: '100%',
+        },
+
         // dailyGoalsAchievementValue
       dailyGoalsWrapper: {
         display: 'flex',
@@ -111,6 +123,7 @@ const useStyles = () => {
         width: vh(3.54),
         height: vh(3.54),
       }
+      
     });
   
     return styles
