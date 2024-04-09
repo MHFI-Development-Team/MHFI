@@ -1,7 +1,12 @@
 {
   "expo": {
+<<<<<<< HEAD
     "name": "MHtest",
     "slug": "MHtest",
+=======
+    "name": "MHFI",
+    "slug": "MHFI",
+>>>>>>> 8096190a151087fc0b6ce2b6a5eaf15682024f40
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

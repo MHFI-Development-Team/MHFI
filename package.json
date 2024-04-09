@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "name": "mhtest",
+=======
+  "name": "mhfi",
+>>>>>>> 8096190a151087fc0b6ce2b6a5eaf15682024f40
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -9,11 +13,24 @@
     "web": "expo start --web"
   },
   "dependencies": {
+<<<<<<< HEAD
     "expo": "~50.0.14",
     "expo-status-bar": "~1.11.1",
     "react": "18.2.0",
     "react-native": "0.73.6",
     "react-native-svg": "14.1.0"
+=======
+    "@expo-google-fonts/poppins": "^0.2.3",
+    "@react-navigation/bottom-tabs": "^6.5.20",
+    "@react-navigation/native": "^6.1.17",
+    "expo": "^49.0.23",
+    "expo-status-bar": "~1.11.1",
+    "react": "18.2.0",
+    "react-native": "0.73.4",
+    "react-native-responsive-hook": "^1.0.4",
+    "react-native-svg": "^15.1.0",
+    "react-native-svg-uri": "^0.0.1"
+>>>>>>> 8096190a151087fc0b6ce2b6a5eaf15682024f40
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
