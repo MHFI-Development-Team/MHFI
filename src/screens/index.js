@@ -7,6 +7,7 @@ export default function HomeScreen() {
   return (
     <View style={globalStyles.mainPageContainer}>
       <Header />
+      
     </View>
   );
 }
