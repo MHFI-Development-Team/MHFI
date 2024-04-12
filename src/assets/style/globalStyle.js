@@ -1,5 +1,6 @@
 import { StyleSheet, Dimensions  } from "react-native";
 
+
 // Gets phone screenWidth
 const screenWidth = Dimensions.get('window').width;
 
