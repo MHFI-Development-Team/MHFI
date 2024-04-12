@@ -1,5 +1,4 @@
 import { StyleSheet, Dimensions  } from "react-native";
-import { FlatList } from "react-native-web";
 
 // const { rem, vh, vw } = useResponsive();
 export const homeStyles = StyleSheet.create({
@@ -33,10 +32,19 @@ export const homeStyles = StyleSheet.create({
         height: '100%',
     },
     TouchableOpacityStyle: {
+        alignItems: 'center',
         marginRight: 10,
         activeOpacity: 0.80
     },
+    TouchableOpacityStyleSuggested: {
+        alignItems: 'center',
+        marginRight: 24,
+        activeOpacity: 0.80
+    },
     colorLight:{
+        fontSize: 14,
+        fontWeight: '400',
+        paddingTop: 5,
         color: 'white'
     },
     dailyGoalsAchievementValueLighter: {
@@ -44,5 +52,11 @@ export const homeStyles = StyleSheet.create({
     },
     dailyGoalsAchievementValueLight: {
         color: 'rgba(255, 255, 255, 0.4)' // 60% lighter than white
+    },
+    headerSuggested: {
+        marginTop: 20
+    },
+    SuggestedTools: {
+        paddingTop: 25
     }
 })

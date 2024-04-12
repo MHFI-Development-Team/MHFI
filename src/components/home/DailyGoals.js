@@ -12,7 +12,7 @@ export default function DailyGoals() {
           <Text style={homeStyles.headerTitle}>Your daily goals</Text>
         </View>
         <SafeAreaView style={homeStyles.dailyGoalsAchievement}>
-          <ScrollView style={homeStyles.flatList} horizontal={true}>
+          <ScrollView style={homeStyles.flatList} horizontal={true} showsHorizontalScrollIndicator={false}>
             <TouchableOpacity style={homeStyles.TouchableOpacityStyle}>
               <WalkingGoalIcon />
               <View style={homeStyles.dailyGoalsAchievementText}>
