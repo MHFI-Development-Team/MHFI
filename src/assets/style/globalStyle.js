@@ -7,7 +7,6 @@ const screenWidth = Dimensions.get('window').width;
 export const globalStyles = StyleSheet.create({
   layoutContainer: {
     flex: 1,
-    color: "white",
     fontFamily: "Poppins",
   },
   mainPageContainer: {

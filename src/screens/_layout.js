@@ -1,6 +1,11 @@
 import { useFonts } from "expo-font";
 import { Tabs } from "expo-router";
 import { globalStyles } from "../assets/style/globalStyle";
+import { Image } from "react-native";
+import HomeIcon from "../assets/svg/homeIcon";
+import FeedIcon from "../assets/svg/feedIcon";
+import Feed from "./feed";
+import MessageIcon from "../assets/svg/messageIcon";
 
 export default function AppLayout() {
   const [fontsLoaded] = useFonts({
@@ -8,8 +13,17 @@ export default function AppLayout() {
   });
 
   const screenOptions = {
-    tabBarActiveTintColor: "blue",
+    tabBarActiveTintColor: "white",
+    tabBarInactiveTintColor: "gray",
+    tabBarStyle: {
+      backgroundColor: "#040509",
+    },
+    tabBarLabelStyle: {
+      fontFamily: "Poppins",
+      fontSize: 12,
+    },
     headerShown: false,
+
   };
 
   return (
@@ -21,18 +35,28 @@ export default function AppLayout() {
         name="index"
         options={{
           title: "Home",
+          tabBarIcon: () => (
+            <HomeIcon />
+          ),
         }}
       />
       <Tabs.Screen
-        name="settings"
+        name="feed"
         options={{
-          title: "Settings",
+          title: "Feed",
+          tabBarIcon: () => (
+            <FeedIcon />
+          ),
         }}
       />
       <Tabs.Screen
-        name="login"
+        name="messages"
         options={{
-          title: "Login",
+          title: "Messages",
+          tabBarIcon: () => (
+           <MessageIcon />
+          ),
+          
         }}
       />
     </Tabs>

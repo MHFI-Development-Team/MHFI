@@ -4,7 +4,7 @@ import { FlatList } from "react-native-web";
 // const { rem, vh, vw } = useResponsive();
 export const homeStyles = StyleSheet.create({
     goalContainer: {
-        height: 231,
+        height: 235,
     },
     header: {
         flexDirection: 'row',
