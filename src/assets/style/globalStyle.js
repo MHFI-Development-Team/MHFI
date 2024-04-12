@@ -1,4 +1,6 @@
 import { StyleSheet, Dimensions  } from "react-native";
+import { Svg, Defs, RadialGradient, Rect, Stop } from 'react-native-svg';
+
 
 
 // Gets phone screenWidth
@@ -29,5 +31,5 @@ export const globalStyles = StyleSheet.create({
   headerImage: {
     width: 33,
     height: 33,
-  }
+  },
 });

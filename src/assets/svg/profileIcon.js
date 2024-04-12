@@ -10,7 +10,7 @@ export default function ProfileIcon() {
       fill="none"
       xmlns="http://www.w3.org/2000/Svg"
     >
-      <g clip-Path="url(#clip0_171_300)">
+      <g clipPath="url(#clip0_171_300)">
         <Path
           d="M16.7952 21.5416C19.7534 21.5416 22.1514 19.1435 22.1514 16.1853C22.1514 13.2272 19.7534 10.8291 16.7952 10.8291C13.837 10.8291 11.439 13.2272 11.439 16.1853C11.439 19.1435 13.837 21.5416 16.7952 21.5416Z"
           fill="#A0616A"
@@ -41,9 +41,9 @@ export default function ProfileIcon() {
           y2="33"
           gradientUnits="userSpaceOnUse"
         >
-          <Stop Stop-color="white" />
-          <Stop offset="0.2" Stop-color="#EBEBEB" />
-          <Stop offset="1" Stop-color="#999999" />
+          <Stop stopColor="white" />
+          <Stop offset="0.2" stopColor="#EBEBEB" />
+          <Stop offset="1" stopColor="#999999" />
         </LinearGradient>
         <clipPath id="clip0_171_300">
           <rect width="33" height="33" fill="white" />
