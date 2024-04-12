@@ -1,4 +1,7 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions  } from "react-native";
+
+// Gets phone screenWidth
+const screenWidth = Dimensions.get('window').width;
 
 export const globalStyles = StyleSheet.create({
   layoutContainer: {
@@ -7,8 +10,24 @@ export const globalStyles = StyleSheet.create({
     fontFamily: "Poppins",
   },
   mainPageContainer: {
-    backgroundColor: "red",
+    backgroundColor: "#040509",
     flex: 1,
   },
-  header: {},
+  headerContainer: {
+    height: 60,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 0.05 * screenWidth,
+  },
+  headerText: {
+    color: 'white',
+    fontSize: 16,
+    marginLeft: 10,
+    fontWeight: '600',
+    flex: 1
+  },
+  headerImage: {
+    width: 33,
+    height: 33,
+  }
 });
