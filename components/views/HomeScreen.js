@@ -1,131 +1,204 @@
-import { View, Text, Pressable, StyleSheet, Image, FlatList, SafeAreaView, ScrollView } from "react-native"
+import { View, Text, Pressable, StyleSheet, Image, TextInput } from "react-native";
 
-import ArrowRight from "../../assets/svg/arrow-right"
-import WalkingGoalIcon from "../../assets/achievements/walking_goal";
+// import { ArrowRight, WalkingGoalIcon } from "../../assets/svg/svg-icons";
 
 import { global_style_function } from "../../assets/style";
 import { useResponsive } from "react-native-responsive-hook";
-import { TouchableOpacity } from "react-native";
-import Greetings from "../../utils/Greetings";
+
+import ArrowRight from "../../assets/svg/arrow-right";
+import WalkingGoalIcon from "../../assets/achievements/walking_goal";
+import SearchBarIcon from "../../assets/svg/searchbar-icon";
 
 export default function HomeScreen() {
-    const styles = useStyles();
+  const styles = useStyles();
   return (
-    <View style={styles.background}>
-        <View style={styles.topBar}>
-            <TouchableOpacity onPress={() => {}}>
-            <Image
-                style={styles.topBarAvatar}
-                source={require("../../assets/placeholder.png")}
-            ></Image>
-            </TouchableOpacity>
-            
-            <Text style={styles.topBarText}><Greetings/>,<Text> Abdul</Text></Text>
+    <View style={{...styles.background, ...styles.fullHeight}}>
+      <View style={styles.topBar}>
+        <Pressable onPress={() => {}}>
+          <Image
+            style={styles.topBarAvatar}
+            source={require("../../assets/placeholder.png")}
+          ></Image>
+        </Pressable>
+        <Text style={styles.topBarText}>
+          Good morning, <Text style={styles.italic}>Abdul</Text>
+        </Text>
       </View>
 
-        <View style={{...styles.dailyGoalsWrapper}}>
-            <View style={{...styles.dailyGoalsHeader}}>
-                <Text style={{ ...styles.dailyGoalsText, ...styles.heading, ...styles.colorLight }}>
-                    Your daily goals
-                </Text>
-                <TouchableOpacity activeOpacity={0.80}>
-                    <ArrowRight></ArrowRight>
-                </TouchableOpacity>
-            </View>
-
-            <SafeAreaView style={{...styles.dailyGoalsAchievements}}>
-              <ScrollView style = {styles.flatList} horizontal = {true}>
-                <TouchableOpacity activeOpacity={0.80}>
-                    <WalkingGoalIcon />
-                    <View style={{...styles.dailyGoalsAchievementText}}>
-                        <Text style={{...styles.colorLight}}>Daily steps</Text>
-                        <Text style={{...styles.dailyGoalsAchievementValue, ...styles.colorLight}}>200 / 10,000</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.80}>
-                    <WalkingGoalIcon />
-                    <View style={{...styles.dailyGoalsAchievementText}}>
-                        <Text style={{...styles.colorLight}}>Daily steps</Text>
-                        <Text style={{...styles.dailyGoalsAchievementValue, ...styles.colorLight}}>200 / 10,000</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.80}>
-                    <WalkingGoalIcon />
-                    <View style={{...styles.dailyGoalsAchievementText}}>
-                        <Text style={{...styles.colorLight}}>Daily steps</Text>
-                        <Text style={{...styles.dailyGoalsAchievementValue, ...styles.colorLight}}>200 / 10,000</Text>
-                    </View>
-                </TouchableOpacity>
-                </ScrollView>
-            </SafeAreaView>
+      <View style={{ ...styles.dailyGoalsWrapper }}>
+        <View style={{ ...styles.dailyGoalsHeader }}>
+          <Text
+            style={{
+              ...styles.dailyGoalsText,
+              ...styles.heading,
+              ...styles.colorLight,
+            }}
+          >
+            Your daily goals
+          </Text>
+          <Pressable>
+            <ArrowRight></ArrowRight>
+          </Pressable>
         </View>
+        <View style={{ ...styles.dailyGoalsAchievements }}>
+          <Pressable>
+            <WalkingGoalIcon />
+            <View style={{ ...styles.dailyGoalsAchievementText }}>
+              <Text style={{ ...styles.colorLight }}>Daily steps</Text>
+              <Text
+                style={{
+                  ...styles.dailyGoalsAchievementValue,
+                  ...styles.colorLight,
+                }}
+              >
+                200 / 10,000
+              </Text>
+            </View>
+          </Pressable>
+          <Pressable>
+            <WalkingGoalIcon />
+            <View style={{ ...styles.dailyGoalsAchievementText }}>
+              <Text style={{ ...styles.colorLight }}>Daily steps</Text>
+              <Text
+                style={{
+                  ...styles.dailyGoalsAchievementValue,
+                  ...styles.colorLight,
+                }}
+              >
+                200 / 10,000
+              </Text>
+            </View>
+          </Pressable>
+          <Pressable>
+            <WalkingGoalIcon />
+            <View style={{ ...styles.dailyGoalsAchievementText }}>
+              <Text style={{ ...styles.colorLight }}>Daily steps</Text>
+              <Text
+                style={{
+                  ...styles.dailyGoalsAchievementValue,
+                  ...styles.colorLight,
+                }}
+              >
+                200 / 10,000
+              </Text>
+            </View>
+          </Pressable>
+        </View>
+      </View>
+      <View style={{ ...styles.contentForYouWrapper }}>
+        <View style={{ ...styles.contentForYouHeader }}>
+          <Text
+            style={{
+              ...styles.dailyGoalsText,
+              ...styles.heading,
+              ...styles.colorLight,
+            }}
+          >
+            Content for you
+          </Text>
+          <Pressable>
+            <Text style={{...styles.colorLight, ...styles.linkText}}>View more</Text>
+          </Pressable>
+        </View>
+        <View style={{...styles.searchbarBarWrapper}}>
+            <SearchBarIcon />
+            <TextInput placeholderTextColor={'rgba(255, 255, 255, 0.6)'} placeholder="Search articles, videos and more" style={{...styles.searchBarInput}} />
+        </View>
+      </View>
     </View>
-  )
+  );
 }
 
 const useStyles = () => {
-    const { rem, vh, vw } = useResponsive();
-  
-    const styles = StyleSheet.create({ 
-        
-        ...global_style_function(),
-        dailyGoalsAchievements: {
-            display: 'flex',
-            flexDirection: 'row',
-            gap: vh(2.36051502)
-        },
-        dailyGoalsAchievementText: {
-            marginTop: vh(0.429)
-        },
+  const { rem, vh, vw } = useResponsive();
 
-        flatList: {
-          height: '100%',
-        },
-
-        // dailyGoalsAchievementValue
-      dailyGoalsWrapper: {
+  const styles = StyleSheet.create({
+    ...global_style_function(),
+    contentForYouWrapper: {
         display: 'flex',
         flexDirection: 'column',
-        gap: vh(1.502),
-
+        marginTop: vh(2.575),
         paddingHorizontal: vh(1.93),
-        marginTop: vh(1.28)
-      },
-      dailyGoalsText: {
-        fontSize: 20
-        // fontSize: rem(1)
-      },
-      dailyGoalsHeader: {
+    },
+    contentForYouHeader: {
         display: 'flex',
         flexDirection: 'row',
-
-        alignItems: 'center',
         justifyContent: 'space-between',
-      },
-      topBar: {
-        backgroundColor: '#000',
-        height: vh(6.75965665),
+        alignItems: 'center'
+    },
+    searchbarBarWrapper: {
+        height: vh(4.72),
+        borderRadius: 100,
+        gap: vh(1.0729),
         display: 'flex',
-        alignItems: 'center',
         flexDirection: 'row',
-        gap: vh(1.07),
-        paddingHorizontal: vh(2.36051502)
-      },
-      italic: {
-        fontStyle: 'italic'
-      },
-      topBarText: {
-        color: '#fff',
-        zIndex: 2,
-        fontWeight: "800"
-      },
-      topBarAvatar: {
-        width: vh(3.54),
-        height: vh(3.54),
-      }
-      
-    });
-  
-    return styles
-  }
-  
+        paddingHorizontal: vh(1.9313),
+        paddingVertical: vh(1.0729),
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: 'rgba(108, 92, 231, 0.25)',
+        backgroundColor: 'rgba(21, 43, 134, 0.2)',
+    },
+    searchBarInput: {
+        width: '100%',
+        height: '100%',
+        flexShrink: 1,
+        color: '#fff'
+    },
+
+    fullHeight: {
+        height: vh(100)
+    },
+    dailyGoalsAchievements: {
+      display: "flex",
+      flexDirection: "row",
+      gap: vh(2.36051502),
+    },
+    dailyGoalsAchievementText: {
+      marginTop: vh(0.429),
+    },
+    // dailyGoalsAchievementValue
+    dailyGoalsWrapper: {
+      display: "flex",
+      flexDirection: "column",
+      gap: vh(1.502),
+
+      paddingHorizontal: vh(1.93),
+      marginTop: vh(1.28),
+    },
+    dailyGoalsText: {
+      fontSize: 20,
+      // fontSize: rem(1)
+    },
+    dailyGoalsHeader: {
+      display: "flex",
+      flexDirection: "row",
+
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+    topBar: {
+      backgroundColor: "#000",
+      height: vh(6.75965665),
+      display: "flex",
+      alignItems: "center",
+      flexDirection: "row",
+      gap: vh(1.07),
+      paddingHorizontal: vh(2.36051502),
+    },
+    italic: {
+      fontStyle: "italic",
+    },
+    topBarText: {
+      color: "#fff",
+      zIndex: 2,
+      fontWeight: "800",
+    },
+    topBarAvatar: {
+      width: vh(3.54),
+      height: vh(3.54),
+    },
+  });
+
+  return styles;
+};
