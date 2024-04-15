@@ -27,11 +27,11 @@ export default function HomeScreen() {
           Good morning, <Text style={styles.italic}>Abdul</Text>
         </Text>
       </View>
-
+      <View style={styles.contentForYouWrapper}>
         <DailyGoals/>
         <SuggestedTools/>
         <ContentForYou/>
-
+      </View>
     </View>
   );
 }
@@ -44,8 +44,8 @@ const useStyles = () => {
     contentForYouWrapper: {
         display: 'flex',
         flexDirection: 'column',
-        marginTop: vh(2.575),
-        paddingHorizontal: vh(1.93),
+        //marginTop: vh(2.575),
+        //paddingHorizontal: vh(1.93),
     },
     contentForYouHeader: {
         display: 'flex',
@@ -74,7 +74,7 @@ const useStyles = () => {
     },
 
     fullHeight: {
-        height: vh(100)
+        flex: 1
     },
     dailyGoalsAchievements: {
       display: "flex",
@@ -103,7 +103,6 @@ const useStyles = () => {
       justifyContent: "space-between",
     },
     topBar: {
-      backgroundColor: "#000",
       height: vh(6.75965665),
       display: "flex",
       alignItems: "center",

@@ -76,7 +76,6 @@ const useStyles = (vh) => StyleSheet.create({
     
   },
   searchbarBarWrapper: {
-    height: vh(4.72),
     borderRadius: 100,
     flexDirection: 'row',
     paddingHorizontal: vh(1.93),

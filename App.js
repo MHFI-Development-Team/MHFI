@@ -30,7 +30,15 @@ export default function App() {
         <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarStyle: {
-              backgroundColor: "#000",
+              backgroundColor: "transparent",
+              position: "absolute",
+              left: 0,
+              bottom: 0,
+              borderTopWidth: 0,
+              elevation: 0,
+              marginTop: 22,
+              marginBottom: 22,
+              paddingHorizontal: 50,
             },
             
             tabBarActiveTintColor: "#fff",
@@ -43,6 +51,11 @@ export default function App() {
                 return <MessagesIcon focused={focused} />;
               }
             },
+            tabBarLabelStyle: {
+              fontFamily: "Poppins",
+              fontSize: 12,
+            },
+            headerShown: false,
           })}
         >
           <Tab.Screen options={{headerShown:false}} name="Home" component={HomeScreen} />

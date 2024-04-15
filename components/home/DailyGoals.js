@@ -37,13 +37,14 @@ const DailyGoals = () => {
             <WalkingGoalIcon />
             <View style={{ ...styles.dailyGoalsAchievementText }}>
               <Text style={{ ...styles.colorLight }}>Daily steps</Text>
-              <Text
-                style={{
-                  ...styles.dailyGoalsAchievementValue,
-                  ...styles.colorLight,
-                }}
-              >
-                200 / 10,000
+              <Text style={{ flexDirection: "row" }}>
+                <Text style={styles.dailyGoalsAchievementValueLight}>
+                  200
+                </Text>
+                <Text style={styles.dailyGoalsAchievementValueLighter}>
+                  {" "}
+                  / 10,000
+                </Text>
               </Text>
             </View>
           </TouchableOpacity>
@@ -51,13 +52,14 @@ const DailyGoals = () => {
             <WaterIntakeIcon />
             <View style={{ ...styles.dailyGoalsAchievementText }}>
               <Text style={{ ...styles.colorLight }}>Water intake</Text>
-              <Text
-                style={{
-                  ...styles.dailyGoalsAchievementValue,
-                  ...styles.colorLight,
-                }}
-              >
-                200ml / 3,000
+              <Text style={{ flexDirection: "row" }}>
+                <Text style={styles.dailyGoalsAchievementValueLight}>
+                  200
+                </Text>
+                <Text style={styles.dailyGoalsAchievementValueLighter}>
+                  {" "}
+                  / 10,000
+                </Text>
               </Text>
             </View>
           </TouchableOpacity>
@@ -65,13 +67,14 @@ const DailyGoals = () => {
             <NightTimeIcon />
             <View style={{ ...styles.dailyGoalsAchievementText }}>
               <Text style={{ ...styles.colorLight }}>Night time routine</Text>
-              <Text
-                style={{
-                  ...styles.dailyGoalsAchievementValue,
-                  ...styles.colorLight,
-                }}
-              >
-                2 / 3 tasks
+              <Text style={{ flexDirection: "row" }}>
+                <Text style={styles.dailyGoalsAchievementValueLight}>
+                  200
+                </Text>
+                <Text style={styles.dailyGoalsAchievementValueLighter}>
+                  {" "}
+                  / 10,000
+                </Text>
               </Text>
             </View>
           </TouchableOpacity>
@@ -86,7 +89,7 @@ const useStyles = (vh) => StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     gap: vh(1.502),
-    marginTop: vh(1.28)
+    marginTop: vh(1.28),
   },
   dailyGoalsHeader: {
     display: "flex",
@@ -105,6 +108,8 @@ const useStyles = (vh) => StyleSheet.create({
     gap: vh(2.36051502),
   },
   dailyGoalsAchievementText: {
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: vh(0.429),
   },
   dailyGoalsAchievementValue: {
@@ -115,6 +120,12 @@ const useStyles = (vh) => StyleSheet.create({
   },
   colorLight: {
     color: '#FFF'
+  },
+  dailyGoalsAchievementValueLight: {
+    color: 'rgba(255, 255, 255, 0.2)'
+  },
+  dailyGoalsAchievementValueLighter: {
+    color: 'rgba(255, 255, 255, 0.4)'
   }
 });
 
