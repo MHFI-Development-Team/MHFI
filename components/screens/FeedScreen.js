@@ -11,8 +11,9 @@ import SuggestedTools from "../home/SuggestedTools";
 import ArrowRight from "../../assets/svg/arrow-right";
 import WalkingGoalIcon from "../../assets/achievements/walking_goal";
 import SearchBarIcon from "../../assets/svg/searchbar-icon";
+import FeedHeader from "../feed/FeedHeader";
 
-export default function HomeScreen() {
+export default function FeedScreen() {
   const styles = useStyles();
   return (
     <View style={{ ...styles.background, ...styles.fullHeight }}>
@@ -27,15 +28,9 @@ export default function HomeScreen() {
           Good morning, <Text style={styles.italic}>Abdul</Text>
         </Text>
       </View>
-      <SafeAreaView>
-        <ScrollView>
-          <View style={styles.contentForYouWrapper}>
-            <DailyGoals />
-            <SuggestedTools />
-            <ContentForYou />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+      <View>
+        <FeedHeader />
+      </View>
     </View>
   );
 }
@@ -129,4 +124,5 @@ const useStyles = () => {
   });
 
   return styles;
+
 };

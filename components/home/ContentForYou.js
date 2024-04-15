@@ -36,6 +36,7 @@ const ContentForYou = () => {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scrollViewContent}
+        style={styles.contentCardWrapper}
       >
 
         <View style={styles.imageWrapper}>
@@ -115,6 +116,9 @@ const useStyles = (vh) => StyleSheet.create({
     marginTop: vh(1),
     width: vh(15)
   },
+  contentCardWrapper: {
+    marginBottom: vh(15)
+  }
 
 });
 

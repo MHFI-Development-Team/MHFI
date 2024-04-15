@@ -20,6 +20,7 @@ import MessagesIcon from "./assets/svg/messages-icon";
 const Tab = createBottomTabNavigator();
 
 import { global_style_function } from "./assets/style";
+import FeedScreen from "./components/screens/FeedScreen";
 
 export default function App() {
   const styles = useStyles();
@@ -30,14 +31,13 @@ export default function App() {
         <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarStyle: {
-              backgroundColor: "transparent",
+              backgroundColor: "#040509",
               position: "absolute",
               left: 0,
               bottom: 0,
               borderTopWidth: 0,
               elevation: 0,
               marginTop: 22,
-              marginBottom: 22,
               paddingHorizontal: 50,
             },
             
@@ -59,7 +59,7 @@ export default function App() {
           })}
         >
           <Tab.Screen options={{headerShown:false}} name="Home" component={HomeScreen} />
-          <Tab.Screen name="Feed" component={HomeScreen} />
+          <Tab.Screen name="Feed" component={FeedScreen} />
           <Tab.Screen name="Messages" component={HomeScreen} />
         </Tab.Navigator>
       </NavigationContainer>
