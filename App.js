@@ -12,7 +12,7 @@ import {
 import { useResponsive } from "react-native-responsive-hook";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "./components/views/HomeScreen";
+import HomeScreen from "./components/screens/HomeScreen";
 import HomeIcon from "./assets/svg/home-icon";
 import FeedIcon from "./assets/svg/feed-icon";
 import MessagesIcon from "./assets/svg/messages-icon";

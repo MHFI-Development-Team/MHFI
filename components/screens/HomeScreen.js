@@ -4,7 +4,10 @@ import { View, Text, Pressable, StyleSheet, Image, TextInput } from "react-nativ
 
 import { global_style_function } from "../../assets/style";
 import { useResponsive } from "react-native-responsive-hook";
+import ContentForYou from "../home/ContentForYou";
 
+import DailyGoals from "../home/DailyGoals";
+import SuggestedTools from "../home/SuggestedTools";
 import ArrowRight from "../../assets/svg/arrow-right";
 import WalkingGoalIcon from "../../assets/achievements/walking_goal";
 import SearchBarIcon from "../../assets/svg/searchbar-icon";
@@ -25,86 +28,10 @@ export default function HomeScreen() {
         </Text>
       </View>
 
-      <View style={{ ...styles.dailyGoalsWrapper }}>
-        <View style={{ ...styles.dailyGoalsHeader }}>
-          <Text
-            style={{
-              ...styles.dailyGoalsText,
-              ...styles.heading,
-              ...styles.colorLight,
-            }}
-          >
-            Your daily goals
-          </Text>
-          <Pressable>
-            <ArrowRight></ArrowRight>
-          </Pressable>
-        </View>
-        <View style={{ ...styles.dailyGoalsAchievements }}>
-          <Pressable>
-            <WalkingGoalIcon />
-            <View style={{ ...styles.dailyGoalsAchievementText }}>
-              <Text style={{ ...styles.colorLight }}>Daily steps</Text>
-              <Text
-                style={{
-                  ...styles.dailyGoalsAchievementValue,
-                  ...styles.colorLight,
-                }}
-              >
-                200 / 10,000
-              </Text>
-            </View>
-          </Pressable>
-          <Pressable>
-            <WalkingGoalIcon />
-            <View style={{ ...styles.dailyGoalsAchievementText }}>
-              <Text style={{ ...styles.colorLight }}>Daily steps</Text>
-              <Text
-                style={{
-                  ...styles.dailyGoalsAchievementValue,
-                  ...styles.colorLight,
-                }}
-              >
-                200 / 10,000
-              </Text>
-            </View>
-          </Pressable>
-          <Pressable>
-            <WalkingGoalIcon />
-            <View style={{ ...styles.dailyGoalsAchievementText }}>
-              <Text style={{ ...styles.colorLight }}>Daily steps</Text>
-              <Text
-                style={{
-                  ...styles.dailyGoalsAchievementValue,
-                  ...styles.colorLight,
-                }}
-              >
-                200 / 10,000
-              </Text>
-            </View>
-          </Pressable>
-        </View>
-      </View>
-      <View style={{ ...styles.contentForYouWrapper }}>
-        <View style={{ ...styles.contentForYouHeader }}>
-          <Text
-            style={{
-              ...styles.dailyGoalsText,
-              ...styles.heading,
-              ...styles.colorLight,
-            }}
-          >
-            Content for you
-          </Text>
-          <Pressable>
-            <Text style={{...styles.colorLight, ...styles.linkText}}>View more</Text>
-          </Pressable>
-        </View>
-        <View style={{...styles.searchbarBarWrapper}}>
-            <SearchBarIcon />
-            <TextInput placeholderTextColor={'rgba(255, 255, 255, 0.6)'} placeholder="Search articles, videos and more" style={{...styles.searchBarInput}} />
-        </View>
-      </View>
+        <DailyGoals/>
+        <SuggestedTools/>
+        <ContentForYou/>
+
     </View>
   );
 }
@@ -159,12 +86,10 @@ const useStyles = () => {
     },
     // dailyGoalsAchievementValue
     dailyGoalsWrapper: {
-      display: "flex",
-      flexDirection: "column",
+      display: 'flex',
+      flexDirection: 'column',
       gap: vh(1.502),
-
-      paddingHorizontal: vh(1.93),
-      marginTop: vh(1.28),
+      marginTop: vh(1.28)
     },
     dailyGoalsText: {
       fontSize: 20,
