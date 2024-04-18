@@ -52,7 +52,7 @@ export default function App() {
               }
             },
             tabBarLabelStyle: {
-              fontFamily: "Poppins",
+              fontFamily: "Poppins-Regular",
               fontSize: 12,
             },
             headerShown: false,
