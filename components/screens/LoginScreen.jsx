@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Image, TouchableOpacity, Text } from 'react-native';
-import SvgComponent from '../../svg/HomeSlope'; 
+import SvgComponent from '../../assets/svg/HomeSlope'; 
 
 export default function LoginScreen() {
   return (
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   slopeContainer: {
-    marginLeft: -120, // Adjust the marginLeft to push the slope more to the left
+    marginLeft: -120, 
     marginTop: 80,
   },
   btnContainer: {
