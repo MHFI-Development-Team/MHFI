@@ -14,47 +14,91 @@ const SmokingCalculator = () => {
   // States
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
-  const [smokingType, setSmokingType] = useState('smokes'); // Default value
-  const [costText, setCostText] = useState('Cost of pack of 20?'); // Default cost text
-  const [showPerPackInput, setShowPerPackInput] = useState(false);
+  const [smokingType, setSmokingType] = useState('smokes');
+  const [costText, setCostText] = useState('Cost of pack of 20?');
+  const [showPerPackInput, setShowPerPackInput] = useState(false); //For rollies/cigars amount in pack
+  const [smokesPerDay, setSmokesPerDay] = useState(0);
+  const [perPack, setPerPack] = useState(20);//For rollies/cigars amount in pack
+  const [costPerItem, setCostPerItem] = useState(0);
+  const [costPerDay, setCostPerDay] = useState(0);
+  const [costPerWeek, setCostPerWeek] = useState(0);
+  const [costPerMonth, setCostPerMonth] = useState(0); 
+  const [costPerYear, setCostPerYear] = useState(0); 
 
   // Function to handle dropdown change
   const handleDropdownChange = (itemValue) => {
     setValue(itemValue);
     setIsFocus(false);
     
-    // Update smoking type and cost text based on selected value
-    switch(itemValue) {
-      case '1':
-        setSmokingType('smokes');
-        setCostText('Cost per pack of 20?');
-        setShowPerPackInput(false);
+     // Update smoking type and cost text based on selected value
+  switch (itemValue) {
+    case '1':
+      setSmokingType('smokes');
+      setCostText('Cost per pack of 20?');
+      setShowPerPackInput(false);
+
+      break;
+    case '2':
+      setSmokingType('rollies');
+      setCostText('Cost per tobacco pouch');
+      setShowPerPackInput(true);
+
+      break;
+    case '3':
+      setSmokingType('vapes');
+      setCostText('Cost per vape?');
+      setShowPerPackInput(false);
+
+      break;
+    case '4':
+      setSmokingType('cigars');
+      setCostText('Cost per pack?');
+      setShowPerPackInput(true);
+
+      break;
+    default:
+      setSmokingType('smokes');
+      setCostText('Cost per pack of 20?');
+      setShowPerPackInput(false);
+  }
+};
+
+  // Function to handle calculate button press
+  const handleCalculate = () => {
+    let costPerDay = 0;
+    let costPerCig = 0;
+
+    switch(smokingType) {
+      case 'smokes':
+        costPerCig = costPerItem / 20;
+        costPerDay = costPerCig * smokesPerDay;
         break;
-      case '2':
-        setSmokingType('rollies');
-        setCostText('Cost per tobacco pouch');
-        setShowPerPackInput(true);
+      case 'vapes':
+        costPerDay = costPerItem * smokesPerDay;
         break;
-      case '3':
-        setSmokingType('vapes');
-        setCostText('Cost per vape?');
-        setShowPerPackInput(false);
-        break;
-      case '4':
-        setSmokingType('cigars');
-        setCostText('Cost per pack?');
-        setShowPerPackInput(true);
+      case 'rollies':
+      case 'cigars':
+        costPerDay = (costPerItem / perPack) * smokesPerDay;
         break;
       default:
-        setSmokingType('smokes');
-        setCostText('Cost per pack of 20?');
-        setShowPerPackInput(false);
+        break;
     }
+
+ 
+    const costPerWeek = costPerDay * 7;
+    const costPerMonth = costPerDay * 30;
+    const costPerYear = costPerDay * 365;
+
+    setCostPerDay(costPerDay.toFixed(2));
+    setCostPerWeek(costPerWeek.toFixed(2));
+    setCostPerMonth(costPerMonth.toFixed(2));
+    setCostPerYear(costPerYear.toFixed(2));
   };
 
   return (
     <View style={styles.container}>
       {/* Header Text */}
+      <View style={styles.inputContainer}>
       <View style={styles.textContainer}>
         <Text style={styles.headerText}>What are you smoking?</Text>
       </View>
@@ -82,7 +126,16 @@ const SmokingCalculator = () => {
       <View style={styles.textContainer}>
         <Text style={styles.dynamicText}>How many {smokingType} do you smoke per day?</Text>
       </View>
-      <TextInput style={styles.input} placeholder="?" keyboardType="numeric"/>
+      <TextInput 
+        style={styles.input} 
+        placeholder="?" 
+        keyboardType="numeric"
+        onChangeText={(text) => {
+          // Replace any non-numeric characters with an empty string
+          text = text.replace(/[^0-9]/g, '').replace('-', '');
+          setSmokesPerDay(parseInt(text));
+        }}
+      />
       
       {/* Per Pack Input */}
       {showPerPackInput && (
@@ -90,19 +143,35 @@ const SmokingCalculator = () => {
           <Text style={styles.dynamicText}>How many per pack?</Text>
         </View>
       )}
-      {showPerPackInput && <TextInput style={styles.input} placeholder="?" keyboardType="numeric"/>}
+      {showPerPackInput && <TextInput 
+        style={styles.input} 
+        placeholder="?" 
+        keyboardType="numeric"
+        onChangeText={(text) => {
+          text = text.replace(/[^0-9]/g, '').replace('-', '');
+          setPerPack(parseInt(text));
+        }}
+      />}
       
       {/* Cost Text Input */}
       <View style={styles.textContainer}>
         <Text style={styles.dynamicText}>{costText}</Text>
       </View>
-      <TextInput style={styles.input} placeholder="?" keyboardType="numeric"/>
+      <TextInput 
+        style={styles.input} 
+        placeholder="?" 
+        keyboardType="numeric"
+        onChangeText={(text) => {
+          text = text.replace(/[^0-9]/g, '').replace('-', '');
+          setCostPerItem(parseFloat(text));}}
+      />
 
       {/* Calculate Button */}
-      <Pressable style={styles.calculateBtn} onPress ={() => console.log('Button')}>
+      <Pressable style={styles.calculateBtn} onPress={handleCalculate}>
         <Text style={styles.calculateText}>Calculate</Text>
       </Pressable>
-
+      </View>
+        
       {/* Spending Text */}
       <View style={styles.textContainer}>
         <Text style={styles.spendingText}>How much you are spending</Text>
@@ -110,19 +179,24 @@ const SmokingCalculator = () => {
 
       {/* Cost Display */}
       <View style={styles.costContainer}>
+      <View style={styles.costTextContainer}>
+          <Text style={styles.costNumber}>Per Day</Text>
+          <Text style={styles.cost}>€{costPerDay}</Text>
+        </View>
+
         <View style={styles.costTextContainer}>
           <Text style={styles.costNumber}>Per Week</Text>
-          <Text style={styles.cost}>?</Text>
+          <Text style={styles.cost}>€{costPerWeek}</Text>
         </View>
 
         <View style={styles.costTextContainer}>
           <Text style={styles.costNumber}>Per Month</Text>
-          <Text style={styles.cost}>?</Text>
+          <Text style={styles.cost}>€{costPerMonth}</Text>
         </View>
       
         <View style={styles.costTextContainer}>
           <Text style={styles.costNumber}>Per Year</Text>
-          <Text style={styles.cost}>?</Text>
+          <Text style={styles.cost}>€{costPerYear}</Text>
         </View>
       </View>
     </View>
@@ -130,6 +204,7 @@ const SmokingCalculator = () => {
 };
 
 export default SmokingCalculator;
+
 
 // Styles
 const styles = StyleSheet.create({
@@ -219,16 +294,21 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   cost: {
-    height: 50,
-    width: 50,
+    height: 70,
+    width: 70, 
     color: 'white',
     backgroundColor: '#0A1336',
     borderColor: '#7473E6',
     borderWidth: 1.5,
-    borderRadius: 30,
-    paddingHorizontal: 15,
-    alignSelf: 'stretch',
-    marginHorizontal: 20,
+    borderRadius: 35, 
+    marginHorizontal: 15,
     marginTop: 20,
+    textAlign: 'center', 
+    justifyContent: 'center', 
+    textAlignVertical: 'center',
   },
+  inputContainer: {
+    alignItems: 'center',
+  },
+  
 });
