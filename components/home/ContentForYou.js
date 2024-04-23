@@ -94,7 +94,7 @@ const useStyles = (vh) => StyleSheet.create({
     color: '#fff'
   },
   searchIcon: {
-    opacity: "0.7",
+    opacity: 0.7,
     marginRight: vh(1), 
   },
   scrollViewContent: {
