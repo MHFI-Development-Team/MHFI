@@ -24,7 +24,7 @@ export default function FeedScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <FeedHeader />
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <FeedCards />
         </ScrollView>
       </View>

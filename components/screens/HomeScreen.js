@@ -9,8 +9,6 @@ import ContentForYou from "../home/ContentForYou";
 import DailyGoals from "../home/DailyGoals";
 import SuggestedTools from "../home/SuggestedTools";
 import ArrowRight from "../../assets/svg/arrow-right";
-import WalkingGoalIcon from "../../assets/achievements/walking_goal";
-import SearchBarIcon from "../../assets/svg/searchbar-icon";
 
 export default function HomeScreen() {
   const styles = useStyles();
