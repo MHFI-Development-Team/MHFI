@@ -16,7 +16,7 @@ export default function HomeScreen() {
   const styles = useStyles();
   return (
     <View style={{ ...styles.background, ...styles.fullHeight }}>
-      <View style={styles.topBar}>
+      {/* <View style={styles.topBar}>
         <Pressable onPress={() => {}}>
           <Image
             style={styles.topBarAvatar}
@@ -26,7 +26,7 @@ export default function HomeScreen() {
         <Text style={styles.topBarText}>
           Good morning, <Text style={styles.italic}>Abdul</Text>
         </Text>
-      </View>
+      </View> */}
       <SafeAreaView>
         <ScrollView>
           <View style={styles.contentForYouWrapper}>

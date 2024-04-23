@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet, Image, TextInput, SafeAreaView, ScrollView } from "react-native";
+import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet, StatusBar, ScrollView } from 'react-native';
 
 // import { ArrowRight, WalkingGoalIcon } from "../../assets/svg/svg-icons";
 
@@ -12,26 +12,23 @@ import ArrowRight from "../../assets/svg/arrow-right";
 import WalkingGoalIcon from "../../assets/achievements/walking_goal";
 import SearchBarIcon from "../../assets/svg/searchbar-icon";
 import FeedHeader from "../feed/FeedHeader";
+import FeedCards from "../feed/FeedCards";
+import SettingIcon from "../../assets/svg/SettingsIcon";
+import { Dimensions } from 'react-native';
+
+const screenWidth = Dimensions.get('window').width;
 
 export default function FeedScreen() {
   const styles = useStyles();
   return (
-    <View style={{ ...styles.background, ...styles.fullHeight }}>
-      <View style={styles.topBar}>
-        <Pressable onPress={() => {}}>
-          <Image
-            style={styles.topBarAvatar}
-            source={require("../../assets/placeholder.png")}
-          ></Image>
-        </Pressable>
-        <Text style={styles.topBarText}>
-          Good morning, <Text style={styles.italic}>Abdul</Text>
-        </Text>
-      </View>
-      <View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.content}>
         <FeedHeader />
+        <ScrollView>
+          <FeedCards />
+        </ScrollView>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -40,86 +37,16 @@ const useStyles = () => {
 
   const styles = StyleSheet.create({
     ...global_style_function(),
-    contentForYouWrapper: {
-        display: 'flex',
-        flexDirection: 'column',
-        //marginTop: vh(2.575),
-        //paddingHorizontal: vh(1.93),
+    container: {
+      flex: 1,
     },
-    contentForYouHeader: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-    },
-    searchbarBarWrapper: {
-        height: vh(4.72),
-        borderRadius: 100,
-        gap: vh(1.0729),
-        display: 'flex',
-        flexDirection: 'row',
-        paddingHorizontal: vh(1.9313),
-        paddingVertical: vh(1.0729),
-        alignItems: 'center',
-        borderWidth: 1,
-        borderColor: 'rgba(108, 92, 231, 0.25)',
-        backgroundColor: 'rgba(21, 43, 134, 0.2)',
-    },
-    searchBarInput: {
-        width: '100%',
-        height: '100%',
-        flexShrink: 1,
-        color: '#fff'
-    },
-
-    fullHeight: {
-        flex: 1
-    },
-    dailyGoalsAchievements: {
-      display: "flex",
-      flexDirection: "row",
-      gap: vh(2.36051502),
-    },
-    dailyGoalsAchievementText: {
-      marginTop: vh(0.429),
-    },
-    // dailyGoalsAchievementValue
-    dailyGoalsWrapper: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: vh(1.502),
-      marginTop: vh(1.28)
-    },
-    dailyGoalsText: {
-      fontSize: 20,
-      // fontSize: rem(1)
-    },
-    dailyGoalsHeader: {
-      display: "flex",
-      flexDirection: "row",
-
-      alignItems: "center",
-      justifyContent: "space-between",
-    },
-    topBar: {
-      height: vh(6.75965665),
-      display: "flex",
-      alignItems: "center",
-      flexDirection: "row",
-      gap: vh(1.07),
-      paddingHorizontal: vh(2.36051502),
-    },
-    italic: {
-      fontStyle: "italic",
-    },
-    topBarText: {
-      color: "#fff",
-      zIndex: 2,
-      fontWeight: "800",
-    },
-    topBarAvatar: {
-      width: vh(3.54),
-      height: vh(3.54),
+    content: {
+      flex: 1,
+      backgroundColor: "#040509",
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingLeft: 16,
+      paddingRight: 16
     },
   });
 

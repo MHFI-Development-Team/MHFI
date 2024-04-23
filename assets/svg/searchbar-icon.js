@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Svg, { Path } from 'react-native-svg';
 
-const SearchBarIcon = (props) => {
+const SettingIcon = (props) => {
   return (
     <Svg
       width="18"
@@ -19,4 +19,4 @@ const SearchBarIcon = (props) => {
   );
 }
 
-export default SearchBarIcon;
+export default SettingIcon;

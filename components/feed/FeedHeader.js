@@ -40,7 +40,6 @@ const FeedHeader = () => {
           </TouchableOpacity>
         </View>
       </View>
-      <FeedCards />
     </View>
   );
 };
@@ -56,7 +55,6 @@ const useStyles = (vh) =>
       borderWidth: 1,
       borderColor: "rgba(108, 92, 231, 0.25)",
       backgroundColor: "rgba(21, 43, 134, 0.2)",
-      marginBottom: vh(1.5),
     },
     searchBarInput: {
       width: "100%",

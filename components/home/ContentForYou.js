@@ -116,9 +116,6 @@ const useStyles = (vh) => StyleSheet.create({
     marginTop: vh(1),
     width: vh(15)
   },
-  contentCardWrapper: {
-    marginBottom: vh(15)
-  }
 
 });
 
