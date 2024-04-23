@@ -30,7 +30,7 @@ const SmokingCalculator = () => {
     setValue(itemValue);
     setIsFocus(false);
     
-     // Update smoking type and cost text based on selected value
+     // Update smoking type and costStyle text based on selected value
   switch (itemValue) {
     case '1':
       setSmokingType('smokes');
@@ -124,10 +124,10 @@ const SmokingCalculator = () => {
       
       {/* Smoking Type Input */}
       <View style={styles.textContainer}>
-        <Text style={styles.dynamicText}>How many {smokingType} do you smoke per day?</Text>
+        <Text style={styles.dynamicText}>Number of {smokingType} per day?</Text>
       </View>
       <TextInput 
-        style={styles.input} 
+        style={styles.inputStyle} 
         placeholder="?" 
         keyboardType="numeric"
         onChangeText={(text) => {
@@ -144,7 +144,7 @@ const SmokingCalculator = () => {
         </View>
       )}
       {showPerPackInput && <TextInput 
-        style={styles.input} 
+        style={styles.inputStyle} 
         placeholder="?" 
         keyboardType="numeric"
         onChangeText={(text) => {
@@ -158,7 +158,7 @@ const SmokingCalculator = () => {
         <Text style={styles.dynamicText}>{costText}</Text>
       </View>
       <TextInput 
-        style={styles.input} 
+        style={styles.inputStyle} 
         placeholder="?" 
         keyboardType="numeric"
         onChangeText={(text) => {
@@ -168,35 +168,31 @@ const SmokingCalculator = () => {
 
       {/* Calculate Button */}
       <Pressable style={styles.calculateBtn} onPress={handleCalculate}>
-        <Text style={styles.calculateText}>Calculate</Text>
+        <Text style={styles.calculateText}>Calculate Savings</Text>
       </Pressable>
       </View>
         
-      {/* Spending Text */}
-      <View style={styles.textContainer}>
-        <Text style={styles.spendingText}>How much you are spending</Text>
-      </View>
 
       {/* Cost Display */}
       <View style={styles.costContainer}>
       <View style={styles.costTextContainer}>
-          <Text style={styles.costNumber}>Per Day</Text>
-          <Text style={styles.cost}>€{costPerDay}</Text>
+          <Text style={styles.costTextStyle}>Per Day</Text>
+          <Text style={styles.costStyle}>€{costPerDay}</Text>
         </View>
 
         <View style={styles.costTextContainer}>
-          <Text style={styles.costNumber}>Per Week</Text>
-          <Text style={styles.cost}>€{costPerWeek}</Text>
+          <Text style={styles.costTextStyle}>Per Week</Text>
+          <Text style={styles.costStyle}>€{costPerWeek}</Text>
         </View>
 
         <View style={styles.costTextContainer}>
-          <Text style={styles.costNumber}>Per Month</Text>
-          <Text style={styles.cost}>€{costPerMonth}</Text>
+          <Text style={styles.costTextStyle}>Per Month</Text>
+          <Text style={styles.costStyle}>€{costPerMonth}</Text>
         </View>
       
         <View style={styles.costTextContainer}>
-          <Text style={styles.costNumber}>Per Year</Text>
-          <Text style={styles.cost}>€{costPerYear}</Text>
+          <Text style={styles.costTextStyle}>Per Year</Text>
+          <Text style={styles.costStyle}>€{costPerYear}</Text>
         </View>
       </View>
     </View>
@@ -211,10 +207,13 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'black',
     padding: 16,
+    flexDirection: 'row', // Flex main axis horizontally
+    justifyContent: 'flex-start', // Align items to start
+    flexWrap: 'wrap', // Wrap items if they exceed the width
   },
   dropdown: {
     height: 50,
-    width: 250,
+    width: 350,
     backgroundColor: '#0A1336',
     borderColor: '#7473E6',
     borderWidth: 1.5,
@@ -235,9 +234,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     backgroundColor: '#0A1336',
   },
-  input: {
+  inputStyle: {
     height: 50,
-    width: 250,
+    width: 350,
     color: 'white',
     backgroundColor: '#0A1336',
     borderColor: '#7473E6',
@@ -247,24 +246,26 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   textContainer: {
-    alignItems: 'center',
-    marginBottom: 20
+    marginBottom: 20,
+    width: '100%', // Set width to 100%
   },
   costContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 20,
+    
   },
   dynamicText: {
     fontSize: 16,
     color: 'white',
     width: 250,
-    textAlign: 'center',
+    textAlign: 'left', 
+    marginLeft: 10, 
   },
   costTextContainer: {
     alignItems: 'center',
   },
-  costNumber: {
+  costTextStyle: {
     color: 'white',
     fontSize: 16,
     marginBottom: 5,
@@ -274,12 +275,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 50,
     width: 250,
-    backgroundColor: '#1B6C0D',
-    borderColor: '#58FE7C',
+    backgroundColor: '#234AF5',
     borderWidth: 1.5,
     borderRadius: 30,
     paddingHorizontal: 15,
-    marginBottom: 20
+    marginBottom: 20,
+    alignSelf: 'center', // Center the button horizontally
   },
   calculateText: {
     fontSize: 16,
@@ -288,12 +289,13 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 16,
     color: 'white',
+    marginLeft: 10,
   },
   spendingText: {
     fontSize: 16,
     color: 'white',
   },
-  cost: {
+  costStyle: {
     height: 70,
     width: 70, 
     color: 'white',
@@ -301,14 +303,14 @@ const styles = StyleSheet.create({
     borderColor: '#7473E6',
     borderWidth: 1.5,
     borderRadius: 35, 
-    marginHorizontal: 15,
+    marginHorizontal: 10,
     marginTop: 20,
     textAlign: 'center', 
     justifyContent: 'center', 
     textAlignVertical: 'center',
   },
   inputContainer: {
-    alignItems: 'center',
+  
   },
   
 });
