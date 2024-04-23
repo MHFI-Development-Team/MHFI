@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import SmokingCalculator from './components/screens/SmokingCalculator';
+import DrinkingCalculator from './components/screens/DrinkingCalculator';
 
 export default function App() {
 
@@ -8,7 +9,7 @@ export default function App() {
   return (
 
     <View style={styles.container}>
-     <SmokingCalculator/>
+     <DrinkingCalculator/>
     </View>
    
   );
