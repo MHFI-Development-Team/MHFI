@@ -14,6 +14,8 @@ import * as Font from "expo-font";
 import * as SplashScreen from 'expo-splash-screen';
 import ProfileIcon from './assets/svg/ProfileIcon';
 import { LinearGradient } from 'expo-linear-gradient';
+import SettingsScreen from './components/screens/SettingsScreen';
+
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -121,6 +123,8 @@ export default function App() {
           <Tab.Screen name="Home" component={HomeScreen} options={{ header: () => <CustomHeader title="Home" />, headerShown: true }} />
           <Tab.Screen name="Feed" component={FeedScreen} options={{ header: () => <CustomHeader title="Feed" />, headerShown: true }} />
           <Tab.Screen name="Messages" component={HomeScreen} options={{ header: () => <CustomHeader title="Messages" />, headerShown: true }} />
+          <Tab.Screen name="Settings" component={SettingsScreen} options={{header : () =><CustomHeader title = "Settings" />,  headerShown: true}}/>
+
         </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaView>
