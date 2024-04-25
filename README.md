@@ -1,11 +1,11 @@
 <a name="readme-top"></a>
 
-<!-- [![Contributors][contributors-shield]][contributors-url]
+[![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]  -->
+[![LinkedIn][linkedin-shield]][linkedin-url] 
 
 
 
@@ -86,20 +86,27 @@ We're aiming to launch our app in time for Men's Health Week, coinciding with th
 
 # Built with
 ### React Ecosystem
-* [![React][React.js]][React-url]
-* [![React Native][ReactNative.js]][ReactNative-url]
-* [![React Native SVG][ReactNativeSVG.js]][ReactNativeSVG-url]
-* [![React Native Responsive][ReactNativeResponsive.js]][ReactNativeResponsive-url]
-* [![React Navigation][ReactNavigation.js]][ReactNavigation-url]
+<div style="display: flex; align-items: center;">
+  <a href="https://reactnative.dev/" style="display: flex; align-items: center; color: #61DAFB; text-decoration: none;">
+    <img src="https://cdn0.iconfinder.com/data/icons/logos-brands-in-colors/128/react_color-512.png" alt="React Native" style="width: 25px; height: 25px; margin-right: 5px;"/>
+    React Native
+  </a>
+</div>
+<div style="display: flex; align-items: center; padding-top: 1rem">
+  <a href="https://reactnative.dev/" style="display: flex; align-items: center; color: #61DAFB; text-decoration: none;">
+    <img src="https://www.svgviewer.dev/static-svgs/13890/expo-icon.svg" alt="React Native" style="width: 25px; height: 25px; margin-right: 5px;"/>
+    Expo
+  </a>
+</div>
 
-### Expo Modules
-* [![Expo][Expo.js]][Expo-url]
-* [![Expo Google Fonts][ExpoGoogleFonts.js]][ExpoGoogleFonts-url]
-* [![Expo Status Bar][ExpoStatusBar.js]][ExpoStatusBar-url]
+### Platforms Supported
+<div style="display: flex; align-items: center; padding-top: 1rem">
+  <a href="https://reactnative.dev/" style="display: flex; align-items: center; color: #61DAFB; text-decoration: none;">
+    <img src="https://cdn-icons-png.freepik.com/256/664/664860.png?semt=ais_hybrid" alt="React Native" style="width: 25px; height: 25px; margin-right: 5px;"/>
+    Android
+  </a>
+</div>
 
-### Platform Specific Issues
-* **Android** -> issues "" in numbers
-* **iOS** -> issues with styling in native wind
 
 <!-- Image references -->
 [React.js]: https://path.to/your/react-logo.png "React Logo"
@@ -269,6 +276,15 @@ Use this space to list resources you find helpful and would like to give credit 
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com 
+* [![React Native][react-native-image]][react-native-url]
+
+
+* **Android** -> issues "" in numbers
+* **iOS** -> issues with styling in native wind
+
+
+
+
 React 
 React Native 
 React Native SVG
