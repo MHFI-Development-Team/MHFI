@@ -1,13 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { Link, Stack } from 'expo-router';
-import { globalStyle } from '../../../assets/globalStyle/styles';
-
-const globalStyles = globalStyle();
 
 export default function HomeScreen() {
   return (
-    <View style={{...globalStyles.container}}>
+    <View style={styles.container}>
       <Stack.Screen options={{title: 'Home'}} />
 
       <Text>Home Screen</Text>
@@ -19,7 +16,12 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  bg: {
-    backgroundColor: 'red',
+  container: {
+    flex: 1,
+    backgroundColor: '#171621',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    paddingHorizontal: 16,
+    paddingVertical: 20,
   },
 });
