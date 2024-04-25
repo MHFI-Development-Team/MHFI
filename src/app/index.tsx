@@ -1,9 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 import { Link, Redirect } from 'expo-router';
+import React from 'react';
 
-export default function HomeScreenRedirect() {
-  return (
-    <Redirect href={'/HomeScreen'} />
-  );
+export default function Root() {
+    return (
+        <Redirect href={'/home'} />
+      );
 }
