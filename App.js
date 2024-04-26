@@ -1,22 +1,26 @@
 import { View, SafeAreaView, StyleSheet, TouchableOpacity } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useResponsive } from "react-native-responsive-hook";
+import { global_style_function } from "./assets/style";
+import React, { useCallback, useEffect, useState } from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import { Dimensions } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
+import MessageScreen from "./components/screens/MessageScreen";
+import DailyGoalsTasksScreen from "./components/screens/DailyGoalTaskScreen";
 import HomeScreen from "./components/screens/HomeScreen";
 import FeedScreen from "./components/screens/FeedScreen";
+import * as SplashScreen from "expo-splash-screen";
+
 import HomeIcon from "./assets/svg/home-icon";
 import FeedIcon from "./assets/svg/feed-icon";
 import MessagesIcon from "./assets/svg/messages-icon";
-import { useResponsive } from "react-native-responsive-hook";
-import { global_style_function } from "./assets/style";
 import SettingIcon from "./assets/svg/SettingsIcon";
-import React, { useCallback, useEffect, useState } from "react";
 import * as Font from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
 import ProfileIcon from "./assets/svg/ProfileIcon";
-import { LinearGradient } from "expo-linear-gradient";
-import SettingsScreen from "./components/screens/SettingsScreen";
-import { createStackNavigator } from "@react-navigation/stack";
-import { Dimensions } from "react-native";
+import BackIcon from "./assets/svg/backIcon";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
