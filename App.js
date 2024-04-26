@@ -16,6 +16,8 @@ import ProfileIcon from './assets/svg/ProfileIcon';
 import { LinearGradient } from 'expo-linear-gradient';
 import SettingsScreen from './components/screens/SettingsScreen';
 import { createStackNavigator } from '@react-navigation/stack';
+import { colours, textStyles } from './assets/theme';
+
 
 
 // Keep the splash screen visible while we fetch resources
@@ -114,7 +116,7 @@ const useStyles = () => {
     ...global_style_function,
     flow: {
       flex: 1,
-      backgroundColor: "blue"
+      backgroundColor: colours.mediumGray
     },
     background: {
       backgroundColor: "#040509"
