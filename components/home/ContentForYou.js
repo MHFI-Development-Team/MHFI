@@ -20,7 +20,7 @@ const ContentForYou = () => {
   return (
     <View>
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>Content for you</Text>
+        <Text style={styles.titleText}>Popular Content</Text>
         <TouchableOpacity>
           <Text style={styles.subTitleText}>View more</Text>
         </TouchableOpacity>
@@ -70,7 +70,7 @@ const useStyles = (vh) =>
       fontSize: 12,
       textDecorationLine: "underline",
       color: "#D17842",
-      paddingRight: screenWidth * 0.05
+      marginRight: screenWidth * 0.05,
     },
     scrollViewContent: {
       alignItems: "flex-start",
@@ -82,7 +82,7 @@ const useStyles = (vh) =>
       height: 141,
       borderRadius: 30,
       resizeMode: "cover",
-      backgroundColor: "red",
+      backgroundColor: "grey",
     },
     articleTitle: {
       color: "#FFFFFF",

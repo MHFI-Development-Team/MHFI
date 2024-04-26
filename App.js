@@ -13,6 +13,12 @@ import DailyGoalsTasksScreen from "./components/screens/DailyGoalTaskScreen";
 import HomeScreen from "./components/screens/HomeScreen";
 import FeedScreen from "./components/screens/FeedScreen";
 import * as SplashScreen from "expo-splash-screen";
+import AlchoholCalculatorScreen from "./components/screens/AlchololCalculatorScreen";
+import SmokingCalculatorScreen from "./components/screens/SmokingCalculatorScreen";
+import BMICalculatorScreen from "./components/screens/BMICalculatorScreen";
+import QuizScreen from "./components/screens/QuizScreen";
+import SignPostScreen from "./components/screens/SignPostScreen";
+import GeoLocatorScreen from "./components/screens/GeoLocatorScreen";
 
 import HomeIcon from "./assets/svg/home-icon";
 import FeedIcon from "./assets/svg/feed-icon";
@@ -84,6 +90,36 @@ function HomeStackScreen() {
       <HomeStack.Screen
         name="DailyGoalTasks"
         component={DailyGoalsTasksScreen}
+        options={{ headerShown: true, header: () => <HeaderComponentBack  navigation={navigation}/> }}
+      />
+      <HomeStack.Screen
+        name="BMICalc"
+        component={BMICalculatorScreen}
+        options={{ headerShown: true, header: () => <HeaderComponentBack  navigation={navigation}/> }}
+      />
+      <HomeStack.Screen
+        name="SmokeCalc"
+        component={SmokingCalculatorScreen}
+        options={{ headerShown: true, header: () => <HeaderComponentBack  navigation={navigation}/> }}
+      />
+      <HomeStack.Screen
+        name="AlchololCalc"
+        component={AlchoholCalculatorScreen}
+        options={{ headerShown: true, header: () => <HeaderComponentBack  navigation={navigation}/> }}
+      />
+      <HomeStack.Screen
+        name="Geo"
+        component={GeoLocatorScreen}
+        options={{ headerShown: true, header: () => <HeaderComponentBack  navigation={navigation}/> }}
+      />
+      <HomeStack.Screen
+        name="Quiz"
+        component={QuizScreen}
+        options={{ headerShown: true, header: () => <HeaderComponentBack  navigation={navigation}/> }}
+      />
+      <HomeStack.Screen
+        name="SignPost"
+        component={SignPostScreen}
         options={{ headerShown: true, header: () => <HeaderComponentBack  navigation={navigation}/> }}
       />
     </HomeStack.Navigator>
