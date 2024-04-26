@@ -27,6 +27,7 @@ import SettingIcon from "./assets/svg/SettingsIcon";
 import * as Font from "expo-font";
 import ProfileIcon from "./assets/svg/ProfileIcon";
 import BackIcon from "./assets/svg/backIcon";
+import { colours } from "./assets/theme";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -168,7 +169,7 @@ export default function App() {
         <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarStyle: {
-              backgroundColor: "#252A32",
+              backgroundColor: colours.background,
               borderTopWidth: 0,
               elevation: 0,
               paddingTop: 10,
@@ -229,10 +230,10 @@ const useStyles = () => {
     ...global_style_function,
     flow: {
       flex: 1,
-      backgroundColor: "blue"
+      backgroundColor: "#252A32",
     },
     background: {
-      backgroundColor: "#040509",
+      backgroundColor: colours.background,
     },
   });
 
