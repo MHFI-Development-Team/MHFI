@@ -5,19 +5,18 @@ import ProfileIcon from "../../assets/svg/ProfileIcon";
 import SettingIcon from "../../assets/svg/SettingsIcon";
 import { StatusBar } from "expo-status-bar";
 import ContentForYou from "../home/ContentForYou";
+import SuggestedTools from "../home/SuggestedTools";
 
 const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
 
 export default function HomeScreen() {
   return (
       <SafeAreaView style={{backgroundColor: '#0C0F14', flex: 1}}>
         <View style={styles.container}>
-        {/* <View style={styles.headerContainer}>
-            <ProfileIcon />
-            <SettingIcon />
-          </View> */}
-          <View>
+          <View style={{flex: 1, justifyContent: "center", gap: 25}}>
             <DailyGoals />
+            <SuggestedTools />
             <ContentForYou />
           </View>
         </View>
@@ -27,11 +26,7 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: screenWidth * 0.05,
-    backgroundColor: "red",
+    paddingLeft: screenWidth * 0.05,
+    flex: 1
   },
-  headerContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between"
-  }
 });

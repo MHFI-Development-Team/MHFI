@@ -13,7 +13,7 @@ export default function ProfileScreen() {
       <SafeAreaView style={{backgroundColor: '#0C0F14', flex: 1}}>
         <View style={styles.container}>
           <View style={{flex: 1, justifyContent: "center", gap: 25, alignItems: "center"}}>
-            <Text style={{color: "white"}}>Feed Screen</Text>
+            <Text style={{color: "white"}}>Profile Screen</Text>
           </View>
         </View>
       </SafeAreaView>

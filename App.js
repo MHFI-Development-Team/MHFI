@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  SafeAreaView,
-  StyleSheet,
-  StatusBar,
-} from "react-native";
+import { View, SafeAreaView, StyleSheet, TouchableOpacity } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./components/screens/HomeScreen";
@@ -20,20 +13,24 @@ import React, { useCallback, useEffect, useState } from "react";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import ProfileIcon from "./assets/svg/ProfileIcon";
-import { LinearGradient } from "expo-linear-gradient";
-import SettingsScreen from "./components/screens/SettingsScreen";
 import { createStackNavigator } from "@react-navigation/stack";
-import SettingsIcon from "./assets/svg/SettingsIcon";
 import { Dimensions } from "react-native";
+import DailyGoalsTasksScreen from "./components/screens/DailyGoalTaskScreen";
+import BackIcon from "./assets/svg/backIcon";
+import { useNavigation } from "@react-navigation/native";
+import MessageScreen from "./components/screens/MessageScreen";
+import ProfileScreen from "./components/screens/ProfileScreen";
+import SettingsScreen from "./components/screens/SettingsScreen";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
+const HomeStack = createStackNavigator();
 const screenWidth = Dimensions.get("window").width;
 
 const HeaderComponent = () => {
+  const navigation = useNavigation();
   return (
     <View
       style={{
@@ -45,11 +42,53 @@ const HeaderComponent = () => {
         paddingHorizontal: screenWidth * 0.05,
       }}
     >
-      <ProfileIcon />
-      <SettingIcon />
+      <TouchableOpacity>
+        <ProfileIcon />
+      </TouchableOpacity>
+      <TouchableOpacity>
+        <SettingIcon />
+      </TouchableOpacity>
     </View>
   );
 };
+
+const HeaderComponentBack = () => {
+  const navigation = useNavigation();
+  return (
+    <View
+      style={{
+        height: 60,
+        backgroundColor: "#0C0F14",
+        alignItems: "center",
+        justifyContent: "space-between",
+        flexDirection: "row",
+        paddingHorizontal: screenWidth * 0.05,
+      }}
+    >
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <BackIcon />
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+function HomeStackScreen() {
+  const navigation = useNavigation();
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ headerShown: true, header: () => <HeaderComponent navigation={navigation} /> }}
+      />
+      <HomeStack.Screen
+        name="DailyGoalTasks"
+        component={DailyGoalsTasksScreen}
+        options={{ headerShown: true, header: () => <HeaderComponentBack  navigation={navigation}/> }}
+      />
+    </HomeStack.Navigator>
+  );
+}
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -79,11 +118,6 @@ export default function App() {
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
-      // This tells the splash screen to hide immediately! If we call this after
-      // `setAppIsReady`, then we may see a blank screen while the app is
-      // loading its initial state and rendering its first pixels. So instead,
-      // we hide the splash screen once we know the root view has already
-      // performed layout.
       await SplashScreen.hideAsync();
     }
   }, [appIsReady]);
@@ -106,7 +140,7 @@ export default function App() {
             tabBarActiveTintColor: "red",
             tabBarShowLabel: false,
             tabBarIcon: ({ focused }) => {
-              if (route.name === "Home") {
+              if (route.name === "HomeTab") {
                 return <HomeIcon focused={focused} />;
               } else if (route.name === "Feed") {
                 return <FeedIcon focused={focused} />;
@@ -122,9 +156,9 @@ export default function App() {
           })}
         >
           <Tab.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{ headerShown: true, header: () => <HeaderComponent /> }}
+            name="HomeTab"
+            component={HomeStackScreen}
+            options={{ headerShown: false, header: () => <HeaderComponent /> }}
           />
           <Tab.Screen
             name="Feed"
@@ -133,9 +167,19 @@ export default function App() {
           />
           <Tab.Screen
             name="Messages"
-            component={HomeScreen}
+            component={MessageScreen}
             options={{ headerShown: true, header: () => <HeaderComponent /> }}
           />
+          {/* <Tab.Screen
+            name="ProfileTab"
+            component={ProfileStackScreen}
+            options={{ headerShown: false, tabBarButton: () => null }}
+          />
+          <Tab.Screen
+            name="SettingsTab"
+            component={SettingsStackScreen}
+            options={{ headerShown: false, tabBarButton: () => null  }}
+          /> */}
         </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaView>

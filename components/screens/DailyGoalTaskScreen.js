@@ -8,12 +8,12 @@ import SuggestedTools from "../home/SuggestedTools";
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
-export default function ProfileScreen() {
+export default function DailyGoalsTasksScreen() {
   return (
       <SafeAreaView style={{backgroundColor: '#0C0F14', flex: 1}}>
         <View style={styles.container}>
           <View style={{flex: 1, justifyContent: "center", gap: 25, alignItems: "center"}}>
-            <Text style={{color: "white"}}>Feed Screen</Text>
+            <Text style={{color: "white"}}>Daily Goal Tasks Screen</Text>
           </View>
         </View>
       </SafeAreaView>

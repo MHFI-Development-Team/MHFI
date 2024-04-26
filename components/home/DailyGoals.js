@@ -4,19 +4,29 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Pressable,
 } from "react-native";
 import ArrowRight from "../../assets/svg/arrow-right";
 import { useResponsive } from "react-native-responsive-hook";
 import { ScrollView } from "react-native";
 import Circle from "../../assets/svg/circle";
+import { Dimensions } from 'react-native';
+const screenWidth = Dimensions.get('window').width;
+import AddMoreIcon from "../../assets/svg/addMoreIcon";
+import { useNavigation } from "@react-navigation/native";
+
 
 const DailyGoals = () => {
   const { vh } = useResponsive();
   const styles = useStyles(vh);
 
+  const navigation = useNavigation();
+
+  const handleAddMorePress = () => {
+    navigation.navigate('DailyGoalTasks');
+  };
+
   return (
-    <View style={{ backgroundColor: "blue" }}>
+    <View>
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>Your daily goals</Text>
         <TouchableOpacity>
@@ -41,6 +51,9 @@ const DailyGoals = () => {
               </Text>
             </View>
           </TouchableOpacity>
+          <TouchableOpacity onPress={handleAddMorePress} activeOpacity={0.6}>
+            <AddMoreIcon />
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>
@@ -53,17 +66,17 @@ const useStyles = (vh) =>
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      marginBottom: 10
+      marginBottom: 10,
+      paddingRight: screenWidth * 0.05
     },
     titleText:{
       fontSize: 16,
       fontWeight: "bold",
-      color: "white"
+      color: "white",
     },
     dailyGoalsAchievements: {
       flexDirection: "row",
       gap: 25,
-      backgroundColor: "black"
     },
     dailyGoalsAchievementText: {
       justifyContent: "center",

@@ -10,49 +10,43 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useResponsive } from "react-native-responsive-hook";
+import { Dimensions } from 'react-native';
+const screenWidth = Dimensions.get('window').width;
 
 const ContentForYou = () => {
   const { vh } = useResponsive();
   const styles = useStyles(vh);
 
   return (
-    <View style={styles.contentForYouWrapper}>
-      <View style={styles.contentForYouHeader}>
-        <Text
-          style={{
-            ...styles.dailyGoalsText,
-            ...styles.heading,
-            ...styles.colorLight,
-          }}
-        >
-          Content for you
-        </Text>
+    <View>
+      <View style={styles.titleContainer}>
+        <Text style={styles.titleText}>Content for you</Text>
         <TouchableOpacity>
-          <Text
-            style={{
-              ...styles.colorLight,
-              ...styles.linkText,
-              textDecorationLine: "underline",
-            }}
-          >
-            View more
-          </Text>
+          <Text style={styles.subTitleText}>View more</Text>
         </TouchableOpacity>
       </View>
-      <ScrollView
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollViewContent}
-        style={styles.contentCardWrapper}
-      >
-        <View style={styles.imageWrapper}>
-          <Image
-            source={require("../../assets/article-image-1.png")}
-            style={styles.articleImage}
-          />
-          <Text style={styles.articleTitle}>
-            Testicular Self-Examination: A Guide for Young Men
-          </Text>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <View style={{ flexDirection: "row", gap: 10}}>
+          <View style={styles.imageWrapper}>
+            <Image
+              // source={require("../../assets/article-image-1.png")} Image Goes Here
+              style={styles.articleImage}
+            />
+            <Text style={styles.articleTitle}>
+              Boost Your Mind Fitness! 🧠💪
+            </Text>
+          </View>
+
+          {/* TODO: use flatlist */}
+          <View style={styles.imageWrapper}>
+            <Image
+              // source={require("../../assets/article-image-1.png")} Image Goes Here
+              style={styles.articleImage}
+            />
+            <Text style={styles.articleTitle}>
+              Boost Your Mind Fitness! 🧠💪
+            </Text>
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -61,53 +55,42 @@ const ContentForYou = () => {
 
 const useStyles = (vh) =>
   StyleSheet.create({
-    contentForYouWrapper: {
-      marginTop: vh(2.575),
-    },
-    contentForYouHeader: {
+    titleContainer: {
       flexDirection: "row",
+      alignItems: "center",
       justifyContent: "space-between",
-      alignItems: "center",
+      marginBottom: 10,
     },
-    searchbarBarWrapper: {
-      borderRadius: 100,
-      flexDirection: "row",
-      paddingHorizontal: vh(1.93),
-      paddingVertical: vh(1.0729),
-      alignItems: "center",
-      borderWidth: 1,
-      borderColor: "rgba(108, 92, 231, 0.25)",
-      backgroundColor: "rgba(21, 43, 134, 0.2)",
-      marginBottom: vh(1.5),
+    titleText: {
+      fontSize: 16,
+      fontWeight: "bold",
+      color: "white",
     },
-    searchBarInput: {
-      width: "100%",
-      height: "100%",
-      flexShrink: 1,
-      color: "#fff",
-    },
-    searchIcon: {
-      opacity: 0.7,
-      marginRight: vh(1),
+    subTitleText: {
+      fontSize: 12,
+      textDecorationLine: "underline",
+      color: "#D17842",
+      paddingRight: screenWidth * 0.05
     },
     scrollViewContent: {
       alignItems: "flex-start",
     },
-    imageWrapper: {
-      marginTop: vh(1),
-      marginRight: vh(2),
-    },
+    // imageWrapper: {
+    // },
     articleImage: {
-      width: vh(15),
-      height: vh(15),
-      borderRadius: vh(1),
-      resizeMode: "contain",
+      width: 233,
+      height: 141,
+      borderRadius: 30,
+      resizeMode: "cover",
+      backgroundColor: "red",
     },
     articleTitle: {
       color: "#FFFFFF",
-      fontSize: vh(1.8),
-      marginTop: vh(1),
-      width: vh(15),
+      fontSize: 14,
+      marginTop: vh(0.429),
+      width: 233,
+      fontWeight: "600",
+      textAlign: "center",
     },
   });
 
