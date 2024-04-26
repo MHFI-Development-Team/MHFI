@@ -18,8 +18,6 @@ import { global_style_function } from "./assets/style";
 import SettingIcon from "./assets/svg/SettingsIcon";
 import React, { useCallback, useEffect, useState } from "react";
 import * as Font from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
-import ProfileIcon from "./assets/svg/ProfileIcon";
 import { LinearGradient } from "expo-linear-gradient";
 import SettingsScreen from "./components/screens/SettingsScreen";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -27,9 +25,6 @@ import SettingsIcon from "./assets/svg/SettingsIcon";
 import { Dimensions } from "react-native";
 import * as SplashScreen from 'expo-splash-screen';
 import ProfileIcon from './assets/svg/ProfileIcon';
-import { LinearGradient } from 'expo-linear-gradient';
-import SettingsScreen from './components/screens/SettingsScreen';
-import { createStackNavigator } from '@react-navigation/stack';
 import { colours, textStyles } from './assets/theme';
 
 
