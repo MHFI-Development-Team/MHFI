@@ -13,14 +13,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import ProfileIcon from "./assets/svg/ProfileIcon";
+import { LinearGradient } from "expo-linear-gradient";
+import SettingsScreen from "./components/screens/SettingsScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Dimensions } from "react-native";
-import DailyGoalsTasksScreen from "./components/screens/DailyGoalTaskScreen";
-import BackIcon from "./assets/svg/backIcon";
-import { useNavigation } from "@react-navigation/native";
-import MessageScreen from "./components/screens/MessageScreen";
-import ProfileScreen from "./components/screens/ProfileScreen";
-import SettingsScreen from "./components/screens/SettingsScreen";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -193,7 +189,7 @@ const useStyles = () => {
     ...global_style_function,
     flow: {
       flex: 1,
-      backgroundColor: "blue",
+      backgroundColor: "blue"
     },
     background: {
       backgroundColor: "#040509",
