@@ -11,10 +11,10 @@ export const colours = {
 export const textStyles = {
   "3xl": 28,
   "2xl": 24,
-  "xl": 20,
-  "l": 18,
-  "m": 16,
-  "s: 14,
+  xl: 20,
+  l: 18,
+  m: 16,
+  s: 14,
   xs: 12,
   xxs: 10,
 };
