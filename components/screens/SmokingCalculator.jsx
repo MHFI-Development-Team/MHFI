@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View, Modal, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown'; // Imported Dropdown component
+import ErrorModal from './ErrorModal'; // Import ErrorModal component
 
 // Data for dropdown options
 const data = [
@@ -69,44 +70,6 @@ const SmokingCalculator = () => {
     }
   };
 
-  // Function to display error modal
-  const errorModal = () => {
-    let errorMessage;
-
-    switch(errorType){
-      case('selectSmokeType'):
-        errorMessage = 'Uh oh, Please select a smoking type!'
-        break;
-      case('nullValues'):
-        errorMessage = 'Uh oh, All fields must have a value!'
-        break;
-      default:
-        errorMessage = 'ERROR :('
-    }
-
-    return (
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>{errorMessage}</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Close</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
-    );
-  };
-
   // Function to handle calculate button press
   const handleCalculate = () => {
     setErrorType(null);
@@ -152,8 +115,8 @@ const SmokingCalculator = () => {
       default:
         break;
     }
-  
-    // Calculate costs for different durations
+
+    // Calculate costs for week, month, and year
     const costPerWeek = costPerDay * 7;
     const costPerMonth = costPerDay * 30;
     const costPerYear = costPerDay * 365;
@@ -164,36 +127,25 @@ const SmokingCalculator = () => {
     setCostPerMonth(costPerMonth.toFixed(2));
     setCostPerYear(costPerYear.toFixed(2));
 
-    // Reset inputs
     handleReset();
   };
 
-  // Function to reset inputs and state variables
+  // Function to handle reset button press
   const handleReset = () => {
+    // Reset state variables
     setSmokesPerDay(0);
-    setCostPerItem(0);
     setPerPack(0);
+    setCostPerItem(0);
 
     // Clear text inputs
     smokesPerDayRef.current.clear();
     costPerItemRef.current.clear();
-   
-    if (showPerPackInput) {
-      perPackRef.current.clear();
-    }
-  }; 
+    perPackRef.current.clear();
+  };
 
   return (
     <View style={styles.container}>
-      {/* Header Text and Reset Button */}
       <View style={styles.inputContainer}>
-        <TouchableOpacity activeOpacity={0.5} style={styles.resetBtn} onPress={handleReset}>
-          <Text style={styles.calculateText}>Reset</Text>
-        </TouchableOpacity>
-        <View style={styles.textContainer}>
-          <Text style={styles.headerText}>What are you smoking?</Text>
-        </View>
-
         {/* Dropdown */}
         <Dropdown
           style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
@@ -208,83 +160,91 @@ const SmokingCalculator = () => {
           onBlur={() => setIsFocus(false)}
           onChange={(item) => handleDropdownChange(item.value)}
         />
-        
-        {/* Smoking Type Input */}
+
+        {/* Input for smokes per day */}
         <View style={styles.textContainer}>
           <Text style={styles.dynamicText}>{perDayText}</Text>
         </View>
-        <TextInput 
-          ref ={smokesPerDayRef}
-          style={styles.inputStyle} 
-          placeholder="?" 
+        <TextInput
+          ref={smokesPerDayRef}
+          style={styles.inputStyle}
+          placeholder="?"
           keyboardType="numeric"
           onChangeText={(text) => {
-            // Replace any non-numeric characters with an empty string
             text = text.replace(/[^0-9]/g, '').replace('-', '');
             setSmokesPerDay(parseInt(text));
           }}
         />
-        
-        {/* Per Pack Input */}
+
+        {/* Input for per pack (if applicable) */}
         {showPerPackInput && (
           <View style={styles.textContainer}>
-            <Text style={styles.dynamicText}>How many per pack?</Text>
+            <Text style={styles.dynamicText}>Items per pack?</Text>
           </View>
         )}
-        {showPerPackInput && <TextInput 
-          ref={perPackRef}
-          style={styles.inputStyle} 
-          placeholder="?" 
-          keyboardType="numeric"
-          onChangeText={(text) => {
-            text = text.replace(/[^0-9]/g, '').replace('-', '');
-            setPerPack(parseInt(text));
-          }}
-        />}
-        
-        {/* Cost Text Input */}
+        {showPerPackInput && (
+          <TextInput
+            ref={perPackRef}
+            style={styles.inputStyle}
+            placeholder="?"
+            keyboardType="numeric"
+            onChangeText={(text) => {
+              text = text.replace(/[^0-9]/g, '').replace('-', '');
+              setPerPack(parseInt(text));
+            }}
+          />
+        )}
+
+        {/* Input for cost per item */}
         <View style={styles.textContainer}>
           <Text style={styles.dynamicText}>{costText}</Text>
         </View>
-        <TextInput 
-          ref ={costPerItemRef}
-          style={styles.inputStyle} 
-          placeholder="?" 
+        <TextInput
+          ref={costPerItemRef}
+          style={styles.inputStyle}
+          placeholder="?"
           keyboardType="numeric"
           onChangeText={(text) => {
-            text = text.replace(/[^0-9]/g, '').replace('-', '');
+            text = text.replace(/[^0-9.]/g, '');
             setCostPerItem(parseFloat(text));
           }}
         />
       </View>
-      
+
       {/* Calculate Button */}
       <TouchableOpacity activeOpacity={0.5} style={styles.calculateBtn} onPress={handleCalculate}>
         <Text style={styles.calculateText}>Calculate Savings</Text>
       </TouchableOpacity>
-        
+
       {/* Cost Display */}
       <View style={styles.costContainer}>
         <View style={styles.costTextContainer}>
           <Text style={styles.costTextStyle}>Per Day</Text>
           <Text style={styles.costStyle}>€{costPerDay}</Text>
         </View>
+
         <View style={styles.costTextContainer}>
           <Text style={styles.costTextStyle}>Per Week</Text>
           <Text style={styles.costStyle}>€{costPerWeek}</Text>
         </View>
+
         <View style={styles.costTextContainer}>
           <Text style={styles.costTextStyle}>Per Month</Text>
           <Text style={styles.costStyle}>€{costPerMonth}</Text>
         </View>
+
         <View style={styles.costTextContainer}>
           <Text style={styles.costTextStyle}>Per Year</Text>
           <Text style={styles.costStyle}>€{costPerYear}</Text>
         </View>
       </View>
-      
+
       {/* Error Modal */}
-      {errorModal()}
+      <ErrorModal
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        errorType={errorType}
+      />
     </View>
   );
 };
@@ -293,17 +253,17 @@ export default SmokingCalculator;
 
 // Styles
 const styles = StyleSheet.create({
-  container:{
+  container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'black', // You can change the background color here
+    backgroundColor: 'black', 
   },
   inputContainer: {
     padding: 16,
-    flexDirection: 'row', // Flex main axis horizontally
-    justifyContent: 'flex-start', // Align items to start
-    flexWrap: 'wrap', // Wrap items if they exceed the width
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    flexWrap: 'wrap',
   },
   dropdown: {
     height: 50,
@@ -336,19 +296,21 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     marginBottom: 10,
-    width: '100%', // Set width to 100%
+    width: '100%',
   },
   costContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 20,
+    minHeight: 100,
   },
   dynamicText: {
     fontSize: 16,
     color: 'white',
-    width: 250,
-    textAlign: 'left', 
-    marginLeft: 10, 
+    width: 'auto',
+    textAlign: 'left',
+    marginLeft: 10,
+    flexWrap: 'wrap',
   },
   costTextContainer: {
     alignItems: 'center',
@@ -368,90 +330,24 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     paddingHorizontal: 15,
     marginBottom: 20,
-    alignSelf: 'center', // Center the button horizontally
+    alignSelf: 'center',
   },
   calculateText: {
-    fontSize: 16,
-    color: 'white',
-  },
-  headerText: {
-    fontSize: 16,
-    color: 'white',
-    marginLeft: 10,
-  },
-  spendingText: {
     fontSize: 16,
     color: 'white',
   },
   costStyle: {
     height: 70,
-    width: 70, 
+    width: 70,
     color: 'white',
     backgroundColor: '#0A1336',
     borderColor: '#7473E6',
     borderWidth: 1.5,
-    borderRadius: 35, 
+    borderRadius: 35,
     marginHorizontal: 10,
     marginTop: 20,
-    textAlign: 'center', 
-    justifyContent: 'center', 
+    textAlign: 'center',
+    justifyContent: 'center',
     textAlignVertical: 'center',
-  },
-  calculateText: {
-    fontSize: 16,
-    color: 'white',
-  },
-  resetBtn: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 50,
-    width: 100,
-    backgroundColor: '#234AF5',
-    borderWidth: 1.5,
-    borderRadius: 30,
-    paddingHorizontal: 15,
-    marginBottom: 20,
-    alignSelf: 'center', // Align button to center horizontally
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  buttonClose: {
-    backgroundColor: '#2196F3',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
   },
 });
