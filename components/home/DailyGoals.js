@@ -77,7 +77,7 @@ const useStyles = (vh) =>
     },
     dailyGoalsAchievementValue: {
       color: "#DC3535",
-      fontSize: 14,
+      fontSize: 12,
     },
   });
 
