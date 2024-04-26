@@ -116,7 +116,7 @@ const DrinkingCalculator = () => {
         costPerDay = (drinksPerDay * costPerItem) / drinkVolume;
         break;
       case 'Spirits':
-        costPerDay = (drinksPerDay / costPerItem) * drinkVolume;
+        costPerDay = (drinksPerDay * costPerItem) / drinkVolume;
         break;
       default:
         break;

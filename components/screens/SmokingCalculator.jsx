@@ -66,8 +66,8 @@ const SmokingCalculator = () => {
         break;
       default:
         setSmokingType('Default');
-        handleReset();
     }
+    handleReset();
   };
 
   // Function to handle calculate button press
@@ -139,8 +139,10 @@ const SmokingCalculator = () => {
 
     // Clear text inputs
     smokesPerDayRef.current.clear();
-    costPerItemRef.current.clear();
-    perPackRef.current.clear();
+    costPerItemRef.current.clear();   
+    if(showPerPackInput){
+      perPackRef.current.clear();
+    }
   };
 
   return (
