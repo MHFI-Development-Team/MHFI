@@ -1,33 +1,20 @@
 import * as React from "react"
-import Svg, { G, Path, Defs, ClipPath } from "react-native-svg"
+import Svg, { Path } from "react-native-svg"
 
 function ProfileIcon(props) {
   return (
     <Svg
       width={21}
-      height={21}
-      viewBox="0 0 21 21"
+      height={24}
+      viewBox="0 0 21 24"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <G clipPath="url(#clip0_800_63)" stroke="#fff" strokeWidth={2}>
-        <Path
-          d="M10.537 9.203a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <Path d="M4.703 15.513a3.81 3.81 0 013.81-3.81h4.047a3.81 3.81 0 013.81 3.81 2.857 2.857 0 01-2.857 2.857H7.56a2.857 2.857 0 01-2.858-2.857z" />
-      </G>
-      <Defs>
-        <ClipPath id="clip0_800_63">
-          <Path
-            fill="#fff"
-            transform="translate(.537 .037)"
-            d="M0 0H20V20H0z"
-          />
-        </ClipPath>
-      </Defs>
+      <Path
+        d="M10.41 11.704a5.711 5.711 0 004.04-1.676 5.723 5.723 0 000-8.09 5.711 5.711 0 00-8.081 0 5.723 5.723 0 000 8.09 5.711 5.711 0 004.04 1.676zm-2.041 2.145c-4.397 0-7.96 3.566-7.96 7.968 0 .733.594 1.327 1.326 1.327h17.348c.732 0 1.326-.594 1.326-1.327 0-4.402-3.562-7.968-7.96-7.968H8.37z"
+        fill="#fff"
+      />
     </Svg>
   )
 }

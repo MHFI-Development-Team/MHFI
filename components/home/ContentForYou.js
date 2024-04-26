@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { View, Text, StyleSheet, TextInput, ScrollView, Image, Pressable, TouchableOpacity} from 'react-native';
-import SearchBarIcon from '../../assets/svg/searchbar-icon';
 import { useResponsive } from 'react-native-responsive-hook';
 
 const ContentForYou = () => {

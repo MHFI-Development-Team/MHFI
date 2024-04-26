@@ -15,37 +15,14 @@ import * as SplashScreen from 'expo-splash-screen';
 import ProfileIcon from './assets/svg/ProfileIcon';
 import { LinearGradient } from 'expo-linear-gradient';
 import SettingsScreen from './components/screens/SettingsScreen';
+import { createStackNavigator } from '@react-navigation/stack';
 
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 
 const Tab = createBottomTabNavigator();
-
-function CustomHeader({title}) {
-  const styles = useStyles();
-
-  return (
-    <SafeAreaView style={styles.background}>
-      <View style={{
-        height: 60,
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        paddingHorizontal: 20,
-      }}>
-        <TouchableOpacity onPress={() => console.log('Left Icon Pressed')}>
-          <ProfileIcon />
-        </TouchableOpacity>
-        <Text style={{fontFamily: 'Poppins-SemiBold', color: 'white', fontSize: 16}}>{title}</Text>
-        <TouchableOpacity onPress={() => console.log('Right Icon Pressed')}>
-          <SettingIcon />
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
-    
-  );
-}
+const Stack = createStackNavigator();
 
 export default function App() {
 
@@ -93,7 +70,7 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.flow} onLayout={onLayoutRootView}>
-      <NavigationContainer>
+      <NavigationContainer style={styles.flow} >
         <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarStyle: {
@@ -118,13 +95,12 @@ export default function App() {
               fontFamily: "Poppins",
               fontSize: 12,
             },
+            headerShown: false
           })}
         >
-          <Tab.Screen name="Home" component={HomeScreen} options={{ header: () => <CustomHeader title="Home" />, headerShown: true }} />
-          <Tab.Screen name="Feed" component={FeedScreen} options={{ header: () => <CustomHeader title="Feed" />, headerShown: true }} />
-          <Tab.Screen name="Messages" component={HomeScreen} options={{ header: () => <CustomHeader title="Messages" />, headerShown: true }} />
-          <Tab.Screen name="Settings" component={SettingsScreen} options={{header : () =><CustomHeader title = "Settings" />,  headerShown: true}}/>
-
+          <Tab.Screen name="Home" component={HomeScreen}/>
+          <Tab.Screen name="Feed" component={FeedScreen}/>
+          <Tab.Screen name="Messages" component={HomeScreen}/>
         </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaView>
@@ -138,7 +114,7 @@ const useStyles = () => {
     ...global_style_function,
     flow: {
       flex: 1,
-      backgroundColor: "#040509"
+      backgroundColor: "blue"
     },
     background: {
       backgroundColor: "#040509"
