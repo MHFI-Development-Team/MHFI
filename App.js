@@ -43,17 +43,14 @@ const HeaderComponent = () => {
       style={{
         height: 60,
         backgroundColor: "#0C0F14",
-        alignItems: "center",
-        justifyContent: "space-between",
+        alignItems: "flex-end",
+        justifyContent: "flex-start",
         flexDirection: "row",
         paddingHorizontal: screenWidth * 0.05,
       }}
     >
       <TouchableOpacity>
         <ProfileIcon />
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <SettingIcon />
       </TouchableOpacity>
     </View>
   );
@@ -66,8 +63,8 @@ const HeaderComponentBack = () => {
       style={{
         height: 60,
         backgroundColor: "#0C0F14",
-        alignItems: "center",
-        justifyContent: "space-between",
+        alignItems: "flex-end",
+        justifyContent: "flex-start",
         flexDirection: "row",
         paddingHorizontal: screenWidth * 0.05,
       }}

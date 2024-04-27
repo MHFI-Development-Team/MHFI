@@ -20,27 +20,17 @@ const ContentForYou = () => {
   return (
     <View>
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>Popular Content</Text>
+        <Text style={styles.titleText}>Content for you</Text>
         <TouchableOpacity>
           <Text style={styles.subTitleText}>View more</Text>
         </TouchableOpacity>
       </View>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <View style={{ flexDirection: "row", gap: 10}}>
-          <View style={styles.imageWrapper}>
-            <Image
-              // source={require("../../assets/article-image-1.png")} Image Goes Here
-              style={styles.articleImage}
-            />
-            <Text style={styles.articleTitle}>
-              Boost Your Mind Fitness! 🧠💪
-            </Text>
-          </View>
-
           {/* TODO: use flatlist */}
           <View style={styles.imageWrapper}>
             <Image
-              // source={require("../../assets/article-image-1.png")} Image Goes Here
+              source={require("../../assets/images/mindfitness.jpg")}
               style={styles.articleImage}
             />
             <Text style={styles.articleTitle}>
@@ -62,7 +52,7 @@ const useStyles = (vh) =>
       marginBottom: 10,
     },
     titleText: {
-      fontSize: 16,
+      fontSize: 20,
       fontWeight: "bold",
       color: "white",
     },
