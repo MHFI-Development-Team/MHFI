@@ -7,6 +7,7 @@ import ContentForYou from "../home/ContentForYou";
 import SuggestedTools from "../home/SuggestedTools";
 import { Dropdown } from 'react-native-element-dropdown';
 import ErrorModal from "../ErrorModal";
+import { colours } from "../../assets/theme";
 // Dropdown options
 
 const screenWidth = Dimensions.get('window').width;
@@ -18,7 +19,7 @@ const data = [
   { label: 'Spirits', value: '2' },
 ];
 
-const AlchoholCalculatorScreen = () => {
+export default function AlchoholCalculatorScreen() {
   // State variables
   const [value, setValue] = useState(null); // Dropdown selected value
   const [isFocus, setIsFocus] = useState(false); // Dropdown focus state
@@ -61,44 +62,6 @@ const AlchoholCalculatorScreen = () => {
 
     handleReset();
   
-  };
-
-  const errorModal = () => {
-    console.log("Inside errorModal");
-    let errorMessage;
-
-    switch(errorType){
-      case('selectDrinkType'):
-        errorMessage = 'Uh oh, Please select a drink type!'
-      break;
-      case('nullValues'):
-      errorMessage = 'Uh oh, All fields must have a value!'
-      break;
-      default:
-        errorMessage = 'ERROR :('
-    }
-
-    return (
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>{errorMessage}</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}>
-              <Text style={styles.textStyle}>Close</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
-    );
   };
 
   // Function to handle calculate button press
@@ -162,6 +125,7 @@ const AlchoholCalculatorScreen = () => {
   const drinksPerDayRef = useRef(null);
   const costPerItemRef = useRef(null);
   const drinkVolumeRef = useRef(null);
+
 
   return (
       <SafeAreaView style={{backgroundColor: '#0C0F14', flex: 1}}>
@@ -278,7 +242,6 @@ const AlchoholCalculatorScreen = () => {
       </SafeAreaView>
   );
 };
-export default AlchoholCalculatorScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -313,8 +276,8 @@ inputStyle: {
   height: 40,
   width: '100%',
   color: 'white',
-  backgroundColor: '#0A1336',
-  borderColor: '#7473E6',
+  backgroundColor: colours.secondaryOrange,
+  borderColor: colours.mainRed,
   borderWidth: 1.5,
   borderRadius: 30,
   paddingHorizontal: 15,
@@ -351,7 +314,7 @@ calculateBtn: {
   justifyContent: 'center',
   height: 50,
   width: 250,
-  backgroundColor: '#234AF5',
+  backgroundColor: colours.mainRed,
   borderWidth: 1.5,
   borderRadius: 30,
   paddingHorizontal: 15,
@@ -386,7 +349,7 @@ resetBtn: {
   justifyContent: 'center',
   height: 50,
   width: 100,
-  backgroundColor: '#234AF5',
+  backgroundColor: colours.mainRed,
   borderWidth: 1.5,
   borderRadius: 30,
   paddingHorizontal: 15,
