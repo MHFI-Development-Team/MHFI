@@ -60,8 +60,8 @@
 ## Front End Implementation Checklist
 
 - [ ] **Home Screen**
-  - [ ] Daily Goals
-  - [ ] Suggested Tools
+  - [ X ] Daily Goals
+  - [ x ] Suggested Tools
   - [ ] Content for you
 
 - [ ] **Daily Goal Screen**
