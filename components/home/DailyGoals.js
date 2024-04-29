@@ -1,24 +1,26 @@
-import { React, useContext } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { React, useContext, useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, StyleSheet} from "react-native";
 import ArrowRight from "../../assets/svg/arrow-right";
 import { useResponsive } from "react-native-responsive-hook";
 import { ScrollView } from "react-native";
 import Circle from "../../assets/svg/circle";
 import { Dimensions } from "react-native";
-const screenWidth = Dimensions.get("window").width;
 import AddMoreIcon from "../../assets/svg/addMoreIcon";
 import { useNavigation } from "@react-navigation/native";
 import DailyGoalsContext from "./DailyGoalsContext";
 
-const DailyGoals = () => {
+const screenWidth = Dimensions.get("window").width;
+
+export default DailyGoals = () => {
   const { vh } = useResponsive();
   const styles = useStyles(vh);
-  const { goals } = useContext(DailyGoalsContext);
   const navigation = useNavigation();
 
   const handleAddMorePress = () => {
     navigation.navigate("DailyGoalTasks");
   };
+
+  const { goals } = useContext(DailyGoalsContext);
 
   return (
     <View>
@@ -30,25 +32,25 @@ const DailyGoals = () => {
       </View>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <View style={{ flexDirection: "row", gap: 25}}>
-          {goals.map((goal, index) => (
-            <View key={index} style={styles.dailyGoalsAchievements}>
-              <TouchableOpacity activeOpacity={0.6}>
-                <Circle />
-                <View style={styles.dailyGoalsAchievementText}>
-                  <Text style={styles.cardTitle}>{goal.title}</Text>
-                  <Text>
-                    <Text style={styles.dailyGoalsAchievementValue}>
-                      {goal.current}
+            {goals.map((goal, index) => (
+              <View key={index} style={styles.dailyGoalsAchievements}>
+                <TouchableOpacity activeOpacity={0.6}>
+                  <Circle />
+                  <View style={styles.dailyGoalsAchievementText}>
+                    <Text style={styles.cardTitle}>{goal.title}</Text>
+                    <Text>
+                      <Text style={styles.dailyGoalsAchievementValue}>
+                        {goal.current}
+                      </Text>
+                      <Text style={styles.dailyGoalsAchievementValue}>
+                        {" "}
+                        / {goal.max} Task
+                      </Text>
                     </Text>
-                    <Text style={styles.dailyGoalsAchievementValue}>
-                      {" "}
-                      / {goal.max} Task
-                    </Text>
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            </View>
-          ))}
+                  </View>
+                </TouchableOpacity>
+              </View>
+            ))}
           <TouchableOpacity onPress={handleAddMorePress} activeOpacity={0.6}>
             <AddMoreIcon />
           </TouchableOpacity>
@@ -90,5 +92,3 @@ const useStyles = (vh) =>
       fontSize: 12,
     },
   });
-
-export default DailyGoals;

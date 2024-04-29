@@ -42,22 +42,26 @@ const tasksByCategory = {
       description: "30 Minutes of dancing or aerobics exercises",
     },
   ],
-  Test: [{ name: "Test", description: "Description for the test task" }],
+  Test: [
+    { 
+      name: "Test",
+      description: "Description for the test task"
+    }
+  ],
 };
 
 export default function DailyGoalsTasksScreen() {
-  const { addGoal } = useContext(DailyGoalsContext);
+  const { addGoal, goals } = useContext(DailyGoalsContext);
   const [title, setTitle] = useState("Physical Activities");
   const [selectedTasks, setSelectedTasks] = useState([]);
   const [addedGoals, setAddedGoals] = useState([]);
 
-  const handleAddGoal = () => {
+  const handleAddGoal = async () => {
     const max = selectedTasks.length;
     const newGoal = { title, current: 0, max };
 
     if (!addedGoals.some(goal => goal.title === title)) {
-      addGoal(newGoal);
-      setAddedGoals([...addedGoals, newGoal]);
+      await addGoal(newGoal);
     }
   };
 
@@ -67,13 +71,23 @@ export default function DailyGoalsTasksScreen() {
     );
   };
 
-  const isGoalAdded = title => addedGoals.some(goal => goal.title === title);
+  const data = Object.keys(tasksByCategory)
+    .filter(title => !goals.some(goal => goal.title === title))
+    .map(key => ({ label: key, value: key }));
 
-  const data = Object.keys(tasksByCategory).map(key => ({ label: key, value: key }));
+  if (data.length == 0) {
+    return (
+    <SafeAreaView style={{ backgroundColor: "#0C0F14", flex: 1 }}>
+      <ScrollView style={styles.container}>
+        <Text style={styles.taskText}>No more goals!</Text>
+      </ScrollView>
+    </SafeAreaView>
+    )
+  }
 
   return (
     <SafeAreaView style={{ backgroundColor: "#0C0F14", flex: 1 }}>
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <Text style={{ fontSize: 16, fontWeight: "600", color: "white" }}>
           Choose Your Goal
         </Text>
@@ -90,7 +104,7 @@ export default function DailyGoalsTasksScreen() {
           selectedTextStyle={styles.selectedText}
           placeholderStyle={styles.placeholderText}
         />
-        <ScrollView style={{ flex: 1, marginBottom: 20 }}>
+        <View>
           {tasksByCategory[title].map((task) => (
             <Pressable
               key={task.name}
@@ -118,7 +132,7 @@ export default function DailyGoalsTasksScreen() {
               </View>
             </Pressable>
           ))}
-        </ScrollView>
+        </View>
         <View
           style={{
             justifyContent: "center",
@@ -129,15 +143,14 @@ export default function DailyGoalsTasksScreen() {
           <Pressable
             style={[
               styles.button,
-              isGoalAdded(title) ? { backgroundColor: '#B8B8B8' } : {}
+              data.length == 0 ? { backgroundColor: '#B8B8B8' } : {}
             ]}
-            disabled={isGoalAdded(title)}
             onPress={handleAddGoal}
           >
             <Text style={styles.textGoal}>Add Goal</Text>
           </Pressable>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

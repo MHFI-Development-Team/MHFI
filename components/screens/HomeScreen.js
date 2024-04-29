@@ -1,9 +1,9 @@
 import { View, Text, Pressable, StyleSheet, Image, TextInput, SafeAreaView, ScrollView } from "react-native";
-import DailyGoals from "../home/DailyGoals";
 import { Dimensions } from 'react-native';
 import ProfileIcon from "../../assets/svg/ProfileIcon";
 import SettingIcon from "../../assets/svg/SettingsIcon";
 import { StatusBar } from "expo-status-bar";
+import DailyGoals from "../home/DailyGoals";
 import ContentForYou from "../home/ContentForYou";
 import SuggestedTools from "../home/SuggestedTools";
 
