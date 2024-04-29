@@ -10,7 +10,7 @@ import {
 
 import React, { useContext, useState } from "react";
 import DailyGoalsContext from "../home/DailyGoalsContext";
-import { Picker } from "@react-native-picker/picker";
+import { Dropdown } from 'react-native-element-dropdown';
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -49,10 +49,16 @@ export default function DailyGoalsTasksScreen() {
   const { addGoal } = useContext(DailyGoalsContext);
   const [title, setTitle] = useState("Physical Activities");
   const [selectedTasks, setSelectedTasks] = useState([]);
+  const [addedGoals, setAddedGoals] = useState([]);
 
   const handleAddGoal = () => {
-    const max = selectedTasks.length; 
-    addGoal({ title, current: 0, max });
+    const max = selectedTasks.length;
+    const newGoal = { title, current: 0, max };
+
+    if (!addedGoals.some(goal => goal.title === title)) {
+      addGoal(newGoal);
+      setAddedGoals([...addedGoals, newGoal]);
+    }
   };
 
   const toggleTask = (task) => {
@@ -61,38 +67,40 @@ export default function DailyGoalsTasksScreen() {
     );
   };
 
+  const isGoalAdded = title => addedGoals.some(goal => goal.title === title);
+
+  const data = Object.keys(tasksByCategory).map(key => ({ label: key, value: key }));
+
   return (
     <SafeAreaView style={{ backgroundColor: "#0C0F14", flex: 1 }}>
       <View style={styles.container}>
         <Text style={{ fontSize: 16, fontWeight: "600", color: "white" }}>
           Choose Your Goal
         </Text>
-        <Picker
-          selectedValue={title}
-          onValueChange={(itemValue) => {
-            setTitle(itemValue);
+        <Dropdown
+          data={data}
+          labelField="label"
+          valueField="value"
+          value={title}
+          onChange={item => {
+            setTitle(item.value);
             setSelectedTasks([]);
           }}
-          style={styles.picker}
-          itemStyle={{ color: "white", fontSize: 16 }}
-        >
-          {Object.keys(tasksByCategory).map((option) => (
-            <Picker.Item label={option} value={option} key={option} />
-          ))}
-        </Picker>
-        <ScrollView style={{ flex: 1, marginBottom: 20}}>
+          style={styles.dropdown}
+          selectedTextStyle={styles.selectedText}
+          placeholderStyle={styles.placeholderText}
+        />
+        <ScrollView style={{ flex: 1, marginBottom: 20 }}>
           {tasksByCategory[title].map((task) => (
             <Pressable
               key={task.name}
               style={({ pressed }) => [
-                {
-                  opacity: pressed ? 0.5 : 1,
-                },
-                styles.taskItem,
+                { opacity: pressed ? 0.5 : 1 },
+                styles.taskItem
               ]}
               onPress={() => toggleTask(task.name)}
             >
-              <View style={{ flexDirection: "row", alignItems: "center"}}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View
                   style={[
                     styles.circle,
@@ -103,7 +111,7 @@ export default function DailyGoalsTasksScreen() {
                     },
                   ]}
                 />
-                <View style={{ flexDirection: "column", marginLeft: 10}}>
+                <View style={{ flexDirection: "column", marginLeft: 10 }}>
                   <Text style={styles.taskText}>{task.name}</Text>
                   <Text style={styles.taskDescription}>{task.description}</Text>
                 </View>
@@ -111,8 +119,21 @@ export default function DailyGoalsTasksScreen() {
             </Pressable>
           ))}
         </ScrollView>
-        <View style={{justifyContent: "center", alignItems: "center", paddingBottom: 10}}>
-          <Pressable style={styles.button} onPress={handleAddGoal}>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            paddingBottom: 10,
+          }}
+        >
+          <Pressable
+            style={[
+              styles.button,
+              isGoalAdded(title) ? { backgroundColor: '#B8B8B8' } : {}
+            ]}
+            disabled={isGoalAdded(title)}
+            onPress={handleAddGoal}
+          >
             <Text style={styles.textGoal}>Add Goal</Text>
           </Pressable>
         </View>
@@ -128,9 +149,17 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 25,
   },
-  picker: {
-    color: "white",
+  dropdown: {
+    backgroundColor: "white",
     borderRadius: 30,
+  },
+  selectedText: {
+    fontSize: 16,
+    color: "black"
+  },
+  placeholderText: {
+    fontSize: 16,
+    color: "#B8B8B8"
   },
   taskItem: {
     flexDirection: "row",
@@ -139,9 +168,6 @@ const styles = StyleSheet.create({
   taskText: {
     fontSize: 14,
     fontWeight: "600",
-    color: "white",
-  },
-  pickerItem: {
     color: "white",
   },
   taskDescription: {
