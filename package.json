@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@expo-google-fonts/poppins": "^0.2.3",
+    "@react-native-community/checkbox": "^0.5.17",
+    "@react-native-picker/picker": "2.4.10",
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/core": "^6.4.16",
     "@react-navigation/native": "^6.1.17",

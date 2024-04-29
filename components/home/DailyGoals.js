@@ -1,28 +1,23 @@
-import React from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { React, useContext } from "react";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import ArrowRight from "../../assets/svg/arrow-right";
 import { useResponsive } from "react-native-responsive-hook";
 import { ScrollView } from "react-native";
 import Circle from "../../assets/svg/circle";
-import { Dimensions } from 'react-native';
-const screenWidth = Dimensions.get('window').width;
+import { Dimensions } from "react-native";
+const screenWidth = Dimensions.get("window").width;
 import AddMoreIcon from "../../assets/svg/addMoreIcon";
 import { useNavigation } from "@react-navigation/native";
-
+import DailyGoalsContext from "./DailyGoalsContext";
 
 const DailyGoals = () => {
   const { vh } = useResponsive();
   const styles = useStyles(vh);
-
+  const { goals } = useContext(DailyGoalsContext);
   const navigation = useNavigation();
 
   const handleAddMorePress = () => {
-    navigation.navigate('DailyGoalTasks');
+    navigation.navigate("DailyGoalTasks");
   };
 
   return (
@@ -33,24 +28,27 @@ const DailyGoals = () => {
           <ArrowRight></ArrowRight>
         </TouchableOpacity>
       </View>
-      <ScrollView
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-      >
-        <View style={styles.dailyGoalsAchievements}>
-          <TouchableOpacity activeOpacity={0.6}>
-            <Circle />
-            <View style={styles.dailyGoalsAchievementText}>
-              <Text style={styles.cardTitle}>Daily steps</Text>
-              <Text>
-                <Text style={styles.dailyGoalsAchievementValue}>200</Text>
-                <Text style={styles.dailyGoalsAchievementValue}>
-                  {" "}
-                  / 10,000
-                </Text>
-              </Text>
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <View style={{ flexDirection: "row", gap: 25}}>
+          {goals.map((goal, index) => (
+            <View key={index} style={styles.dailyGoalsAchievements}>
+              <TouchableOpacity activeOpacity={0.6}>
+                <Circle />
+                <View style={styles.dailyGoalsAchievementText}>
+                  <Text style={styles.cardTitle}>{goal.title}</Text>
+                  <Text>
+                    <Text style={styles.dailyGoalsAchievementValue}>
+                      {goal.current}
+                    </Text>
+                    <Text style={styles.dailyGoalsAchievementValue}>
+                      {" "}
+                      / {goal.max} Task
+                    </Text>
+                  </Text>
+                </View>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
+          ))}
           <TouchableOpacity onPress={handleAddMorePress} activeOpacity={0.6}>
             <AddMoreIcon />
           </TouchableOpacity>
@@ -67,16 +65,15 @@ const useStyles = (vh) =>
       alignItems: "center",
       justifyContent: "space-between",
       marginBottom: 10,
-      paddingRight: screenWidth * 0.05
+      paddingRight: screenWidth * 0.05,
     },
-    titleText:{
-      fontSize: 16,
+    titleText: {
+      fontSize: 20,
       fontWeight: "bold",
       color: "white",
     },
     dailyGoalsAchievements: {
       flexDirection: "row",
-      gap: 25,
     },
     dailyGoalsAchievementText: {
       justifyContent: "center",
@@ -86,7 +83,7 @@ const useStyles = (vh) =>
     cardTitle: {
       color: "#FFF",
       fontSize: 14,
-      fontWeight: "600"
+      fontWeight: "600",
     },
     dailyGoalsAchievementValue: {
       color: "#DC3535",

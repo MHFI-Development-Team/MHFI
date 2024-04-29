@@ -40,7 +40,7 @@ const SuggestedTools = () => {
   
   return (
     <View style={styles.toolsWrapper}>
-      <Text style={styles.title}>Suggested Tools</Text>
+      <Text style={styles.title}>Suggested tools</Text>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <View style={styles.toolsContainer}>
           {/* BMI */}
@@ -97,7 +97,7 @@ const useStyles = (vh) =>
       gap: 20,
     },
     title: {
-      fontSize: 16,
+      fontSize: 20,
       fontWeight: "bold",
       color: "white",
     },
