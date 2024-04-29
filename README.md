@@ -1,3 +1,4 @@
+https://reactnativetesting.io/component/setup
 <a name="readme-top"></a>
 
 [![Contributors][contributors-shield]][contributors-url]

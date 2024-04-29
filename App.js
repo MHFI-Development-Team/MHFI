@@ -29,6 +29,7 @@ import ProfileIcon from "./assets/svg/ProfileIcon";
 import BackIcon from "./assets/svg/backIcon";
 import { colours } from "./assets/theme";
 import { DailyGoalsProvider } from "./components/home/DailyGoalsContext";
+import { Text } from "react-native";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -41,6 +42,7 @@ const HeaderComponent = () => {
   const navigation = useNavigation();
   return (
     <View
+      testID="headerComponent"
       style={{
         height: 60,
         backgroundColor: "#0C0F14",
@@ -61,6 +63,7 @@ const HeaderComponentBack = () => {
   const navigation = useNavigation();
   return (
     <View
+      testID="headerComponentBack"
       style={{
         height: 60,
         backgroundColor: "#0C0F14",
@@ -70,7 +73,7 @@ const HeaderComponentBack = () => {
         paddingHorizontal: screenWidth * 0.05,
       }}
     >
-      <TouchableOpacity onPress={() => navigation.goBack()}>
+      <TouchableOpacity testID="backButton" onPress={() => navigation.goBack()}>
         <BackIcon />
       </TouchableOpacity>
     </View>
@@ -88,6 +91,7 @@ function HomeStackScreen() {
           headerShown: true,
           header: () => <HeaderComponent navigation={navigation} />,
         }}
+        testID="homeScreen"
       />
       <HomeStack.Screen
         name="DailyGoalTasks"
@@ -96,14 +100,13 @@ function HomeStackScreen() {
           headerShown: true,
           header: () => <HeaderComponentBack navigation={navigation} />,
         }}
+        testID="dailyGoalTasksScreen"
       />
       <HomeStack.Screen
         name="BMICalc"
         component={BMICalculatorScreen}
-        options={{
-          headerShown: true,
-          header: () => <HeaderComponentBack navigation={navigation} />,
-        }}
+        options={{ headerShown: true, header: () => <HeaderComponentBack /> }}
+        testID="bmiCalculatorScreen"
       />
       <HomeStack.Screen
         name="SmokeCalc"
@@ -112,6 +115,7 @@ function HomeStackScreen() {
           headerShown: true,
           header: () => <HeaderComponentBack navigation={navigation} />,
         }}
+        testID="smokingCalculatorScreen"
       />
       <HomeStack.Screen
         name="AlchololCalc"
@@ -120,6 +124,7 @@ function HomeStackScreen() {
           headerShown: true,
           header: () => <HeaderComponentBack navigation={navigation} />,
         }}
+        testID="alchoholCalculatorScreen"
       />
       <HomeStack.Screen
         name="Geo"
@@ -128,6 +133,7 @@ function HomeStackScreen() {
           headerShown: true,
           header: () => <HeaderComponentBack navigation={navigation} />,
         }}
+        testID="geoLocatorScreen"
       />
       <HomeStack.Screen
         name="Quiz"
@@ -136,6 +142,7 @@ function HomeStackScreen() {
           headerShown: true,
           header: () => <HeaderComponentBack navigation={navigation} />,
         }}
+        testID="quizScreen"
       />
       <HomeStack.Screen
         name="SignPost"
@@ -144,6 +151,7 @@ function HomeStackScreen() {
           headerShown: true,
           header: () => <HeaderComponentBack navigation={navigation} />,
         }}
+        testID="signPostScreen"
       />
     </HomeStack.Navigator>
   );
@@ -186,8 +194,15 @@ export default function App() {
   }
 
   return (
-    <SafeAreaView style={styles.flow} onLayout={onLayoutRootView}>
-      <DailyGoalsProvider>
+    <SafeAreaView
+      testID="appContainer"
+      style={styles.flow}
+      onLayout={onLayoutRootView}
+    >
+      <View>
+        <Text>Test</Text>
+      </View>
+      {/* <DailyGoalsProvider>
         <NavigationContainer style={styles.flow}>
           <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -222,17 +237,20 @@ export default function App() {
                 headerShown: false,
                 header: () => <HeaderComponent />,
               }}
+              testID="homeTabScreen"
             />
             <Tab.Screen
               name="Feed"
               component={FeedScreen}
               options={{ headerShown: true, header: () => <HeaderComponent /> }}
+              testID="feedScreen"
             />
             <Tab.Screen
               name="Messages"
               component={MessageScreen}
               options={{ headerShown: true, header: () => <HeaderComponent /> }}
-            />
+              testID="messagesScreen"
+            /> */}
             {/* <Tab.Screen
             name="ProfileTab"
             component={ProfileStackScreen}
@@ -243,9 +261,9 @@ export default function App() {
             component={SettingsStackScreen}
             options={{ headerShown: false, tabBarButton: () => null  }}
           /> */}
-          </Tab.Navigator>
+          {/* </Tab.Navigator>
         </NavigationContainer>
-      </DailyGoalsProvider>
+      </DailyGoalsProvider> */}
     </SafeAreaView>
   );
 }
