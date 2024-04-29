@@ -26,7 +26,7 @@ const SuggestedTools = () => {
     navigation.navigate("SmokeCalc");
   };
   const handleAlchololCalcPress = () => {
-    navigation.navigate("AlchololCalc");
+    navigation.navigate("AlchoholCalculatorScreen");
   };
   const handleGeoPress = () => {
     navigation.navigate("Geo");

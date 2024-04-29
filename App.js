@@ -103,7 +103,7 @@ function HomeStackScreen() {
         options={{ headerShown: true, header: () => <HeaderComponentBack  navigation={navigation}/> }}
       />
       <HomeStack.Screen
-        name="AlchololCalc"
+        name="AlchoholCalculatorScreen"
         component={AlchoholCalculatorScreen}
         options={{ headerShown: true, header: () => <HeaderComponentBack  navigation={navigation}/> }}
       />
