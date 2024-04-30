@@ -10,7 +10,7 @@ import {
 
 import React, { useContext, useState } from "react";
 import DailyGoalsContext from "../home/DailyGoalsContext";
-import { Dropdown } from 'react-native-element-dropdown';
+import { Dropdown } from "react-native-element-dropdown";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -43,10 +43,10 @@ const tasksByCategory = {
     },
   ],
   Test: [
-    { 
+    {
       name: "Test",
-      description: "Description for the test task"
-    }
+      description: "Description for the test task",
+    },
   ],
 };
 
@@ -60,8 +60,13 @@ export default function DailyGoalsTasksScreen() {
     const max = selectedTasks.length;
     const newGoal = { title, current: 0, max };
 
-    if (!addedGoals.some(goal => goal.title === title)) {
+    // Check if a goal with the same title already exists in the added goals
+    if (!addedGoals.some((goal) => goal.title === title)) {
       await addGoal(newGoal);
+      setAddedGoals((prevGoals) => [...prevGoals, newGoal]); // Update the addedGoals state
+    } else {
+      // Optionally, alert the user that the goal already exists
+      alert("A goal with this title already exists!");
     }
   };
 
@@ -72,17 +77,17 @@ export default function DailyGoalsTasksScreen() {
   };
 
   const data = Object.keys(tasksByCategory)
-    .filter(title => !goals.some(goal => goal.title === title))
-    .map(key => ({ label: key, value: key }));
+    .filter((title) => !goals.some((goal) => goal.title === title))
+    .map((key) => ({ label: key, value: key }));
 
   if (data.length == 0) {
     return (
-    <SafeAreaView style={{ backgroundColor: "#0C0F14", flex: 1 }}>
-      <ScrollView style={styles.container}>
-        <Text style={styles.taskText}>No more goals!</Text>
-      </ScrollView>
-    </SafeAreaView>
-    )
+      <SafeAreaView style={{ backgroundColor: "#0C0F14", flex: 1 }}>
+        <ScrollView style={styles.container}>
+          <Text style={styles.taskText}>No more goals!</Text>
+        </ScrollView>
+      </SafeAreaView>
+    );
   }
 
   return (
@@ -96,21 +101,25 @@ export default function DailyGoalsTasksScreen() {
           labelField="label"
           valueField="value"
           value={title}
-          onChange={item => {
+          onChange={(item) => {
             setTitle(item.value);
             setSelectedTasks([]);
+            // Optionally clear tasks if the title is already in addedGoals
+            if (addedGoals.some((goal) => goal.title === item.value)) {
+              setSelectedTasks([]);
+            }
           }}
           style={styles.dropdown}
           selectedTextStyle={styles.selectedText}
           placeholderStyle={styles.placeholderText}
         />
         <View>
-          {tasksByCategory[title].map((task) => (
+          { tasksByCategory[title] && !addedGoals.some(goal => goal.title === title) && tasksByCategory[title].map((task) => (
             <Pressable
               key={task.name}
               style={({ pressed }) => [
                 { opacity: pressed ? 0.5 : 1 },
-                styles.taskItem
+                styles.taskItem,
               ]}
               onPress={() => toggleTask(task.name)}
             >
@@ -133,24 +142,21 @@ export default function DailyGoalsTasksScreen() {
             </Pressable>
           ))}
         </View>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            paddingBottom: 10,
-          }}
-        >
-          <Pressable
-            style={[
-              styles.button,
-              data.length == 0 ? { backgroundColor: '#B8B8B8' } : {}
-            ]}
-            onPress={handleAddGoal}
-          >
-            <Text style={styles.textGoal}>Add Goal</Text>
-          </Pressable>
-        </View>
       </ScrollView>
+      <View style={styles.buttonContainer}>
+        <Pressable
+          style={[
+            styles.button,
+            addedGoals.some((goal) => goal.title === title) || data.length === 0
+              ? { backgroundColor: "#B8B8B8" }
+              : {},
+          ]}
+          onPress={handleAddGoal}
+          disabled={addedGoals.some((goal) => goal.title === title)}
+        >
+          <Text style={styles.textGoal}>Add Goal</Text>
+        </Pressable>
+      </View>
     </SafeAreaView>
   );
 }
@@ -165,14 +171,16 @@ const styles = StyleSheet.create({
   dropdown: {
     backgroundColor: "white",
     borderRadius: 30,
+    paddingHorizontal: 10,
+    marginVertical: 10
   },
   selectedText: {
     fontSize: 16,
-    color: "black"
+    color: "black",
   },
   placeholderText: {
     fontSize: 16,
-    color: "#B8B8B8"
+    color: "#B8B8B8",
   },
   taskItem: {
     flexDirection: "row",
@@ -208,5 +216,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     letterSpacing: 0.25,
     color: "white",
+  },
+  buttonContainer: {
+    paddingBottom: 10,
+    paddingHorizontal: 20,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
