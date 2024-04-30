@@ -6,7 +6,7 @@ export const global_style_function = () => {
     
     return {
         background: {
-            backgroundColor: "#040509",
+            backgroundColor: "#040509"
         },
         colorLight: {
             color: '#E0E2EB'

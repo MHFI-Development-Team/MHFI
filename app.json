@@ -16,7 +16,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.opod.MHFI"
+      "usesNonExemptEncryption": false
     },
     "plugins": [
       [
@@ -39,6 +39,7 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": []
   }
 }
