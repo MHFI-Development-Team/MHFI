@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   ScrollView,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import { useResponsive } from "react-native-responsive-hook";
 import { global_style_function } from "../../assets/style";
@@ -350,7 +351,7 @@ export default function MapScreen() {
           flexDirection: "row",
         }}
       >
-        <Pressable style={{ width: "50%" }} onPress={() => setMapMode(1)}>
+        <TouchableOpacity style={{ width: "50%" }} onPress={() => setMapMode(1)}>
           <View>
             <Text
               style={{
@@ -363,8 +364,8 @@ export default function MapScreen() {
               Map View
             </Text>
           </View>
-        </Pressable>
-        <Pressable style={{ width: "50%" }} onPress={() => setMapMode(2)}>
+        </TouchableOpacity>
+        <TouchableOpacity style={{ width: "50%" }} onPress={() => setMapMode(2)}>
           <View>
             <Text
               style={{
@@ -377,7 +378,7 @@ export default function MapScreen() {
               List View
             </Text>
           </View>
-        </Pressable>
+        </TouchableOpacity>
       </View>
       <View style={{ flex: 1 }}>
         {handleScreenDisplay() ? (
