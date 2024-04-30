@@ -8,14 +8,14 @@ import {
   Dimensions,
 } from "react-native";
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useMemo} from "react";
 import DailyGoalsContext from "../home/DailyGoalsContext";
 import { Dropdown } from "react-native-element-dropdown";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
-const tasksByCategory = {
+export const tasksByCategory = {
   "Physical Activities": [
     {
       name: "Cardiovascular Exercise",
@@ -42,117 +42,108 @@ const tasksByCategory = {
       description: "30 Minutes of dancing or aerobics exercises",
     },
   ],
-  Test: [
+  "Test Activity": [
     {
       name: "Test",
-      description: "Description for the test task",
-    },
+      description: "Test Test Test Test Test",
+    }
   ],
+};
+
+const TaskItem = ({ task, onSelect, isSelected }) => {
+  return (
+    <Pressable
+      key={task.name}
+      onPress={() => onSelect(task.name)}
+      style={({ pressed }) => [
+        styles.taskItem,
+        { opacity: pressed ? 0.5 : 1 }
+      ]}
+    >
+      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View
+          style={[
+            styles.circle,
+            { backgroundColor: isSelected ? '#D17842' : 'transparent' }
+          ]}
+        />
+        <View style={{ flexDirection: 'column', marginLeft: 10 }}>
+          <Text style={styles.taskText}>{task.name}</Text>
+          <Text style={styles.taskDescription}>{task.description}</Text>
+        </View>
+      </View>
+    </Pressable>
+  );
 };
 
 export default function DailyGoalsTasksScreen() {
   const { addGoal, goals } = useContext(DailyGoalsContext);
-  const [title, setTitle] = useState("Physical Activities");
+  const [title, setTitle] = useState('Physical Activities');
   const [selectedTasks, setSelectedTasks] = useState([]);
-  const [addedGoals, setAddedGoals] = useState([]);
+  
+  const data = useMemo(() => Object.keys(tasksByCategory)
+    .filter(key => !goals.some(goal => goal.title === key))
+    .map(key => ({ label: key, value: key })), [goals]);
 
   const handleAddGoal = async () => {
-    const max = selectedTasks.length;
-    const newGoal = { title, current: 0, max };
+    const newGoal = {
+      title: title,
+      totalTasks: selectedTasks,
+      completedTasks: []
+    };
 
-    // Check if a goal with the same title already exists in the added goals
-    if (!addedGoals.some((goal) => goal.title === title)) {
+    if (!goals.some(goal => goal.title === title)) {
       await addGoal(newGoal);
-      setAddedGoals((prevGoals) => [...prevGoals, newGoal]); // Update the addedGoals state
     } else {
-      // Optionally, alert the user that the goal already exists
-      alert("A goal with this title already exists!");
+      alert('A goal with this title already exists!');
     }
   };
 
-  const toggleTask = (task) => {
+  const toggleTask = (taskName) => {
     setSelectedTasks((prev) =>
-      prev.includes(task) ? prev.filter((t) => t !== task) : [...prev, task]
+      prev.includes(taskName)
+        ? prev.filter((name) => name !== taskName)
+        : [...prev, taskName]
     );
   };
 
-  const data = Object.keys(tasksByCategory)
-    .filter((title) => !goals.some((goal) => goal.title === title))
-    .map((key) => ({ label: key, value: key }));
-
-  if (data.length == 0) {
-    return (
-      <SafeAreaView style={{ backgroundColor: "#0C0F14", flex: 1 }}>
-        <ScrollView style={styles.container}>
-          <Text style={styles.taskText}>No more goals!</Text>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
+  const availableTasks = useMemo(() => goals.some(goal => goal.title === title) ? [] : tasksByCategory[title], [goals, title]);
 
   return (
-    <SafeAreaView style={{ backgroundColor: "#0C0F14", flex: 1 }}>
+    <SafeAreaView style={{ backgroundColor: '#0C0F14', flex: 1 }}>
       <ScrollView style={styles.container}>
-        <Text style={{ fontSize: 16, fontWeight: "600", color: "white" }}>
+        <Text style={{ fontSize: 16, fontWeight: '600', color: 'white' }}>
           Choose Your Goal
         </Text>
         <Dropdown
           data={data}
-          labelField="label"
-          valueField="value"
+          labelField='label'
+          valueField='value'
           value={title}
           onChange={(item) => {
             setTitle(item.value);
             setSelectedTasks([]);
-            // Optionally clear tasks if the title is already in addedGoals
-            if (addedGoals.some((goal) => goal.title === item.value)) {
-              setSelectedTasks([]);
-            }
           }}
           style={styles.dropdown}
           selectedTextStyle={styles.selectedText}
           placeholderStyle={styles.placeholderText}
         />
         <View>
-          { tasksByCategory[title] && !addedGoals.some(goal => goal.title === title) && tasksByCategory[title].map((task) => (
-            <Pressable
+          {availableTasks.map(task => (
+            <TaskItem
               key={task.name}
-              style={({ pressed }) => [
-                { opacity: pressed ? 0.5 : 1 },
-                styles.taskItem,
-              ]}
-              onPress={() => toggleTask(task.name)}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <View
-                  style={[
-                    styles.circle,
-                    {
-                      backgroundColor: selectedTasks.includes(task.name)
-                        ? "#D17842"
-                        : "transparent",
-                    },
-                  ]}
-                />
-                <View style={{ flexDirection: "column", marginLeft: 10 }}>
-                  <Text style={styles.taskText}>{task.name}</Text>
-                  <Text style={styles.taskDescription}>{task.description}</Text>
-                </View>
-              </View>
-            </Pressable>
+              task={task}
+              onSelect={toggleTask}
+              isSelected={selectedTasks.includes(task.name)}
+            />
           ))}
         </View>
       </ScrollView>
       <View style={styles.buttonContainer}>
         <Pressable
-          style={[
-            styles.button,
-            addedGoals.some((goal) => goal.title === title) || data.length === 0
-              ? { backgroundColor: "#B8B8B8" }
-              : {},
-          ]}
+          style={[styles.button, { backgroundColor: data.length === 0 ? '#B8B8B8' : '#DC3535' }]}
           onPress={handleAddGoal}
-          disabled={addedGoals.some((goal) => goal.title === title)}
+          disabled={data.length === 0}
         >
           <Text style={styles.textGoal}>Add Goal</Text>
         </Pressable>
@@ -172,7 +163,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 30,
     paddingHorizontal: 10,
-    marginVertical: 10
+    marginVertical: 10,
   },
   selectedText: {
     fontSize: 16,

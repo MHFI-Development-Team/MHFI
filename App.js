@@ -19,6 +19,7 @@ import BMICalculatorScreen from "./components/screens/BMICalculatorScreen";
 import QuizScreen from "./components/screens/QuizScreen";
 import SignPostScreen from "./components/screens/SignPostScreen";
 import GeoLocatorScreen from "./components/screens/GeoLocatorScreen";
+import GoalManagementScreen from "./components/screens/GoalManagementScreen";
 
 import HomeIcon from "./assets/svg/home-icon";
 import FeedIcon from "./assets/svg/feed-icon";
@@ -140,6 +141,14 @@ function HomeStackScreen() {
       <HomeStack.Screen
         name="SignPost"
         component={SignPostScreen}
+        options={{
+          headerShown: true,
+          header: () => <HeaderComponentBack navigation={navigation} />,
+        }}
+      />
+      <HomeStack.Screen
+        name="GoalManagement"
+        component={GoalManagementScreen}
         options={{
           headerShown: true,
           header: () => <HeaderComponentBack navigation={navigation} />,

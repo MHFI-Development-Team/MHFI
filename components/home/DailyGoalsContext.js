@@ -1,36 +1,47 @@
 import React, { createContext, useState, useEffect } from 'react';
 import * as SecureStore from 'expo-secure-store';
 
-// NOTE: expo-secure-store only works for mobile (https://docs.expo.dev/versions/latest/sdk/securestore/)
 const DailyGoalsContext = createContext();
 
 export const DailyGoalsProvider = ({ children }) => {
   const [goals, setGoals] = useState([]);
 
-  const addGoal = async goal => {
-    setGoals([...goals, goal]);
-    await SecureStore.setItemAsync('goals', JSON.stringify([...goals, goal]));
+  const addGoal = async (goal) => {
+    const updatedGoals = [...goals, goal];
+    setGoals(updatedGoals);
+    await SecureStore.setItemAsync('goals', JSON.stringify(goals));
   };
 
+  const editGoal = async (index, updatedGoal) => {
+    const updatedGoals = [...goals];
+    updatedGoals[index] = updatedGoal;
+    setGoals(updatedGoals);
+
+    await SecureStore.setItemAsync('goals', JSON.stringify(goals));
+  };
+
+  const deleteGoal = async index => {
+    const updatedGoals = goals.filter((_, i) => i != index)
+    setGoals(updatedGoals);
+
+    await SecureStore.setItemAsync('goals', JSON.stringify(goals));
+  };
+
+
   useEffect(() => {
-    async function fetchGoals() {
-      if (goals.length != 0)
-        return goals;
-
-      // NOTE: uncomment the below if you would like
-      // to remove all of the goals (for testing purposes)..
-      // await SecureStore.deleteItemAsync('goals')
-
-      let goalJson = await SecureStore.getItemAsync('goals') || '[]'
-      let items = JSON.parse(goalJson);
-
-      setGoals(items);
-    }
+    const fetchGoals = async () => {
+      const goalJson = await SecureStore.getItemAsync('goals') || '[]';
+      const items = JSON.parse(goalJson);
+      if (items.length > 0) {
+        setGoals(items);
+      }
+    };
 
     fetchGoals();
-  }, [])
+  }, []);
+
   return (
-    <DailyGoalsContext.Provider value={{ goals, addGoal }}>
+    <DailyGoalsContext.Provider value={{ goals, addGoal, editGoal, deleteGoal }}>
       {children}
     </DailyGoalsContext.Provider>
   );

@@ -1,5 +1,5 @@
 import { React, useContext, useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import ArrowRight from "../../assets/svg/arrow-right";
 import { useResponsive } from "react-native-responsive-hook";
 import { ScrollView } from "react-native";
@@ -8,6 +8,7 @@ import { Dimensions } from "react-native";
 import AddMoreIcon from "../../assets/svg/addMoreIcon";
 import { useNavigation } from "@react-navigation/native";
 import DailyGoalsContext from "./DailyGoalsContext";
+import { tasksByCategory } from "../screens/DailyGoalTaskScreen";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -18,6 +19,10 @@ export default DailyGoals = () => {
 
   const handleAddMorePress = () => {
     navigation.navigate("DailyGoalTasks");
+  };
+
+  const handlePress = (index) => () => {
+    navigation.navigate("GoalManagement", { goalIndex: index });
   };
 
   const { goals } = useContext(DailyGoalsContext);
@@ -31,26 +36,25 @@ export default DailyGoals = () => {
         </TouchableOpacity>
       </View>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        <View style={{ flexDirection: "row", gap: 25}}>
-            {goals.map((goal, index) => (
+        <View style={{ flexDirection: "row", gap: 25 }}>
+          {goals.map((goal, index) => {
+            return (
               <View key={index} style={styles.dailyGoalsAchievements}>
-                <TouchableOpacity activeOpacity={0.6}>
+                <TouchableOpacity
+                  activeOpacity={0.6}
+                  onPress={handlePress(index)}
+                >
                   <Circle />
                   <View style={styles.dailyGoalsAchievementText}>
                     <Text style={styles.cardTitle}>{goal.title}</Text>
-                    <Text>
-                      <Text style={styles.dailyGoalsAchievementValue}>
-                        {goal.current}
-                      </Text>
-                      <Text style={styles.dailyGoalsAchievementValue}>
-                        {" "}
-                        / {goal.max} Task
-                      </Text>
+                    <Text style={styles.dailyGoalsAchievementValue}>
+                      {goal.completedTasks.length} / {goal.totalTasks.length} Task
                     </Text>
                   </View>
                 </TouchableOpacity>
               </View>
-            ))}
+            );
+          })}
           <TouchableOpacity onPress={handleAddMorePress} activeOpacity={0.6}>
             <AddMoreIcon />
           </TouchableOpacity>
