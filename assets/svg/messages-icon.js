@@ -1,37 +1,29 @@
 import * as React from "react"
-import { Path, Svg } from "react-native-svg"
+import Svg, { G, Path, Defs, ClipPath } from "react-native-svg"
 
-const MessagesIcon = (props) => (
-    props?.focused ? (
-        <Svg
-xmlns="http://www.w3.org/2000/svg"
-width={21}
-height={21}
-fill="none"
-{...props}
->
-<Path
-  fill="#fff"
-  d="M.5 20.5v-18c0-.55.196-1.02.588-1.412A1.93 1.93 0 0 1 2.5.5h16c.55 0 1.021.196 1.413.588.392.392.588.863.587 1.412v12c0 .55-.196 1.021-.587 1.413a1.92 1.92 0 0 1-1.413.587h-14l-4 4Zm4-8h8v-2h-8v2Zm0-3h12v-2h-12v2Zm0-3h12v-2h-12v2Z"
-/>
-</Svg>
-
-    )
-    :
-    (
-        <Svg
-        xmlns="http://www.w3.org/2000/svg"
-        width={21}
-        height={21}
-        fill="none"
-        {...props}
-        >
+function MessageIcon(props) {
+  return (
+    <Svg
+      width={31}
+      height={30}
+      viewBox="0 0 31 30"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <G clipPath="url(#clip0_951_1304)">
         <Path
+          d="M4.688 0a3.753 3.753 0 00-3.75 3.75v16.875a3.754 3.754 0 003.75 3.75h5.625v4.688c0 .357.2.68.516.838a.949.949 0 00.984-.088l7.248-5.438h8.128a3.754 3.754 0 003.75-3.75V3.75A3.754 3.754 0 0027.189 0h-22.5z"
           fill="#fff"
-          d="M.5 20.5v-18c0-.55.196-1.02.588-1.412A1.93 1.93 0 0 1 2.5.5h16c.55 0 1.021.196 1.413.588.392.392.588.863.587 1.412v12c0 .55-.196 1.021-.587 1.413a1.92 1.92 0 0 1-1.413.587h-14l-4 4Zm4-8h8v-2h-8v2Zm0-3h12v-2h-12v2Zm0-3h12v-2h-12v2Z"
         />
-        </Svg>        
+      </G>
+      <Defs>
+        <ClipPath id="clip0_951_1304">
+          <Path fill="#fff" transform="translate(.938)" d="M0 0H30V30H0z" />
+        </ClipPath>
+      </Defs>
+    </Svg>
   )
-)
+}
 
-export default MessagesIcon
+export default MessageIcon

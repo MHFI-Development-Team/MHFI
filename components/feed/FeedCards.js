@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from "react-native";
-import SearchBarIcon from "../../assets/svg/searchbar-icon";
 import { useResponsive } from "react-native-responsive-hook";
 import { Dimensions } from "react-native";
 const { width } = Dimensions.get("window");
