@@ -5,10 +5,9 @@ import {
   StyleSheet,
   SafeAreaView,
   Dimensions,
-  Slider,
   TouchableOpacity,
 } from "react-native";
-
+import Slider from '@react-native-community/slider';
 const screenWidth = Dimensions.get("window").width;
 
 const BMIHeightScreen = ({ navigation, route }) => {

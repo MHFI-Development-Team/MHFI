@@ -5,9 +5,9 @@ import {
   StyleSheet,
   SafeAreaView,
   Dimensions,
-  Slider,
+  TouchableOpacity
 } from "react-native";
-
+import Slider from '@react-native-community/slider';
 const screenWidth = Dimensions.get("window").width;
 
 const BMIWeightScreen = ({ route, navigation }) => {
@@ -15,7 +15,7 @@ const BMIWeightScreen = ({ route, navigation }) => {
   const [weight, setWeight] = useState(69);
 
   const handleNext = () => {
-    navigation.navigate("BMIHeightScreen", { age, weight });
+    navigation.navigate("BMIHeight", { age, weight });
   };
   return (
     <SafeAreaView style={styles.safeArea}>
