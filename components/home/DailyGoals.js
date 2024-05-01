@@ -37,8 +37,8 @@ export default DailyGoals = () => {
       </View>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <View style={{ flexDirection: "row", gap: 25 }}>
-          {goals.map((goal, index) => {
-            return (
+          {goals.map((goal, index) => 
+             (
               <View key={index} style={styles.dailyGoalsAchievements}>
                 <TouchableOpacity
                   activeOpacity={0.6}
@@ -48,13 +48,14 @@ export default DailyGoals = () => {
                   <View style={styles.dailyGoalsAchievementText}>
                     <Text style={styles.cardTitle}>{goal.title}</Text>
                     <Text style={styles.dailyGoalsAchievementValue}>
-                      {goal.completedTasks.length} / {goal.totalTasks.length} Task
+                      {goal?.completedTasks?.length || 0} / {goal?.totalTasks?.length || 0} Task
                     </Text>
                   </View>
                 </TouchableOpacity>
               </View>
-            );
-          })}
+            )
+          )
+          }
           <TouchableOpacity onPress={handleAddMorePress} activeOpacity={0.6}>
             <AddMoreIcon />
           </TouchableOpacity>
