@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useResponsive } from "react-native-responsive-hook";
 import BmiIcon from "../../assets/svg/SuggestToolSVG/bmiIcon";
 import { ScrollView } from "react-native";
@@ -11,7 +11,7 @@ import SignIcon from "../../assets/svg/SuggestToolSVG/signIcon";
 import { Dimensions } from "react-native";
 const screenWidth = Dimensions.get("window").width;
 import { useNavigation } from "@react-navigation/native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+// import { TouchableOpacity } from "react-native-gesture-handler";
 
 const SuggestedTools = () => {
   const { vh } = useResponsive();
