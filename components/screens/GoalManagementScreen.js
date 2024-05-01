@@ -66,7 +66,7 @@ export default GoalManagementScreen = ({ route, navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: "#0C0F14", flex: 1 }}>
+    <SafeAreaView style={{ backgroundColor: "#171621", flex: 1 }}>
       <ScrollView style={styles.container}>
         <Text
           style={{
