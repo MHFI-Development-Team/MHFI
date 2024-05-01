@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet, Image, TextInput, SafeAreaView, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, Pressable, StyleSheet, Image, TextInput, SafeAreaView, ScrollView, TouchableOpacity, Keyboard } from "react-native";
 import React, { useState, useRef } from 'react';
 import DailyGoals from "../home/DailyGoals";
 import { Dimensions } from 'react-native';
@@ -81,6 +81,8 @@ const SmokingCalculatorScreen = () => {
 
   // Function to handle calculate button press
   const handleCalculate = () => {
+    Keyboard.dismiss();
+
     setErrorType(null);
 
     // Validation checks
