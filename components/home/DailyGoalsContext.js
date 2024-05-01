@@ -8,8 +8,8 @@ export const DailyGoalsProvider = ({ children }) => {
 
   const addGoal = async (goal) => {
     const updatedGoals = [...goals, goal];
+    await SecureStore.setItemAsync('goals', JSON.stringify(updatedGoals));
     setGoals(updatedGoals);
-    await SecureStore.setItemAsync('goals', JSON.stringify(goals));
   };
 
   const editGoal = async (index, updatedGoal) => {
@@ -30,8 +30,12 @@ export const DailyGoalsProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchGoals = async () => {
+      // NOTE: To remove all of the goals, kindly uncomment the line below.
+      // await SecureStore.deleteItemAsync('goals');
+
       const goalJson = await SecureStore.getItemAsync('goals') || '[]';
       const items = JSON.parse(goalJson);
+
       if (items.length > 0) {
         setGoals(items);
       }
