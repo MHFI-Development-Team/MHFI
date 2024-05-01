@@ -296,6 +296,7 @@ export default function GeoLocatorScreen() {
 
   const [currentLocation, setCurrentLocaiton] = useState({})
   const [closestGPPs, setClosestGPPs] = useState([]);
+  const [mapMode, setMapMode] = useState(1);
 
   const handleScreenDisplay = () => {
     return mapMode === 1;
@@ -324,13 +325,13 @@ export default function GeoLocatorScreen() {
             latitude: a.lattitude,
             longitude: a.longitude,
           }) / 1000
-        ).toPrecision(2);
+        ).toFixed(2);
         b.distance = (
           getDistance(long_lat, {
             latitude: b.lattitude,
             longitude: b.longitude,
           }) / 1000
-        ).toPrecision(2);
+        ).toFixed(2);
         return a.distance - b.distance;
       });
 
@@ -338,10 +339,8 @@ export default function GeoLocatorScreen() {
     })();
   }, []);
 
-  let mapMode = 1;
-
-  const setMapMode = (mode) => {
-    mapMode = mode;
+  const hanldeMapModeChange = (mode) => {
+    setMapMode(mode);
   };
 
   return (
@@ -354,7 +353,7 @@ export default function GeoLocatorScreen() {
           flexDirection: "row",
         }}
       >
-        <TouchableOpacity style={{ width: "50%" }} onPress={() => setMapMode(1)}>
+        <TouchableOpacity style={{ width: "50%" }} onPress={() => hanldeMapModeChange(1)}>
           <View>
             <Text
               style={{
@@ -368,7 +367,7 @@ export default function GeoLocatorScreen() {
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={{ width: "50%" }} onPress={() => setMapMode(2)}>
+        <TouchableOpacity style={{ width: "50%" }} onPress={() => hanldeMapModeChange(2)}>
           <View>
             <Text
               style={{
