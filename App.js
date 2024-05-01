@@ -13,8 +13,8 @@ import DailyGoalsTasksScreen from "./components/screens/DailyGoalTaskScreen";
 import HomeScreen from "./components/screens/HomeScreen";
 import FeedScreen from "./components/screens/FeedScreen";
 import * as SplashScreen from "expo-splash-screen";
-import AlchoholCalculatorScreen from "./components/screens/AlchololCalculatorScreen";
-import SmokingCalculatorScreen from "./components/screens/SmokingCalculatorScreen";
+
+import SmokingCalculatorUI from "./components/screens/smoking-calculator/SmokingCalculatorUI";
 import BMIWeightScreen from "./components/screens/bmi-calculator/components/BMIWeightScreen";
 import BMIHeightScreen from "./components/screens/bmi-calculator/components/BMIHeightSceen";
 import BMIResultScreen from "./components/screens/bmi-calculator/components/BMIResultScreen";
