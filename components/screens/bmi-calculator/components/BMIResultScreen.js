@@ -36,3 +36,4 @@ const BMIResultScreen = ({ navigation, route }) => {
       </SafeAreaView>
     );
   };
+  export default BMIResultScreen;

@@ -35,7 +35,7 @@ const BMIHeightScreen = ({ navigation, route }) => {
     
       const handleNext = () => {
         const bmiResult = calculateBMI();
-        navigation.navigate('BMIResultScreen', { bmi: bmiResult, age, weight, height: unit === "cm" ? `${heightCm} cm` : `${heightFeet}'${heightInches}"` });
+        navigation.navigate('BMIResult', { bmi: bmiResult, age, weight, height: unit === "cm" ? `${heightCm} cm` : `${heightFeet}'${heightInches}"` });
       };
 
   return (
