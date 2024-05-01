@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
-import styles from './calculatorStyle';
+import styles from '../common-calculator/calculatorStyle';
 import AlchoholCalculatorLogic from './AlchoholCalculatorLogic';
 import ErrorModal from '../../ErrorModal';
 
-const AlcohololCalculatorUI = () => {
+const AlchololCalculatorUI = () => {
   const {
     data,
     value,
@@ -158,4 +158,4 @@ const AlcohololCalculatorUI = () => {
   );
 };
 
-export default AlcohololCalculatorUI;
+export default AlchololCalculatorUI;

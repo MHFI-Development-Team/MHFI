@@ -15,6 +15,7 @@ import FeedScreen from "./components/screens/FeedScreen";
 import * as SplashScreen from "expo-splash-screen";
 
 import SmokingCalculatorUI from "./components/screens/smoking-calculator/SmokingCalculatorUI";
+import AlchololCalculatorUI from "./components/screens/alcohol-calculator/AlchololCalculatorUI";
 import BMIWeightScreen from "./components/screens/bmi-calculator/components/BMIWeightScreen";
 import BMIHeightScreen from "./components/screens/bmi-calculator/components/BMIHeightSceen";
 import BMIResultScreen from "./components/screens/bmi-calculator/components/BMIResultScreen";
@@ -126,7 +127,7 @@ function HomeStackScreen() {
       />
       <HomeStack.Screen
         name="SmokeCalc"
-        component={SmokingCalculatorScreen}
+        component={SmokingCalculatorUI}
         options={{
           headerShown: true,
           header: () => <HeaderComponentBack navigation={navigation} />,
@@ -134,7 +135,7 @@ function HomeStackScreen() {
       />
       <HomeStack.Screen
         name="AlchoholCalculatorScreen"
-        component={AlchoholCalculatorScreen}
+        component={AlchololCalculatorUI}
         options={{
           headerShown: true,
           header: () => <HeaderComponentBack navigation={navigation} />,

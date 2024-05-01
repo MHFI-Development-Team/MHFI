@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
-import styles from '../AlchololCalculatorScreen/calculatorStyle';
+import styles from '../common-calculator/calculatorStyle';
 import SmokingCalculatorLogic from './SmokingCalculatorLogic';
 import ErrorModal from '../../ErrorModal';
 
