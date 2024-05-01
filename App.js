@@ -44,7 +44,7 @@ const HeaderComponent = () => {
     <View
       style={{
         height: 60,
-        backgroundColor: "#0C0F14",
+        backgroundColor: "#171621",
         alignItems: "flex-end",
         justifyContent: "flex-start",
         flexDirection: "row",
@@ -64,7 +64,7 @@ const HeaderComponentBack = () => {
     <View
       style={{
         height: 60,
-        backgroundColor: "#0C0F14",
+        backgroundColor: "#171621",
         alignItems: "flex-end",
         justifyContent: "flex-start",
         flexDirection: "row",
@@ -266,7 +266,7 @@ const useStyles = () => {
     ...global_style_function,
     flow: {
       flex: 1,
-      backgroundColor: "#252A32",
+      backgroundColor: "#303345",
     },
     background: {
       backgroundColor: colours.background,

@@ -10,7 +10,7 @@ const screenHeight = Dimensions.get('window').height;
 
 export default function ProfileScreen() {
   return (
-      <SafeAreaView style={{backgroundColor: '#0C0F14', flex: 1}}>
+      <SafeAreaView style={{backgroundColor: '#171621', flex: 1}}>
         <View style={styles.container}>
           <View style={{flex: 1, justifyContent: "center", gap: 25, alignItems: "center"}}>
             <Text style={{color: "white"}}>Feed Screen</Text>

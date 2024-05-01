@@ -25,7 +25,7 @@ function SignIcon(props) {
           gradientUnits="userSpaceOnUse"
         >
           <Stop stopColor="#39302A" />
-          <Stop offset={1} stopColor="#DC3535" />
+          <Stop offset={1} stopColor="#FF922E" />
         </LinearGradient>
       </Defs>
     </Svg>

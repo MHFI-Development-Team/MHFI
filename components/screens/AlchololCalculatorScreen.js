@@ -164,7 +164,7 @@ const AlchoholCalculatorScreen = () => {
   const drinkVolumeRef = useRef(null);
 
   return (
-      <SafeAreaView style={{backgroundColor: '#0C0F14', flex: 1}}>
+      <SafeAreaView style={{backgroundColor: '#171621', flex: 1}}>
         <View style={styles.container}>
       <View style={styles.inputContainer}>
       {/* Reset button */}

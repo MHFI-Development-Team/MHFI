@@ -92,7 +92,7 @@ const useStyles = (vh) =>
       fontWeight: "600",
     },
     dailyGoalsAchievementValue: {
-      color: "#DC3535",
+      color: "#FF922E",
       fontSize: 12,
     },
   });

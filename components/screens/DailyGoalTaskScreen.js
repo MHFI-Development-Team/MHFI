@@ -110,7 +110,7 @@ export default function DailyGoalsTasksScreen() {
   const availableTasks = useMemo(() => goals.some(goal => goal.title === title) ? [] : tasksByCategory[title], [goals, title]);
 
   return (
-    <SafeAreaView style={{ backgroundColor: '#0C0F14', flex: 1 }}>
+    <SafeAreaView style={{ backgroundColor: '#171621', flex: 1 }}>
       <ScrollView style={styles.container}>
         <Text style={{ fontSize: 16, fontWeight: '600', color: 'white' }}>
           Choose Your Goal
@@ -141,7 +141,7 @@ export default function DailyGoalsTasksScreen() {
       </ScrollView>
       <View style={styles.buttonContainer}>
         <Pressable
-          style={[styles.button, { backgroundColor: data.length === 0 ? '#B8B8B8' : '#DC3535' }]}
+          style={[styles.button, { backgroundColor: data.length === 0 ? '#B8B8B8' : '#FF922E' }]}
           onPress={handleAddGoal}
           disabled={data.length === 0}
         >
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 22,
     borderRadius: 20,
-    backgroundColor: "#DC3535",
+    backgroundColor: "#FF922E",
   },
   textGoal: {
     fontSize: 16,
