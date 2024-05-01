@@ -19,8 +19,8 @@ const SuggestedTools = () => {
 
   const navigation = useNavigation();
 
-  const handleBMICalcPress = () => {
-    navigation.navigate("BMICalc");
+  const handleBMIPress = () => {
+    navigation.navigate("BMIWeight");
   };
   const handleSmokeCalcPress = () => {
     navigation.navigate("SmokeCalc");
@@ -44,7 +44,7 @@ const SuggestedTools = () => {
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <View style={styles.toolsContainer}>
           {/* BMI */}
-          <TouchableOpacity onPress={handleBMICalcPress} activeOpacity={0.6}>
+          <TouchableOpacity onPress={handleBMIPress} activeOpacity={0.6}>
             <View style={styles.tool}>
               <BmiIcon />
               <Text style={styles.toolName}>BMI Calculator</Text>

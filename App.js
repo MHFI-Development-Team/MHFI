@@ -15,7 +15,9 @@ import FeedScreen from "./components/screens/FeedScreen";
 import * as SplashScreen from "expo-splash-screen";
 import AlchoholCalculatorScreen from "./components/screens/AlchololCalculatorScreen";
 import SmokingCalculatorScreen from "./components/screens/SmokingCalculatorScreen";
-import BMICalculatorScreen from "./components/screens/BMICalculatorScreen";
+import BMIWeightScreen from "./components/screens/bmi-calculator/components/BMIWeightScreen";
+import BMIHeightScreen from "./components/screens/bmi-calculator/components/BMIHeightSceen";
+import BMIResultScreen from "./components/screens/bmi-calculator/components/BMIResultScreen";
 import QuizScreen from "./components/screens/QuizScreen";
 import SignPostScreen from "./components/screens/SignPostScreen";
 import GeoLocatorScreen from "./components/screens/GeoLocatorScreen";
@@ -99,8 +101,24 @@ function HomeStackScreen() {
         }}
       />
       <HomeStack.Screen
-        name="BMICalc"
-        component={BMICalculatorScreen}
+        name="BMIWeight"
+        component={BMIWeightScreen}
+        options={{
+          headerShown: true,
+          header: () => <HeaderComponentBack navigation={navigation} />,
+        }}
+      />
+       <HomeStack.Screen
+        name="BMIHeight"
+        component={BMIHeightScreen}
+        options={{
+          headerShown: true,
+          header: () => <HeaderComponentBack navigation={navigation} />,
+        }}
+      />
+           <HomeStack.Screen
+        name="BMIResult"
+        component={BMIResultScreen}
         options={{
           headerShown: true,
           header: () => <HeaderComponentBack navigation={navigation} />,
