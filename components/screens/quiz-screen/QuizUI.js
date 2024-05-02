@@ -1,14 +1,17 @@
 import React from 'react';
 import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import QuizLogic from './QuizLogic';
 
 const screenWidth = Dimensions.get('window').width;
 
 const QuizUI = () => {
+  const randomQuestion = QuizLogic.selectRandomQuestion();
+
   return (
     <SafeAreaView style={{ backgroundColor: '#171621', flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.questionContainer}>
-          <Text style={{ color: 'white', fontSize: 32 }}>Placeholder</Text>
+          <Text style={{ color: 'white', fontSize: 32 }}>{randomQuestion.question}</Text>
         </View>
         <View style={styles.answerContainer}>
           <TouchableOpacity style={styles.answerBtn}>
