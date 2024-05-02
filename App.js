@@ -19,7 +19,7 @@ import AlchololCalculatorUI from "./components/screens/alcohol-calculator/Alchol
 import BMIWeightScreen from "./components/screens/bmi-calculator/components/BMIWeightScreen";
 import BMIHeightScreen from "./components/screens/bmi-calculator/components/BMIHeightSceen";
 import BMIResultScreen from "./components/screens/bmi-calculator/components/BMIResultScreen";
-import QuizScreen from "./components/screens/QuizScreen";
+
 import SignPostScreen from "./components/screens/SignPostScreen";
 import GeoLocatorScreen from "./components/screens/GeoLocatorScreen";
 import GoalManagementScreen from "./components/screens/GoalManagementScreen";
@@ -151,7 +151,7 @@ function HomeStackScreen() {
       />
       <HomeStack.Screen
         name="Quiz"
-        component={QuizScreen}
+        component={QuizUI}
         options={{
           headerShown: true,
           header: () => <HeaderComponentBack navigation={navigation} />,
