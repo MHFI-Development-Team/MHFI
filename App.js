@@ -19,7 +19,7 @@ import AlchololCalculatorUI from "./components/screens/alcohol-calculator/Alchol
 import BMIWeightScreen from "./components/screens/bmi-calculator/components/BMIWeightScreen";
 import BMIHeightScreen from "./components/screens/bmi-calculator/components/BMIHeightSceen";
 import BMIResultScreen from "./components/screens/bmi-calculator/components/BMIResultScreen";
-
+import QuizUI from "./components/screens/quiz-screen/QuizUI";
 import SignPostScreen from "./components/screens/SignPostScreen";
 import GeoLocatorScreen from "./components/screens/GeoLocatorScreen";
 import GoalManagementScreen from "./components/screens/GoalManagementScreen";
