@@ -1,11 +1,11 @@
 import React from 'react';
-import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import QuizLogic from './QuizLogic';
-
-const screenWidth = Dimensions.get('window').width;
+import BackIcon from '../../../assets/svg/backIcon';
 
 const QuizUI = () => {
-  const randomQuestion = QuizLogic.selectRandomQuestion();
+  const { selectedOption, handleOptionPress, handleNextQuestion, selectRandomQuestion, score } = QuizLogic();
+  const randomQuestion = selectRandomQuestion(); 
 
   return (
     <SafeAreaView style={{ backgroundColor: '#171621', flex: 1 }}>
@@ -14,21 +14,24 @@ const QuizUI = () => {
           <Text style={{ color: 'white', fontSize: 32 }}>{randomQuestion.question}</Text>
         </View>
         <View style={styles.answerContainer}>
-          <TouchableOpacity style={styles.answerBtn}>
-            <Text style={{ color: 'white' }}>Answer 1</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.answerBtn}>
-            <Text style={{ color: 'white' }}>Answer 2</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.answerBtn}>
-            <Text style={{ color: 'white' }}>Answer 3</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.answerBtn}>
-            <Text style={{ color: 'white' }}>Answer 4</Text>
-          </TouchableOpacity>
+          {randomQuestion.options.map((option, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[styles.answerBtn, selectedOption === index && styles.selectedBtn]}
+              onPress={() => handleOptionPress(index)}
+            >
+              <Text style={{ color: 'white' }}>{option}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+        <View style={styles.nextQuestion}>
+        {selectedOption !== null && ( // Display the "Next Question" button only if an option has been selected
+          <View style={styles.nextQuestion}>
+            <TouchableOpacity onPress={handleNextQuestion}>
+              <BackIcon/>
+            </TouchableOpacity>
+          </View>
+        )}
         </View>
       </View>
     </SafeAreaView>
@@ -40,19 +43,18 @@ export default QuizUI;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center', // Center items vertically
-    alignItems: 'center', // Center items horizontally
-    paddingHorizontal: screenWidth * 0.05,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   questionContainer: {
-    flex: 1, // Take up space above the answers
-    justifyContent: 'center', // Center items vertically
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   answerContainer: {
-    flex: 1, // Take up space below the question
-    alignItems: 'center', // Center items horizontally
-    justifyContent: 'flex-start', // Align items to the top
-    marginTop: 20, // Add some spacing between question and answers
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   answerBtn: {
     alignItems: 'center',
@@ -63,4 +65,10 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginBottom: 20,
   },
+  selectedBtn: {
+    backgroundColor: 'orange', // Change color to orange when selected
+  },
+  nextQuestion:{
+
+  }
 });

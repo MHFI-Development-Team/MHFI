@@ -10,6 +10,11 @@ const QuizData = () => {
       options: ["Cork", "Dublin", "Galway", "Meath"],
       correctAnswer: "Dublin"
     },
+    {
+      question: "Whats my favourite position?",
+      options: ["Centre back", "Striker", "Texas Oil Rig", "Goalkeeper"],
+      correctAnswer: "Goalkeeper"
+    },
     // Add more questions as needed
   ];
 
