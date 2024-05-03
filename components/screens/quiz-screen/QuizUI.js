@@ -4,17 +4,21 @@ import QuizLogic from './QuizLogic';
 import BackIcon from '../../../assets/svg/backIcon';
 
 const QuizUI = () => {
-  const { selectedOption, handleOptionPress, handleNextQuestion, selectRandomQuestion, score } = QuizLogic();
-  const randomQuestion = selectRandomQuestion(); 
+  const { selectedOption, handleOptionPress, handleNextQuestion, selectedQuestion} = QuizLogic();
+ 
+  
+  if (!selectedQuestion) {
+    return null; // Return null or a loading indicator while waiting for a question to be selected
+  }
 
   return (
     <SafeAreaView style={{ backgroundColor: '#171621', flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.questionContainer}>
-          <Text style={{ color: 'white', fontSize: 32 }}>{randomQuestion.question}</Text>
+          <Text style={{ color: 'white', fontSize: 32 }}>{selectedQuestion.question}</Text>
         </View>
         <View style={styles.answerContainer}>
-          {randomQuestion.options.map((option, index) => (
+          {selectedQuestion.options.map((option, index) => (
             <TouchableOpacity
               key={index}
               style={[styles.answerBtn, selectedOption === index && styles.selectedBtn]}
@@ -69,6 +73,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'orange', // Change color to orange when selected
   },
   nextQuestion:{
-
+    position: 'absolute',
+    bottom: 10,
+    right: 20,
   }
 });

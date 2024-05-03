@@ -20,6 +20,7 @@ import BMIWeightScreen from "./components/screens/bmi-calculator/components/BMIW
 import BMIHeightScreen from "./components/screens/bmi-calculator/components/BMIHeightSceen";
 import BMIResultScreen from "./components/screens/bmi-calculator/components/BMIResultScreen";
 import QuizUI from "./components/screens/quiz-screen/QuizUI";
+import QuizResult from "./components/screens/quiz-screen/QuizResult";
 import SignPostScreen from "./components/screens/SignPostScreen";
 import GeoLocatorScreen from "./components/screens/GeoLocatorScreen";
 import GoalManagementScreen from "./components/screens/GoalManagementScreen";
@@ -152,6 +153,14 @@ function HomeStackScreen() {
       <HomeStack.Screen
         name="Quiz"
         component={QuizUI}
+        options={{
+          headerShown: true,
+          header: () => <HeaderComponentBack navigation={navigation} />,
+        }}
+      />
+       <HomeStack.Screen
+        name="QuizResult"
+        component={QuizResult}
         options={{
           headerShown: true,
           header: () => <HeaderComponentBack navigation={navigation} />,
