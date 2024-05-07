@@ -35,156 +35,14 @@ import BackIcon from "./assets/svg/backIcon";
 import { colours } from "./assets/theme";
 import { DailyGoalsProvider } from "./components/home/DailyGoalsContext";
 
+import {HomeStackScreen} from './components/home/HomeStackScreen'
+
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 const screenWidth = Dimensions.get("window").width;
-
-const HeaderComponent = () => {
-  const navigation = useNavigation();
-  return (
-    <View
-      style={{
-        height: 60,
-        backgroundColor: "#171621",
-        alignItems: "flex-end",
-        justifyContent: "flex-start",
-        flexDirection: "row",
-        paddingHorizontal: screenWidth * 0.05,
-      }}
-    >
-      <TouchableOpacity>
-        <ProfileIcon />
-      </TouchableOpacity>
-    </View>
-  );
-};
-
-const HeaderComponentBack = () => {
-  const navigation = useNavigation();
-  return (
-    <View
-      style={{
-        height: 60,
-        backgroundColor: "#171621",
-        alignItems: "flex-end",
-        justifyContent: "flex-start",
-        flexDirection: "row",
-        paddingHorizontal: screenWidth * 0.05,
-      }}
-    >
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <BackIcon />
-      </TouchableOpacity>
-    </View>
-  );
-};
-
-function HomeStackScreen() {
-  const navigation = useNavigation();
-  return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          headerShown: true,
-          header: () => <HeaderComponent navigation={navigation} />,
-        }}
-      />
-      <HomeStack.Screen
-        name="DailyGoalTasks"
-        component={DailyGoalsTasksScreen}
-        options={{
-          headerShown: true,
-          header: () => <HeaderComponentBack navigation={navigation} />,
-        }}
-      />
-      <HomeStack.Screen
-        name="BMIWeight"
-        component={BMIWeightScreen}
-        options={{
-          headerShown: true,
-          header: () => <HeaderComponentBack navigation={navigation} />,
-        }}
-      />
-       <HomeStack.Screen
-        name="BMIHeight"
-        component={BMIHeightScreen}
-        options={{
-          headerShown: true,
-          header: () => <HeaderComponentBack navigation={navigation} />,
-        }}
-      />
-           <HomeStack.Screen
-        name="BMIResult"
-        component={BMIResultScreen}
-        options={{
-          headerShown: true,
-          header: () => <HeaderComponentBack navigation={navigation} />,
-        }}
-      />
-      <HomeStack.Screen
-        name="SmokeCalc"
-        component={SmokingCalculatorUI}
-        options={{
-          headerShown: true,
-          header: () => <HeaderComponentBack navigation={navigation} />,
-        }}
-      />
-      <HomeStack.Screen
-        name="AlchoholCalculatorScreen"
-        component={AlchololCalculatorUI}
-        options={{
-          headerShown: true,
-          header: () => <HeaderComponentBack navigation={navigation} />,
-        }}
-      />
-      <HomeStack.Screen
-        name="Geo"
-        component={GeoLocatorScreen}
-        options={{
-          headerShown: true,
-          header: () => <HeaderComponentBack navigation={navigation} />,
-        }}
-      />
-      <HomeStack.Screen
-        name="Quiz"
-        component={QuizUI}
-        options={{
-          headerShown: true,
-          header: () => <HeaderComponentBack navigation={navigation} />,
-        }}
-      />
-       <HomeStack.Screen
-        name="QuizResult"
-        component={QuizResult}
-        options={{
-          headerShown: true,
-          header: () => <HeaderComponentBack navigation={navigation} />,
-        }}
-      />
-      <HomeStack.Screen
-        name="SignPost"
-        component={SignPostScreen}
-        options={{
-          headerShown: true,
-          header: () => <HeaderComponentBack navigation={navigation} />,
-        }}
-      />
-      <HomeStack.Screen
-        name="GoalManagement"
-        component={GoalManagementScreen}
-        options={{
-          headerShown: true,
-          header: () => <HeaderComponentBack navigation={navigation} />,
-        }}
-      />
-    </HomeStack.Navigator>
-  );
-}
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -221,66 +79,13 @@ export default function App() {
   if (!appIsReady) {
     return null;
   }
-
-  return (
+    
+    return (
+    
     <SafeAreaView style={styles.flow} onLayout={onLayoutRootView}>
       <DailyGoalsProvider>
         <NavigationContainer style={styles.flow}>
-          <Tab.Navigator
-            screenOptions={({ route }) => ({
-              tabBarStyle: {
-                backgroundColor: colours.background,
-                borderTopWidth: 0,
-                elevation: 0,
-                paddingTop: 10,
-              },
-              tabBarActiveTintColor: "red",
-              tabBarShowLabel: false,
-              tabBarIcon: ({ focused }) => {
-                if (route.name === "HomeTab") {
-                  return <HomeIcon focused={focused} />;
-                } else if (route.name === "Feed") {
-                  return <FeedIcon focused={focused} />;
-                } else if (route.name === "Messages") {
-                  return <MessagesIcon focused={focused} />;
-                }
-              },
-              tabBarLabelStyle: {
-                fontFamily: "Poppins",
-                fontSize: 12,
-              },
-              headerShown: false,
-            })}
-          >
-            <Tab.Screen
-              name="HomeTab"
-              component={HomeStackScreen}
-              options={{
-                headerShown: false,
-                header: () => <HeaderComponent />,
-              }}
-            />
-            <Tab.Screen
-              name="Feed"
-              component={FeedScreen}
-              options={{ headerShown: true, header: () => <HeaderComponent /> }}
-            />
-            <Tab.Screen
-              name="Messages"
-              component={MessageScreen}
-              options={{ headerShown: true, header: () => <HeaderComponent /> }}
-            />
-            {/* <Tab.Screen
-            name="ProfileTab"
-            component={ProfileStackScreen}
-            options={{ headerShown: false, tabBarButton: () => null }}
-          />
-          <Tab.Screen
-            name="SettingsTab"
-            component={SettingsStackScreen}
-            options={{ headerShown: false, tabBarButton: () => null  }}
-          /> */}
-          </Tab.Navigator>
+          <HomeStackScreen />
         </NavigationContainer>
       </DailyGoalsProvider>
     </SafeAreaView>

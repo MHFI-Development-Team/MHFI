@@ -12,7 +12,6 @@ const screenHeight = Dimensions.get('window').height;
 
 export default function HomeScreen() {
   return (
-      <SafeAreaView style={{backgroundColor: '#171621', flex: 1}}>
         <View style={styles.container}>
           <View style={{flex: 1, justifyContent: "center", gap: 25}}>
             <DailyGoals />
@@ -20,7 +19,6 @@ export default function HomeScreen() {
             <ContentForYou />
           </View>
         </View>
-      </SafeAreaView>
   );
 }
 
