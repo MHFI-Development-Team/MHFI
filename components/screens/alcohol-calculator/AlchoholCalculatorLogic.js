@@ -22,6 +22,7 @@ const AlchoholCalculatorLogic = () => {
   const [costPerYear, setCostPerYear] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [errorType, setErrorType] = useState(null);
+  const [showCostContainer, setShowCostContainer] = useState(false);
 
   const handleDropdownChange = (itemValue) => {
     setValue(itemValue);
@@ -33,15 +34,18 @@ const AlchoholCalculatorLogic = () => {
         setCostText('Cost per pack of cans');
         setAmountText('Cans per pack?');
         setType('Cans');
+        setShowCostContainer(false); 
         break;
       case '2':
         setDrinkingTypeText('Volume consumed per day (ml)?');
         setCostText('Cost per bottle of spirits');
         setAmountText('Volume per bottle (ml)?');
         setType('Spirits');
+        setShowCostContainer(false); 
         break;
       default:
         setType('Default');
+        setShowCostContainer(false); 
     }
 
     handleReset();
@@ -100,16 +104,17 @@ const AlchoholCalculatorLogic = () => {
         break;
     }
 
-    const costPerWeek = costPerDay * 7;
-    const costPerMonth = costPerDay * 30;
-    const costPerYear = costPerDay * 365;
+    const costPerWeek = Math.round(costPerDay * 7); 
+    const costPerMonth = Math.round(costPerDay * 30); 
+    const costPerYear = Math.round(costPerDay * 365); 
 
-    setCostPerDay(costPerDay.toFixed(2));
-    setCostPerWeek(costPerWeek.toFixed(2));
-    setCostPerMonth(costPerMonth.toFixed(2));
-    setCostPerYear(costPerYear.toFixed(2));
+    setCostPerDay(Math.round(costPerDay));
+    setCostPerWeek(costPerWeek);
+    setCostPerMonth(costPerMonth);
+    setCostPerYear(costPerYear);
 
     handleReset();
+    setShowCostContainer(true);
   };
 
   const handleReset = () => {
@@ -161,6 +166,7 @@ const AlchoholCalculatorLogic = () => {
     drinksPerDayRef,
     costPerItemRef,
     drinkVolumeRef,
+    showCostContainer,
   };
 };
 

@@ -14,8 +14,8 @@ const QuizData = () => {
     },
     {
       id: 3,
-      question: "What's my favorite position?",
-      options: ["Centre back", "Striker", "Texas Oil Rig", "Goalkeeper"],
+      question: "What's my favorite football position?",
+      options: ["Centre back", "Striker", "Midfield", "Goalkeeper"],
       correctAnswer: "Goalkeeper"
     },
     // Add more questions as needed

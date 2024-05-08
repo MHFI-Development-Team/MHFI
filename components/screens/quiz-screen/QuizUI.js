@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   selectedBtn: {
-    backgroundColor: 'orange', // Change color to orange when selected
+    backgroundColor: 'orange', 
   },
   nextQuestion:{
     position: 'absolute',

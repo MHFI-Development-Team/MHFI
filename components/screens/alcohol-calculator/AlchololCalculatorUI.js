@@ -38,6 +38,7 @@ const AlchololCalculatorUI = () => {
     drinksPerDayRef,
     costPerItemRef,
     drinkVolumeRef,
+    showCostContainer,
   } = AlchoholCalculatorLogic();
 
   return (
@@ -76,7 +77,7 @@ const AlchololCalculatorUI = () => {
           <TextInput
             ref={drinksPerDayRef}
             style={styles.inputStyle}
-            placeholder="?"
+            
             keyboardType="numeric"
             onChangeText={(text) => {
               // Replace any non-numeric characters with an empty string
@@ -92,7 +93,7 @@ const AlchololCalculatorUI = () => {
           <TextInput
             ref={drinkVolumeRef}
             style={styles.inputStyle}
-            placeholder="?"
+            
             keyboardType="numeric"
             onChangeText={(text) => {
               text = text.replace(/[^0-9]/g, '').replace('-', '');
@@ -107,7 +108,7 @@ const AlchololCalculatorUI = () => {
           <TextInput
             ref={costPerItemRef}
             style={styles.inputStyle}
-            placeholder="?"
+            
             keyboardType="numeric"
             onChangeText={(text) => {
               // Allow only numeric and decimal inputs
@@ -125,28 +126,29 @@ const AlchololCalculatorUI = () => {
         </View>
 
         {/* Cost Display */}
-        <View style={styles.costContainer}>
-          <View style={styles.costTextContainer}>
-            <Text style={styles.costTextStyle}>Per Day</Text>
-            <Text style={styles.costStyle}>€{costPerDay}</Text>
-          </View>
+        {showCostContainer && (
+          <View style={styles.costContainer}>
+            <View style={styles.costTextContainer}>
+              <Text style={styles.costTextStyle}>Per Day</Text>
+              <Text style={styles.costStyle}>€{costPerDay}</Text>
+            </View>
 
-          <View style={styles.costTextContainer}>
-            <Text style={styles.costTextStyle}>Per Week</Text>
-            <Text style={styles.costStyle}>€{costPerWeek}</Text>
-          </View>
+            <View style={styles.costTextContainer}>
+              <Text style={styles.costTextStyle}>Per Week</Text>
+              <Text style={styles.costStyle}>€{costPerWeek}</Text>
+            </View>
 
-          <View style={styles.costTextContainer}>
-            <Text style={styles.costTextStyle}>Per Month</Text>
-            <Text style={styles.costStyle}>€{costPerMonth}</Text>
-          </View>
+            <View style={styles.costTextContainer}>
+              <Text style={styles.costTextStyle}>Per Month</Text>
+              <Text style={styles.costStyle}>€{costPerMonth}</Text>
+            </View>
 
-          <View style={styles.costTextContainer}>
-            <Text style={styles.costTextStyle}>Per Year</Text>
-            <Text style={styles.costStyle}>€{costPerYear}</Text>
+            <View style={styles.costTextContainer}>
+              <Text style={styles.costTextStyle}>Per Year</Text>
+              <Text style={styles.costStyle}>€{costPerYear}</Text>
+            </View>
           </View>
-        </View>
-
+        )}
         {/* Error Modal */}
         <ErrorModal
           modalVisible={modalVisible}
