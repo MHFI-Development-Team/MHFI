@@ -16,7 +16,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "usesNonExemptEncryption": false
+      "usesNonExemptEncryption": false,
+      "bundleIdentifier": "com.opod.MHFI"
     },
     "plugins": [
       [
@@ -35,7 +36,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.opod.MHFI"
+      "package": "com.opod.MHFI",
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_BACKGROUND_LOCATION",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_LOCATION"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
