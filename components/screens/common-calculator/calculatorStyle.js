@@ -1,30 +1,26 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet,  Dimensions, } from "react-native";
+
+const screenWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#171621', // Set background color for the entire screen
+    padding: 16, // Add padding to the container
+  },
   inputContainer: {
-    padding: 16,
     flexDirection: 'row', 
-    justifyContent: 'flex-start', 
     flexWrap: 'wrap', 
   },
   dropdown: {
     height: 50,
     width: '100%',
-    backgroundColor: '#0A1336',
-    borderColor: '#7473E6',
-    borderWidth: 1.5,
-    borderRadius: 30,
+    backgroundColor: '#303345',
+    borderRadius: 10,
     paddingHorizontal: 8,
-    marginBottom: 5
+    marginBottom: 10, // Adjusted margin for consistency
   },
   placeholderStyle: {
-    fontSize: 16,
-    color: 'white',
-  },
-  selectedTextStyle: {
     fontSize: 16,
     color: 'white',
   },
@@ -32,12 +28,10 @@ const styles = StyleSheet.create({
     height: 40,
     width: '100%',
     color: 'white',
-    backgroundColor: '#0A1336',
-    borderColor: '#7473E6',
-    borderWidth: 1.5,
-    borderRadius: 30,
+    backgroundColor: '#303345',
+    borderRadius: 10,
     paddingHorizontal: 15,
-    marginBottom: 10
+    marginBottom: 10,
   },
   textContainer: {
     marginBottom: 10,
@@ -52,13 +46,11 @@ const styles = StyleSheet.create({
   dynamicText: {
     fontSize: 16,
     color: 'white',
-    width: 'auto',
-    textAlign: 'left', 
     marginLeft: 10, 
-    flexWrap: 'wrap', 
   },
   costTextContainer: {
     alignItems: 'center',
+    marginHorizontal: 10, // Added margin for consistent spacing
   },
   costTextStyle: {
     color: 'white',
@@ -69,13 +61,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     height: 50,
-    width: 250,
-    backgroundColor: '#7473E6',
+    width: '100%', // Adjusted width to fill the container
+    backgroundColor: '#FF922E',
     borderWidth: 1.5,
     borderRadius: 30,
-    paddingHorizontal: 15,
     marginBottom: 20,
-    alignSelf: 'center', 
   },
   calculateText: {
     fontSize: 16,
@@ -85,19 +75,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white',
     marginLeft: 10, 
+    marginBottom: 10, // Added margin bottom for consistency
   },
   costStyle: {
     height: 70,
     width: 70,
     color: 'white',
-    backgroundColor: '#0A1336',
-    borderColor: '#7473E6',
-    borderWidth: 1.5,
+    backgroundColor: '#6A1B9A',
     borderRadius: 35,
-    marginHorizontal: 10, 
-    marginTop: 20,
     textAlign: 'center', 
-    justifyContent: 'center', 
     textAlignVertical: 'center', 
   },
   resetBtn: {
@@ -105,12 +91,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 50,
     width: 100,
-    backgroundColor: '#7473E6',
+    backgroundColor: '#FF922E',
     borderWidth: 1.5,
     borderRadius: 30,
     paddingHorizontal: 15,
     marginBottom: 20,
     alignSelf: 'center', 
   },
-  });
-  export default styles;
+});
+
+export default styles;

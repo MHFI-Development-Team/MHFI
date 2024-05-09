@@ -44,10 +44,11 @@ const SmokingCalculatorUI = () => {
     smokesPerDayRef,
     costPerItemRef,
     perPackRef,
+    showCostContainer,
   } = SmokingCalculatorLogic();
 
   return (
-    <SafeAreaView style={{backgroundColor: '#0C0F14', flex: 1}}>
+    <SafeAreaView style={{ backgroundColor: '#171621', flex: 1 }}>
          <View style={styles.container}>
       <View style={styles.inputContainer}>
          {/* Reset button */}
@@ -131,6 +132,7 @@ const SmokingCalculatorUI = () => {
       </TouchableOpacity>
 
       {/* Cost Display */}
+      {showCostContainer && (
       <View style={styles.costContainer}>
         <View style={styles.costTextContainer}>
           <Text style={styles.costTextStyle}>Per Day</Text>
@@ -152,7 +154,7 @@ const SmokingCalculatorUI = () => {
           <Text style={styles.costStyle}>€{costPerYear}</Text>
         </View>
       </View>
-
+      )}
       {/* Error Modal */}
       <ErrorModal
         modalVisible={modalVisible}

@@ -26,6 +26,7 @@ const SmokingCalculatorLogic = () => {
   const [costPerYear, setCostPerYear] = useState(0); // State for cost per year
   const [modalVisible, setModalVisible] = useState(false); // State for error modal visibility
   const [errorType, setErrorType] = useState(null); // State to track the type of error
+  const [showCostContainer, setShowCostContainer] = useState(false);
 
   const smokesPerDayRef = useRef(null);
   const costPerItemRef = useRef(null);
@@ -43,27 +44,32 @@ const SmokingCalculatorLogic = () => {
         setCostText('Cost per pack of 20?');
         setPerDayText('Cigarettes per day?');
         setShowPerPackInput(false);
+        setShowCostContainer(false); 
         break;
       case '2':
         setSmokingType('rollies');
         setCostText('Cost per tobacco pouch');
         setPerDayText('Rollies per day?');
         setShowPerPackInput(true);
+        setShowCostContainer(false); 
         break;
       case '3':
         setSmokingType('vapes');
         setCostText('Cost per vape?');
         setPerDayText('Vapes per day?');
         setShowPerPackInput(false);
+        setShowCostContainer(false); 
         break;
       case '4':
         setSmokingType('cigars');
         setCostText('Cost per pack?');
         setPerDayText('Cigars per day?');
         setShowPerPackInput(true);
+        setShowCostContainer(false); 
         break;
       default:
         setSmokingType('Default');
+        setShowCostContainer(false); 
     }
     handleReset();
   };
@@ -117,17 +123,18 @@ const SmokingCalculatorLogic = () => {
     }
 
     // Calculate costs for week, month, and year
-    const costPerWeek = costPerDay * 7;
-    const costPerMonth = costPerDay * 30;
-    const costPerYear = costPerDay * 365;
+    const costPerWeek = Math.round(costPerDay * 7); 
+    const costPerMonth = Math.round(costPerDay * 30); 
+    const costPerYear = Math.round(costPerDay * 365); 
 
     // Update state with calculated costs
-    setCostPerDay(costPerDay.toFixed(2));
-    setCostPerWeek(costPerWeek.toFixed(2));
-    setCostPerMonth(costPerMonth.toFixed(2));
-    setCostPerYear(costPerYear.toFixed(2));
+    setCostPerDay(Math.round(costPerDay));
+    setCostPerWeek(costPerWeek);
+    setCostPerMonth(costPerMonth);
+    setCostPerYear(costPerYear);
 
     handleReset();
+    setShowCostContainer(true);
   };
 
   // Function to handle reset button press
@@ -182,6 +189,7 @@ const SmokingCalculatorLogic = () => {
         smokesPerDayRef,
         costPerItemRef,
         perPackRef,
+        showCostContainer,
       };
   };
   export default SmokingCalculatorLogic;
