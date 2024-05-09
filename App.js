@@ -8,7 +8,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import MessageScreen from "./components/screens/MessageScreen";
+import MessageScreen from "./components/screens/messaging/components/MessageScreen";
 import DailyGoalsTasksScreen from "./components/screens/DailyGoalTaskScreen";
 import HomeScreen from "./components/screens/HomeScreen";
 import FeedScreen from "./components/screens/FeedScreen";
