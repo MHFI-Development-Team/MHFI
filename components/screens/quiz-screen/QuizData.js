@@ -14,8 +14,8 @@ const QuizData = () => {
     },
     {
       id: 3,
-      question: "What's my favorite position?",
-      options: ["Centre back", "Striker", "Texas Oil Rig", "Goalkeeper"],
+      question: "Who is the best football team?",
+      options: ["Liverpool", "Chelsea", "Man Utd", "Man City"],
       correctAnswer: "Goalkeeper"
     },
     // Add more questions as needed
