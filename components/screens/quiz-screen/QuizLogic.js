@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import QuizData from './QuizData'; // Assuming QuizData contains your question data
+import QuizData from './QuizData'; 
 import { useNavigation } from '@react-navigation/native'; 
 
 const QuizLogic = () => {
@@ -9,24 +9,31 @@ const QuizLogic = () => {
   const totalQuestions = QuizData().length;
   const [askedQuestions, setAskedQuestions] = useState([]);
   const [score, setScore] = useState(0);
+  const [finalScore, setFinalScore] = useState(null);
 
   useEffect(() => {
     selectRandomQuestion();
   }, []);
 
+  useEffect(() => {
+    console.log("Updated Score:", score); // Log the updated score
+    if (finalScore !== null) {
+      console.log("Final Score:", finalScore); // Log the final score before navigating
+      navigation.navigate('QuizResult', { score: score, totalQuestions: totalQuestions });
+    }
+  }, [score, finalScore]); // Log the score whenever it changes
+
   const selectRandomQuestion = () => {
     const questions = QuizData();
-    let remainingQuestions = questions.filter(question => !askedQuestions.includes(question.id)); // Change to compare IDs
+    let remainingQuestions = questions.filter(question => !askedQuestions.includes(question.id));
     if (remainingQuestions.length === 0) {
-      // Navigate to QuizResult page if all questions are answered
-      console.log("Final Score:", score); // Log the final score before navigating
-      navigation.navigate('QuizResult', { score: score, totalQuestions: totalQuestions });
+      setFinalScore(score); // Set the final score
       return;
     }
     const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
     const randomQuestion = remainingQuestions[randomIndex];
     setSelectedQuestion(randomQuestion);
-    setAskedQuestions([...askedQuestions, randomQuestion.id]); // Store IDs instead of objects
+    setAskedQuestions([...askedQuestions, randomQuestion.id]);
   };
 
   const [selectedOption, setSelectedOption] = useState(null);
@@ -37,20 +44,13 @@ const QuizLogic = () => {
 
   const handleNextQuestion = () => {
     const currentQuestion = selectedQuestion;
-    console.log("Current Question:", currentQuestion);
-    console.log("Selected Option:", selectedOption);
-    if (selectedOption !== null && currentQuestion.correctAnswer === currentQuestion.options[selectedOption]) {
-      console.log("Answer is correct!");
+    if (selectedOption !== null && currentQuestion.options[selectedOption] === currentQuestion.correctAnswer) {
       setScore(score + 1);
-      console.log("Updated Score:", score);
-    } else {
-      console.log("Answer is incorrect or no option selected!");
     }
     setSelectedOption(null);
-    selectRandomQuestion(); // Call selectRandomQuestion to get the next question
+    selectRandomQuestion();
   };
   
-
   return { selectedOption, handleOptionPress, handleNextQuestion, selectedQuestion };
 };
 
