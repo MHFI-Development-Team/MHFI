@@ -1,7 +1,9 @@
 import React from 'react';
-import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { SafeAreaView, View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import QuizLogic from './QuizLogic';
 import BackIcon from '../../../assets/svg/backIcon';
+
+const screenWidth = Dimensions.get("window").width;
 
 const QuizUI = () => {
   const { selectedOption, handleOptionPress, handleNextQuestion, selectedQuestion} = QuizLogic();
@@ -46,15 +48,16 @@ export default QuizUI;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
   },
   questionContainer: {
-    flex: 1,
+    flex: 0.5, 
     justifyContent: 'center',
     alignItems: 'center',
-  },
+    paddingHorizontal: 20,
+  }, 
   answerContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -63,14 +66,14 @@ const styles = StyleSheet.create({
   answerBtn: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 50,
-    width: 300,
+    height: 60,
+    width:  screenWidth - 50,
     backgroundColor: '#303345',
     borderRadius: 15,
     marginBottom: 20,
   },
   selectedBtn: {
-    backgroundColor: 'orange', // Change color to orange when selected
+    backgroundColor: '#FF922E', 
   },
   nextQuestion:{
     position: 'absolute',

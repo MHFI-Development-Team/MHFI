@@ -5,8 +5,13 @@ const screenWidth = Dimensions.get("window").width;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#171621', // Set background color for the entire screen
-    padding: 16, // Add padding to the container
+    backgroundColor: '#171621', 
+    padding: 16,
+  },
+  resetContainer: {
+    flex: 0.4,
+    flexDirection: 'row', 
+    flexWrap: 'wrap', 
   },
   inputContainer: {
     flexDirection: 'row', 
@@ -14,19 +19,19 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     height: 50,
-    width: '100%',
+    width: screenWidth - 30,
     backgroundColor: '#303345',
     borderRadius: 10,
     paddingHorizontal: 8,
-    marginBottom: 10, // Adjusted margin for consistency
+    marginBottom: 10, 
   },
   placeholderStyle: {
     fontSize: 16,
     color: 'white',
   },
   inputStyle: {
-    height: 40,
-    width: '100%',
+    height: 50,
+    width: screenWidth - 30,
     color: 'white',
     backgroundColor: '#303345',
     borderRadius: 10,
@@ -35,10 +40,12 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     marginBottom: 10,
-    width: '100%', 
+    width: screenWidth - 30,
   },
   costContainer: {
+    flex: 0.5,
     flexDirection: 'row',
+    justifyContent: 'center', 
     alignItems: 'center',
     marginTop: 20,
     minHeight: 100, 
@@ -50,7 +57,7 @@ const styles = StyleSheet.create({
   },
   costTextContainer: {
     alignItems: 'center',
-    marginHorizontal: 10, // Added margin for consistent spacing
+    marginHorizontal: 10, 
   },
   costTextStyle: {
     color: 'white',
@@ -60,12 +67,13 @@ const styles = StyleSheet.create({
   calculateBtn: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 50,
-    width: '100%', // Adjusted width to fill the container
+    height: 60,
+    width: '100%', 
     backgroundColor: '#FF922E',
     borderWidth: 1.5,
     borderRadius: 30,
     marginBottom: 20,
+    marginTop: 50
   },
   calculateText: {
     fontSize: 16,
@@ -75,22 +83,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white',
     marginLeft: 10, 
-    marginBottom: 10, // Added margin bottom for consistency
+    marginBottom: 10, 
   },
   costStyle: {
     height: 70,
-    width: 70,
+    width: screenWidth - 30,
     color: 'white',
     backgroundColor: '#6A1B9A',
     borderRadius: 35,
     textAlign: 'center', 
     textAlignVertical: 'center', 
+    marginHorizontal: 5, 
   },
   resetBtn: {
     alignItems: 'center',
     justifyContent: 'center',
     height: 50,
-    width: 100,
+    width: screenWidth - 325,
     backgroundColor: '#FF922E',
     borderWidth: 1.5,
     borderRadius: 30,

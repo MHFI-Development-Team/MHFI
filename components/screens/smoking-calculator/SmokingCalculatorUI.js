@@ -50,12 +50,15 @@ const SmokingCalculatorUI = () => {
   return (
     <SafeAreaView style={{ backgroundColor: '#171621', flex: 1 }}>
          <View style={styles.container}>
-      <View style={styles.inputContainer}>
+    
          {/* Reset button */}
+         <View style={styles.resetContainer}>
       <TouchableOpacity activeOpacity={0.5} style={styles.resetBtn} onPress={handleReset}>
         <Text style={styles.calculateText}>Reset</Text>
       </TouchableOpacity>
+      </View>
 
+      <View style={styles.inputContainer}>
       {/* Header Text */}
       <View style={styles.textContainer}>
         <Text style={styles.headerText}>What are you smoking?</Text>
