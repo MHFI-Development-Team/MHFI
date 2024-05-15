@@ -17,7 +17,7 @@ const QuizUI = () => {
     <SafeAreaView style={{ backgroundColor: '#171621', flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.questionContainer}>
-          <Text style={{ color: 'white', fontSize: 32 }}>{selectedQuestion.question}</Text>
+          <Text style={{ color: 'white', fontSize: 32, textAlign:'center' }}>{selectedQuestion.question}</Text>
         </View>
         <View style={styles.answerContainer}>
           {selectedQuestion.options.map((option, index) => (
@@ -48,20 +48,23 @@ export default QuizUI;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingBottom: 50, // Add some padding to accommodate the "Next Question" button
   },
   questionContainer: {
-    flex: 0.5, 
+    flex: 1, 
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
+    paddingBottom: 20, // Add padding at the bottom
   }, 
   answerContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingBottom: 20, // Add padding at the bottom
   },
   answerBtn: {
     alignItems: 'center',

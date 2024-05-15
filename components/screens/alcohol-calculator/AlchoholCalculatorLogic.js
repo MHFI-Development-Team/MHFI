@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Modal, Text, View, Pressable, Alert } from 'react-native';
+import { Modal, Text, View, Pressable, Alert, Keyboard } from 'react-native';
 
 const data = [
     { label: 'Cans', value: '1' },
@@ -77,6 +77,8 @@ const AlchoholCalculatorLogic = () => {
 
   const handleCalculate = () => {
     setErrorType(null);
+
+    Keyboard.dismiss();
 
     if (drinkType === 'Default') {
       setModalVisible(true);

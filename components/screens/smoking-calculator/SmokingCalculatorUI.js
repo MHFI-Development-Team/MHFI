@@ -49,123 +49,125 @@ const SmokingCalculatorUI = () => {
 
   return (
     <SafeAreaView style={{ backgroundColor: '#171621', flex: 1 }}>
-         <View style={styles.container}>
-    
-         {/* Reset button */}
-         <View style={styles.resetContainer}>
-      <TouchableOpacity activeOpacity={0.5} style={styles.resetBtn} onPress={handleReset}>
-        <Text style={styles.calculateText}>Reset</Text>
-      </TouchableOpacity>
-      </View>
+      <View style={styles.container}>
 
-      <View style={styles.inputContainer}>
-      {/* Header Text */}
-      <View style={styles.textContainer}>
-        <Text style={styles.headerText}>What are you smoking?</Text>
-      </View>
-
-        {/* Dropdown */}
-        <Dropdown
-          style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          data={data}
-          labelField="label"
-          valueField="value"
-          placeholder={!isFocus ? 'Select item' : '...'}
-          value={value}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          onChange={(item) => handleDropdownChange(item.value)}
-        />
-
-        {/* Input for smokes per day */}
-        <View style={styles.textContainer}>
-          <Text style={styles.dynamicText}>{perDayText}</Text>
+        {/* Title */}
+        <View style={styles.titleBox}>
+        <Text style={styles.title}>Calculate how much your smoking habits cost you</Text>
         </View>
-        <TextInput
-          ref={smokesPerDayRef}
-          style={styles.inputStyle}
-          placeholder="?"
-          keyboardType="numeric"
-          onChangeText={(text) => {
-            text = text.replace(/[^0-9]/g, '').replace('-', '');
-            setSmokesPerDay(parseInt(text));
-          }}
-        />
-
-        {/* Input for per pack (if applicable) */}
-        {showPerPackInput && (
+      
+        <View style={styles.inputContainer}>
+          {/* Header Text */}
           <View style={styles.textContainer}>
-            <Text style={styles.dynamicText}>Items per pack?</Text>
+            <Text style={styles.headerText}>What are you smoking?</Text>
           </View>
-        )}
-        {showPerPackInput && (
+
+          {/* Dropdown */}
+          <Dropdown
+            style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
+            placeholderStyle={styles.placeholderStyle}
+            selectedTextStyle={{color:'white'}}
+            data={data}
+            labelField="label"
+            valueField="value"
+            placeholder={!isFocus ? 'Select item' : '...'}
+            value={value}
+            onFocus={() => setIsFocus(true)}
+            onBlur={() => setIsFocus(false)}
+            onChange={(item) => handleDropdownChange(item.value)}
+          />
+
+          {/* Input for smokes per day */}
+          <View style={styles.textContainer}>
+            <Text style={styles.dynamicText}>{perDayText}</Text>
+          </View>
           <TextInput
-            ref={perPackRef}
+            ref={smokesPerDayRef}
             style={styles.inputStyle}
-            placeholder="?"
             keyboardType="numeric"
             onChangeText={(text) => {
               text = text.replace(/[^0-9]/g, '').replace('-', '');
-              setPerPack(parseInt(text));
+              setSmokesPerDay(parseInt(text));
             }}
           />
-        )}
 
-        {/* Input for cost per item */}
-        <View style={styles.textContainer}>
-          <Text style={styles.dynamicText}>{costText}</Text>
+          {/* Input for per pack (if applicable) */}
+          {showPerPackInput && (
+            <View style={styles.textContainer}>
+              <Text style={styles.dynamicText}>Items per pack?</Text>
+            </View>
+          )}
+          {showPerPackInput && (
+            <TextInput
+              ref={perPackRef}
+              style={styles.inputStyle}
+              keyboardType="numeric"
+              onChangeText={(text) => {
+                text = text.replace(/[^0-9]/g, '').replace('-', '');
+                setPerPack(parseInt(text));
+              }}
+            />
+          )}
+
+          {/* Input for cost per item */}
+          <View style={styles.textContainer}>
+            <Text style={styles.dynamicText}>{costText}</Text>
+          </View>
+          <TextInput
+            ref={costPerItemRef}
+            style={styles.inputStyle}
+            keyboardType="numeric"
+            onChangeText={(text) => {
+              text = text.replace(/[^0-9.]/g, '');
+              setCostPerItem(parseFloat(text));
+            }}
+          />
         </View>
-        <TextInput
-          ref={costPerItemRef}
-          style={styles.inputStyle}
-          placeholder="?"
-          keyboardType="numeric"
-          onChangeText={(text) => {
-            text = text.replace(/[^0-9.]/g, '');
-            setCostPerItem(parseFloat(text));
-          }}
+        
+        <View style={styles.buttonsRow}>
+        {/* Reset button */}
+        <TouchableOpacity activeOpacity={0.5} style={styles.resetBtn} onPress={handleReset}>
+            <Text style={styles.calculateText}>Reset</Text>
+          </TouchableOpacity>
+
+        {/* Calculate Button */}
+        <TouchableOpacity activeOpacity={0.5} style={styles.calculateBtn} onPress={handleCalculate}>
+          <Text style={styles.calculateText}>Calculate Savings</Text>
+        </TouchableOpacity>
+        </View>
+
+        {/* Cost Display */}
+        {showCostContainer && (
+          <View style={styles.costContainer}>
+            <View style={styles.costTextContainer}>
+              <Text style={styles.costTextStyle}>Per Day</Text>
+              <Text style={styles.costStyle}>€{costPerDay}</Text>
+            </View>
+
+            <View style={styles.costTextContainer}>
+              <Text style={styles.costTextStyle}>Per Week</Text>
+              <Text style={styles.costStyle}>€{costPerWeek}</Text>
+            </View>
+
+            <View style={styles.costTextContainer}>
+              <Text style={styles.costTextStyle}>Per Month</Text>
+              <Text style={styles.costStyle}>€{costPerMonth}</Text>
+            </View>
+
+            <View style={styles.costTextContainer}>
+              <Text style={styles.costTextStyle}>Per Year</Text>
+              <Text style={styles.costStyle}>€{costPerYear}</Text>
+            </View>
+          </View>
+        )}
+        {/* Error Modal */}
+        <ErrorModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          errorType={errorType}
         />
       </View>
-
-      {/* Calculate Button */}
-      <TouchableOpacity activeOpacity={0.5} style={styles.calculateBtn} onPress={handleCalculate}>
-        <Text style={styles.calculateText}>Calculate Savings</Text>
-      </TouchableOpacity>
-
-      {/* Cost Display */}
-      {showCostContainer && (
-      <View style={styles.costContainer}>
-        <View style={styles.costTextContainer}>
-          <Text style={styles.costTextStyle}>Per Day</Text>
-          <Text style={styles.costStyle}>€{costPerDay}</Text>
-        </View>
-
-        <View style={styles.costTextContainer}>
-          <Text style={styles.costTextStyle}>Per Week</Text>
-          <Text style={styles.costStyle}>€{costPerWeek}</Text>
-        </View>
-
-        <View style={styles.costTextContainer}>
-          <Text style={styles.costTextStyle}>Per Month</Text>
-          <Text style={styles.costStyle}>€{costPerMonth}</Text>
-        </View>
-
-        <View style={styles.costTextContainer}>
-          <Text style={styles.costTextStyle}>Per Year</Text>
-          <Text style={styles.costStyle}>€{costPerYear}</Text>
-        </View>
-      </View>
-      )}
-      {/* Error Modal */}
-      <ErrorModal
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        errorType={errorType}
-      />
-    </View>
-      </SafeAreaView>
+    </SafeAreaView>
   );
 };
 

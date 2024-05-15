@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import QuizData from './QuizData'; 
 import { useNavigation } from '@react-navigation/native'; 
+import { BackHandler} from 'react-native';
 
 const QuizLogic = () => {
   const navigation = useNavigation();
@@ -22,6 +23,17 @@ const QuizLogic = () => {
       navigation.navigate('QuizResult', { score: score, totalQuestions: totalQuestions });
     }
   }, [score, finalScore]); // Log the score whenever it changes
+
+  useEffect(() => {
+    const backAction = () => {
+      navigation.navigate('Home'); // Navigate to the Home screen when the back button is pressed
+      return true; // Prevent default behavior (going back to the previous question)
+    };
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => backHandler.remove(); // Clean up event listener
+  }, []); // Only run this effect once
 
   const selectRandomQuestion = () => {
     const questions = QuizData();

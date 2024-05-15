@@ -6,10 +6,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#171621', 
-    padding: 16,
+    padding: 16, 
+  },
+  title: {
+    fontSize: 18,
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 30
   },
   resetContainer: {
-    flex: 0.4,
     flexDirection: 'row', 
     flexWrap: 'wrap', 
   },
@@ -24,6 +30,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingHorizontal: 8,
     marginBottom: 10, 
+    color: 'white'
   },
   placeholderStyle: {
     fontSize: 16,
@@ -43,12 +50,10 @@ const styles = StyleSheet.create({
     width: screenWidth - 30,
   },
   costContainer: {
-    flex: 0.5,
     flexDirection: 'row',
-    justifyContent: 'center', 
     alignItems: 'center',
     marginTop: 20,
-    minHeight: 100, 
+    alignSelf: 'center', 
   },
   dynamicText: {
     fontSize: 16,
@@ -57,7 +62,7 @@ const styles = StyleSheet.create({
   },
   costTextContainer: {
     alignItems: 'center',
-    marginHorizontal: 10, 
+    marginHorizontal: 5,
   },
   costTextStyle: {
     color: 'white',
@@ -67,13 +72,12 @@ const styles = StyleSheet.create({
   calculateBtn: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: 60,
-    width: '100%', 
+    height: 50,
+    width: screenWidth * 0.50,
     backgroundColor: '#FF922E',
     borderWidth: 1.5,
     borderRadius: 30,
-    marginBottom: 20,
-    marginTop: 50
+    
   },
   calculateText: {
     fontSize: 16,
@@ -83,29 +87,32 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white',
     marginLeft: 10, 
-    marginBottom: 10, 
+    marginBottom: 10,
   },
   costStyle: {
     height: 70,
-    width: screenWidth - 30,
+    width: 70,
     color: 'white',
     backgroundColor: '#6A1B9A',
     borderRadius: 35,
+    marginHorizontal: 5, 
     textAlign: 'center', 
     textAlignVertical: 'center', 
-    marginHorizontal: 5, 
+ 
   },
   resetBtn: {
     alignItems: 'center',
     justifyContent: 'center',
     height: 50,
-    width: screenWidth - 325,
+    width: screenWidth * 0.30,
     backgroundColor: '#FF922E',
     borderWidth: 1.5,
     borderRadius: 30,
-    paddingHorizontal: 15,
-    marginBottom: 20,
     alignSelf: 'center', 
+  },
+  buttonsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
 
