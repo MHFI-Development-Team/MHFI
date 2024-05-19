@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Image, StyleSheet } from "react-native";
 
+// TEST
 type CircularCardProps = {
   imageUri: string;
   size: number;
