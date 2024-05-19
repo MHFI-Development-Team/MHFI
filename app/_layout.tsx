@@ -1,37 +1,32 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+import { Stack } from "expo-router";
+import TabBarIcon from "@/components/navigation/TabBarIcon";
+import { View } from "react-native";
+import { Link } from "expo-router";
+import HeaderLeftIcon from "@/components/HeaderLeftIcon";
+import { Colors } from "@/constants/Colors";
+import { SafeAreaView } from "react-native-safe-area-context";
+import globalStyles from "@/constants/globalStyles";
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+    <Stack>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="profile"
+        options={{
+          headerTitle: "",
+          headerLeft: _ => <HeaderLeftIcon />,
+          headerStyle: globalStyles.secondary
+        }}
+      />
+      <Stack.Screen
+        name="(dailygoals)"
+        options={{
+          headerTitle: "",
+          headerLeft: _ => <HeaderLeftIcon />,
+          headerStyle: globalStyles.secondary
+        }}
+      />
+    </Stack>
   );
 }

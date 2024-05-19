@@ -1,37 +1,40 @@
-import { Tabs } from 'expo-router';
 import React from 'react';
+import { Tabs } from 'expo-router';
+import { TabBarIcon, TabBarIconName } from '@/components/navigation/TabBarIcon';
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+const tabs = [
+  { name: 'index', title: 'Home', icon: 'home' },
+  { name: 'feedScreen', title: 'Feed', icon: 'filetext1' },
+  { name: 'messageScreen', title: 'Message', icon: 'message1' }
+];
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: '#FF922E',
+        tabBarInactiveTintColor: 'white',
         headerShown: false,
+        tabBarLabelStyle: {
+          fontWeight: 'bold'
+        },
+        tabBarStyle: {
+          backgroundColor: '#303345',
+          borderTopColor: 'transparent',
+          elevation: 0
+        }
       }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
-        }}
-      />
+      {tabs.map((tab, i) => (
+        <Tabs.Screen
+          key={i}
+          name={tab.name}
+          options={{
+            title: tab.title,
+            tabBarIcon: ({ color, focused }) => (
+              <TabBarIcon name={tab.icon as TabBarIconName} color={focused ? color : color} />
+            ),
+          }}></Tabs.Screen>
+      ))}
     </Tabs>
   );
 }
