@@ -1,12 +1,16 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import TabBarIcon from './navigation/TabBarIcon';
 import { Link } from 'expo-router';
+
+const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   headerContainer: {
     width: '100%',
-    padding: 15,
+    paddingVertical: windowHeight * 0.015,
+    paddingHorizontal: windowWidth * 0.03,
     alignItems: 'flex-start',
     justifyContent: 'center',
   },

@@ -1,4 +1,5 @@
 import { Link } from 'expo-router';
+import { FC } from 'react';
 import { SvgProps } from 'react-native-svg';
 
 export type DailyGoalsTask = {
@@ -8,8 +9,8 @@ export type DailyGoalsTask = {
 };
 
 export type SuggestedTool = {
-  [x: string]: FC<SvgProps> | undefined;
-  image: string;
+  image?: string;
+  SvgComponent?: FC<SvgProps>;
   name: string;
   link: typeof Link;
   href: string;

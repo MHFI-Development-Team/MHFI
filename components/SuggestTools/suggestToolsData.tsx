@@ -11,7 +11,7 @@ const suggestedTools: SuggestedTool[] = [
   {
     image: '',
     SvgComponent: BmiIcon,
-    name: 'Tool 2',
+    name: 'Tool 1',
     link: Link,
     href: '/messageScreen',
   },
@@ -43,11 +43,12 @@ const suggestedTools: SuggestedTool[] = [
     link: Link,
     href: '/messageScreen',
   },
-  // {
-  //   image: '',
-  //   SvgComponent: SignIcon,
-  //   name: 'Tool 2',
-  //   link: Link,
-  // },
+  {
+    image: '',
+    SvgComponent: SignIcon,
+    name: 'Tool 2',
+    link: Link,
+    href: '/messageScreen',
+  },
 ];
 export default suggestedTools;

@@ -5,7 +5,7 @@ const contentForYou: ContentForYou[] = [
   {
     image:
       'https://randomwordgenerator.com/img/picture-generator/54e2d3475754a809ea898279c02132761022dfe05a50704f742c73dc_640.jpg',
-    name: 'Content 1',
+    name: 'Why do you smell',
     link: Link,
   },
   {

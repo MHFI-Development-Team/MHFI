@@ -1,36 +1,32 @@
 import React from 'react';
-import { View, Image, StyleSheet, Text } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 
 type ContentCardProps = {
   imageUri: string;
   size: number;
-  text: string;
 };
 
-const styles = (size: number) =>
+const radiusSize = 25;
+
+const styles = () =>
   StyleSheet.create({
     card: {
-      width: size,
-      height: size,
-      borderRadius: size / 3,
+      width: 300,
+      height: 180,
+      borderRadius: radiusSize,
     },
     image: {
       width: '100%',
       height: '100%',
       resizeMode: 'cover',
-      borderRadius: size / 3,
-    },
-    text: {
-      color: 'white',
-      textAlign: 'center',
+      borderRadius: radiusSize,
     },
   });
 
 export default function ContentCard(props: ContentCardProps) {
   return (
-    <View style={styles(props.size).card}>
-      <Image source={{ uri: props.imageUri }} style={styles(props.size).image} />
-      <Text style={styles(props.size).text}>{props.text}</Text>
+    <View style={styles().card}>
+      <Image source={{ uri: props.imageUri }} style={styles().image} />
     </View>
   );
 }

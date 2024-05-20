@@ -5,14 +5,17 @@ import globalStyles from '@/constants/globalStyles';
 import ContentForYou from '@/components/ContentForYou/contentForYou';
 import DailyGoals from '@/components/DailyGoals/dailyGoals';
 import SuggestedTools from '@/components/SuggestTools/suggestTools';
+import { View } from 'react-native';
 
 const homeScreen = () => {
   return (
-    <SafeAreaView style={globalStyles.container}>
+    <SafeAreaView style={[globalStyles.container, { paddingLeft: 0 }]}>
       <Header />
-      <DailyGoals />
-      <SuggestedTools />
-      <ContentForYou />
+      <View style={{ justifyContent: 'space-evenly', flex: 1 }}>
+        <ContentForYou />
+        <SuggestedTools />
+        <DailyGoals />
+      </View>
     </SafeAreaView>
   );
 };

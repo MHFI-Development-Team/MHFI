@@ -1,7 +1,6 @@
-import { View, Text } from 'react-native';
+import { Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import React from 'react';
-import { Link } from 'expo-router';
 
 const messageScreen = () => {
   return (
