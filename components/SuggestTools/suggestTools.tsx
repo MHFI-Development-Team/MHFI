@@ -16,7 +16,7 @@ const SuggestedTools = () => {
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View style={{ flexDirection: 'row', gap: 25 }}>
           {suggestedTools.map((tool, index) => (
-            <Link key={index} href="#" asChild>
+            <Link key={index} href={tool.href} asChild>
               <TouchableOpacity style={{ flexDirection: 'column', alignItems: 'center' }}>
                 <SquareCard
                   imageUri={tool.image}

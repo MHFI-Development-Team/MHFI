@@ -15,6 +15,6 @@ export default StyleSheet.create({
     color: 'white',
   },
   secondary: {
-    backgroundColor: "#303345"
-  }
+    backgroundColor: '#303345',
+  },
 });

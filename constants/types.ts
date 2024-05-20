@@ -1,4 +1,5 @@
 import { Link } from 'expo-router';
+import { SvgProps } from 'react-native-svg';
 
 export type DailyGoalsTask = {
   task: string;
@@ -11,6 +12,7 @@ export type SuggestedTool = {
   image: string;
   name: string;
   link: typeof Link;
+  href: string;
 };
 
 export type ContentForYou = {

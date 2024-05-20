@@ -43,11 +43,11 @@ const suggestedTools: SuggestedTool[] = [
     link: Link,
     href: '/messageScreen',
   },
-  {
-    image: '',
-    SvgComponent: SignIcon,
-    name: 'Tool 2',
-    link: Link,
-  },
+  // {
+  //   image: '',
+  //   SvgComponent: SignIcon,
+  //   name: 'Tool 2',
+  //   link: Link,
+  // },
 ];
 export default suggestedTools;
