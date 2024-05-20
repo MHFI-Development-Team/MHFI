@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
-import { Link } from 'expo-router';
-
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Dimensions,
+  ActivityIndicator,
+} from 'react-native';
+import { useRouter } from 'expo-router';
 import { articles } from '@/constants/types';
 import globalStyles from '@/constants/globalStyles';
 import ContentCard from '@/components/ContentCard';
@@ -14,6 +20,7 @@ const windowHeight = Dimensions.get('window').height;
 const ContentForYou = () => {
   const [contentForYou, setContentForYou] = useState<articles[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -29,7 +36,7 @@ const ContentForYou = () => {
 
         const articlePromises = fileNames.map(async (file: any) => {
           const fileContentResponse = await fetch(file.download_url);
-          const content = await fileContentResponse.text(); //   console.log(content);
+          const content = await fileContentResponse.text();
 
           const imageMatch = content.match(/<img src="([^"]+)" \/>/);
           const imageUrl = imageMatch ? imageMatch[1] : 'https://example.com/default-image.jpg';
@@ -69,21 +76,27 @@ const ContentForYou = () => {
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10 }}>
           <View style={{ flexDirection: 'row', gap: 25 }}>
             {contentForYou.map((content, index) => (
-              <Link key={index} href="#" asChild>
-                <TouchableOpacity style={{ flexDirection: 'column' }}>
-                  <ContentCard imageUri={content.image} size={0} />
-                  <View
-                    style={{
-                      marginTop: windowHeight * 0.005,
-                      alignItems: 'center',
-                      maxWidth: 300,
-                    }}>
-                    <Text style={[globalStyles.text, { fontWeight: '500', fontSize: 18 }]}>
-                      {content.title}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </Link>
+              <TouchableOpacity
+                key={index}
+                style={{ flexDirection: 'column' }}
+                onPress={() =>
+                  router.push({
+                    pathname: `/[id]`,
+                    params: { title: content.title, content: content.content },
+                  })
+                }>
+                <ContentCard imageUri={content.image} size={0} />
+                <View
+                  style={{
+                    marginTop: windowHeight * 0.005,
+                    alignItems: 'center',
+                    maxWidth: 300,
+                  }}>
+                  <Text style={[globalStyles.text, { fontWeight: '500', fontSize: 18 }]}>
+                    {content.title}
+                  </Text>
+                </View>
+              </TouchableOpacity>
             ))}
           </View>
         </ScrollView>
