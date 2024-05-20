@@ -21,3 +21,10 @@ export type ContentForYou = {
   name: string;
   link: typeof Link;
 };
+
+export type articles = {
+  title: string;
+  id: string;
+  content: string;
+  image: string;
+};
