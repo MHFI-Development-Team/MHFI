@@ -5,7 +5,7 @@ import { TabBarIcon, TabBarIconName } from '@/components/navigation/TabBarIcon';
 const tabs = [
   { name: 'index', title: 'Home', icon: 'home' },
   { name: 'feedScreen', title: 'Feed', icon: 'filetext1' },
-  { name: 'messageScreen', title: 'Message', icon: 'message1' }
+  { name: 'messageScreen', title: 'Message', icon: 'message1' },
 ];
 
 export default function TabsLayout() {
@@ -16,13 +16,13 @@ export default function TabsLayout() {
         tabBarInactiveTintColor: 'white',
         headerShown: false,
         tabBarLabelStyle: {
-          fontWeight: 'bold'
+          fontWeight: 'bold',
         },
         tabBarStyle: {
           backgroundColor: '#303345',
           borderTopColor: 'transparent',
-          elevation: 0
-        }
+          elevation: 0,
+        },
       }}>
       {tabs.map((tab, i) => (
         <Tabs.Screen
@@ -33,7 +33,8 @@ export default function TabsLayout() {
             tabBarIcon: ({ color, focused }) => (
               <TabBarIcon name={tab.icon as TabBarIconName} color={focused ? color : color} />
             ),
-          }}></Tabs.Screen>
+          }}
+        />
       ))}
     </Tabs>
   );
