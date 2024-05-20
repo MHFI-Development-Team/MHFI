@@ -18,7 +18,12 @@ const SuggestedTools = () => {
           {suggestedTools.map((tool, index) => (
             <Link key={index} href="#" asChild>
               <TouchableOpacity style={{ flexDirection: 'column', alignItems: 'center' }}>
-                <SquareCard imageUri={tool.image} size={150} text={tool.name} />
+                <SquareCard
+                  imageUri={tool.image}
+                  SvgComponent={tool.SvgComponent}
+                  size={150}
+                  text={tool.name}
+                />
               </TouchableOpacity>
             </Link>
           ))}

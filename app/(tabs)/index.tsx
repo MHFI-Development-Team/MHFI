@@ -1,4 +1,3 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import React from 'react';
 import Header from '@/components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';

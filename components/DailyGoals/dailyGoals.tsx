@@ -16,15 +16,15 @@ const DailyGoals = () => {
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View style={{ flexDirection: 'row', gap: 25 }}>
           {dailyGoalsTasks.map((goal, index) => (
-            <Link key={index} href="/dailyGoalsTasks" asChild>
-              <TouchableOpacity
-                key={index}
-                style={{ flexDirection: 'column', alignItems: 'center' }}>
+            <Link key={index} href="/dailyGoalsEdit" asChild>
+              <TouchableOpacity key={index} style={{ flexDirection: 'column' }}>
                 <CircularCard imageUri={goal.image} size={150} />
-                <Text style={[globalStyles.text, { fontWeight: '500' }]}>{goal.task}</Text>
-                <Text style={[globalStyles.text, { fontWeight: '500' }]}>
-                  0 / {goal.maxtaskcount} Task{goal.maxtaskcount > 1 ? 's' : ''}
-                </Text>
+                <View style={{ marginTop: 5, alignItems: 'center' }}>
+                  <Text style={[globalStyles.text, { fontWeight: '500' }]}>{goal.task}</Text>
+                  <Text style={[globalStyles.text, { fontWeight: '500' }]}>
+                    0 / {goal.maxtaskcount} Task{goal.maxtaskcount > 1 ? 's' : ''}
+                  </Text>
+                </View>
               </TouchableOpacity>
             </Link>
           ))}

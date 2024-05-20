@@ -7,6 +7,7 @@ export type DailyGoalsTask = {
 };
 
 export type SuggestedTool = {
+  [x: string]: FC<SvgProps> | undefined;
   image: string;
   name: string;
   link: typeof Link;
