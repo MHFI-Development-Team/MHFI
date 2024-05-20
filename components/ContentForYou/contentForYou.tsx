@@ -38,11 +38,14 @@ const ContentForYou = () => {
           const fileContentResponse = await fetch(file.download_url);
           const content = await fileContentResponse.text();
 
+          const titleMatch = content.match(/^# (.+?):/);
+          const title = titleMatch ? titleMatch[1] : file.name;
+
           const imageMatch = content.match(/<img src="([^"]+)" \/>/);
           const imageUrl = imageMatch ? imageMatch[1] : 'https://example.com/default-image.jpg';
 
           return {
-            title: file.name,
+            title,
             id: file.name,
             content,
             image: imageUrl,
@@ -82,7 +85,7 @@ const ContentForYou = () => {
                 onPress={() =>
                   router.push({
                     pathname: `/[id]`,
-                    params: { title: content.title, content: content.content },
+                    params: { content: content.content },
                   })
                 }>
                 <ContentCard imageUri={content.image} size={0} />
