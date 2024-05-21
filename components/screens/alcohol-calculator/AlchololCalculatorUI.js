@@ -39,7 +39,7 @@ const AlcoholCalculatorUI = () => {
     <SafeAreaView style={{ backgroundColor: '#171621', flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.titleBox}>
-          <Text style={styles.title}>Calculate your alcohol consumption</Text> 
+          <Text style={styles.title}>Calculate your alcohol consumption (liters)</Text> 
         </View>
         <View style={styles.drinkContainer}>
           <View style={styles.textContainer}>
@@ -99,19 +99,19 @@ const AlcoholCalculatorUI = () => {
           <View style={styles.costContainer}>
             <View style={styles.costTextContainer}>
               <Text style={styles.costTextStyle}>Per Day</Text>
-              <Text style={styles.costStyle}>{alcoholPerDay} ml</Text> 
+              <Text style={styles.costStyle}>{alcoholPerDay}</Text> 
             </View>
             <View style={styles.costTextContainer}>
               <Text style={styles.costTextStyle}>Per Week</Text>
-              <Text style={styles.costStyle}>{alcoholPerWeek} ml</Text>
+              <Text style={styles.costStyle}>{alcoholPerWeek}</Text>
             </View>
             <View style={styles.costTextContainer}>
               <Text style={styles.costTextStyle}>Per Month</Text>
-              <Text style={styles.costStyle}>{alcoholPerMonth} ml</Text> 
+              <Text style={styles.costStyle}>{alcoholPerMonth}</Text> 
             </View>
             <View style={styles.costTextContainer}>
               <Text style={styles.costTextStyle}>Per Year</Text>
-              <Text style={styles.costStyle}>{alcoholPerYear} ml</Text> 
+              <Text style={styles.costStyle}>{alcoholPerYear}</Text> 
             </View>
           </View>
         )}
