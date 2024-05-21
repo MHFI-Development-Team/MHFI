@@ -10,7 +10,7 @@ const ArticleDetail = () => {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>{title}</Text>
-      <RenderMdx>{content}</RenderMdx>
+      <RenderMdx componentStyle={styles}>{content}</RenderMdx>
     </ScrollView>
   );
 };
@@ -25,6 +25,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
+  },
+  text: {
+    color: 'white',
   },
 });
 
