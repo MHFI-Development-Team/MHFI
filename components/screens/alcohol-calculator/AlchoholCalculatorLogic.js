@@ -129,6 +129,7 @@ const AlcoholCalculatorLogic = () => {
   const handleReset = () => {
     setDrinksPerDay(0);
     setDrinkVolume(0);
+    setShowCostContainer(false);
 
     // Clear text inputs
     drinksPerDayRef.current.clear();

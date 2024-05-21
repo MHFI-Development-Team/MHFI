@@ -41,7 +41,7 @@ const AlcoholCalculatorUI = () => {
         <View style={styles.titleBox}>
           <Text style={styles.title}>Calculate your alcohol consumption</Text> 
         </View>
-        <View style={styles.inputContainer}>
+        <View style={styles.drinkContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.headerText}>What are you drinking?</Text>
           </View>
@@ -92,7 +92,7 @@ const AlcoholCalculatorUI = () => {
             <Text style={styles.calculateText}>Reset</Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.5} style={styles.calculateBtn} onPress={handleCalculate}>
-            <Text style={styles.calculateText}>Calculate Consumption</Text> 
+            <Text style={styles.calculateText}>Calculate</Text> 
           </TouchableOpacity>
         </View>
         {showCostContainer && (

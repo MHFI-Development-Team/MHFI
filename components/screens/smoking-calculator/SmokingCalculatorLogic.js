@@ -143,6 +143,7 @@ const SmokingCalculatorLogic = () => {
     setSmokesPerDay(0);
     setPerPack(0);
     setCostPerItem(0);
+    setShowCostContainer(false);
 
     // Clear text inputs
     smokesPerDayRef.current.clear();

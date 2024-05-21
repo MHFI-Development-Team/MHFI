@@ -8,6 +8,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#171621', 
     padding: 16, 
   },
+  drinkContainer:{
+    flex: 1,
+  },
   title: {
     fontSize: 18,
     color: 'white',
@@ -22,6 +25,12 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row', 
     flexWrap: 'wrap', 
+  },
+  drinkContainer: {
+    flexDirection: 'row', 
+    flexWrap: 'wrap', 
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   dropdown: {
     height: 50,
