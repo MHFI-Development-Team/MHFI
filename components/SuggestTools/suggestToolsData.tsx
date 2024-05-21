@@ -25,7 +25,7 @@ const suggestedTools: SuggestedTool[] = [
   {
     image: '',
     SvgComponent: AlchololIcon,
-    name: 'Tool 2',
+    name: 'Alcohol Calculator',
     link: Link,
     href: '/messageScreen',
   },
