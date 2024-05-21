@@ -1,42 +1,45 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, TextInput, SafeAreaView } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
+import AlcoholCalculatorLogic from './AlchoholCalculatorLogic';
 import styles from '../common-calculator/calculatorStyle';
-import AlchoholCalculatorLogic from './AlchoholCalculatorLogic';
 import ErrorModal from '../../ErrorModal';
 
-const AlchololCalculatorUI = () => {
+const AlcoholCalculatorUI = () => {
   const {
     data,
     value,
+    setValue,
     isFocus,
     setIsFocus,
     drinkingTypeText,
-    costText,
+    setDrinkingTypeText,
     amountText,
+    setAmountText,
+    drinksPerDay,
     setDrinksPerDay,
-    setCostPerItem,
+    drinkVolume,
     setDrinkVolume,
-    costPerDay,
-    costPerWeek,
-    costPerMonth,
-    costPerYear,
+    alcoholPerDay,
+    alcoholPerWeek,
+    alcoholPerMonth,
+    alcoholPerYear,
     modalVisible,
     setModalVisible,
     handleDropdownChange,
     handleCalculate,
     handleReset,
     drinksPerDayRef,
-    costPerItemRef,
     drinkVolumeRef,
     showCostContainer,
-  } = AlchoholCalculatorLogic();
+    showCanSize,
+  } = AlcoholCalculatorLogic();
 
   return (
     <SafeAreaView style={{ backgroundColor: '#171621', flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.titleBox}>
-          <Text style={styles.title}>Calculate how much your drinking habits cost you</Text>
+          <Text style={styles.title}>Calculate your alcohol consumption</Text> 
         </View>
         <View style={styles.inputContainer}>
           <View style={styles.textContainer}>
@@ -67,6 +70,8 @@ const AlchololCalculatorUI = () => {
               setDrinksPerDay(parseInt(text));
             }}
           />
+          {showCanSize && (
+            <>
           <View style={styles.textContainer}>
             <Text style={styles.dynamicText}>{amountText}</Text>
           </View>
@@ -78,45 +83,35 @@ const AlchololCalculatorUI = () => {
               text = text.replace(/[^0-9]/g, '').replace('-', '');
               setDrinkVolume(parseInt(text));
             }}
-          />
-          <View style={styles.textContainer}>
-            <Text style={styles.dynamicText}>{costText}</Text>
-          </View>
-          <TextInput
-            ref={costPerItemRef}
-            style={styles.inputStyle}
-            keyboardType="numeric"
-            onChangeText={(text) => {
-              text = text.replace(/[^0-9.]/g, '');
-              setCostPerItem(parseFloat(text));
-            }}
-          />
+            />
+          </>
+        )}
         </View>
         <View style={styles.buttonsRow}>
           <TouchableOpacity activeOpacity={0.5} style={styles.resetBtn} onPress={handleReset}>
             <Text style={styles.calculateText}>Reset</Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.5} style={styles.calculateBtn} onPress={handleCalculate}>
-            <Text style={styles.calculateText}>Calculate Savings</Text>
+            <Text style={styles.calculateText}>Calculate Consumption</Text> 
           </TouchableOpacity>
         </View>
         {showCostContainer && (
           <View style={styles.costContainer}>
             <View style={styles.costTextContainer}>
               <Text style={styles.costTextStyle}>Per Day</Text>
-              <Text style={styles.costStyle}>€{costPerDay}</Text>
+              <Text style={styles.costStyle}>{alcoholPerDay} ml</Text> 
             </View>
             <View style={styles.costTextContainer}>
               <Text style={styles.costTextStyle}>Per Week</Text>
-              <Text style={styles.costStyle}>€{costPerWeek}</Text>
+              <Text style={styles.costStyle}>{alcoholPerWeek} ml</Text>
             </View>
             <View style={styles.costTextContainer}>
               <Text style={styles.costTextStyle}>Per Month</Text>
-              <Text style={styles.costStyle}>€{costPerMonth}</Text>
+              <Text style={styles.costStyle}>{alcoholPerMonth} ml</Text> 
             </View>
             <View style={styles.costTextContainer}>
               <Text style={styles.costTextStyle}>Per Year</Text>
-              <Text style={styles.costStyle}>€{costPerYear}</Text>
+              <Text style={styles.costStyle}>{alcoholPerYear} ml</Text> 
             </View>
           </View>
         )}
@@ -129,4 +124,4 @@ const AlchololCalculatorUI = () => {
   );
 };
 
-export default AlchololCalculatorUI;
+export default AlcoholCalculatorUI;

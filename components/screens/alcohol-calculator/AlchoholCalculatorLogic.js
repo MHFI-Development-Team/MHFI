@@ -2,27 +2,26 @@ import React, { useState, useRef } from 'react';
 import { Modal, Text, View, Pressable, Alert, Keyboard } from 'react-native';
 
 const data = [
-    { label: 'Cans', value: '1' },
-    { label: 'Spirits', value: '2' },
-  ];
+  { label: 'Cans', value: '1' },
+  { label: 'Spirits', value: '2' },
+];
 
-const AlchoholCalculatorLogic = () => {
+const AlcoholCalculatorLogic = () => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const [drinkType, setType] = useState('Default');
   const [drinkingTypeText, setDrinkingTypeText] = useState('......');
-  const [costText, setCostText] = useState('......');
   const [amountText, setAmountText] = useState('......');
   const [drinksPerDay, setDrinksPerDay] = useState(0);
-  const [costPerItem, setCostPerItem] = useState(0);
   const [drinkVolume, setDrinkVolume] = useState(0);
-  const [costPerDay, setCostPerDay] = useState(0);
-  const [costPerWeek, setCostPerWeek] = useState(0);
-  const [costPerMonth, setCostPerMonth] = useState(0);
-  const [costPerYear, setCostPerYear] = useState(0);
+  const [alcoholPerDay, setAlcoholPerDay] = useState(0); // in liters
+  const [alcoholPerWeek, setAlcoholPerWeek] = useState(0); // in liters
+  const [alcoholPerMonth, setAlcoholPerMonth] = useState(0); // in liters
+  const [alcoholPerYear, setAlcoholPerYear] = useState(0); // in liters
   const [modalVisible, setModalVisible] = useState(false);
   const [errorType, setErrorType] = useState(null);
   const [showCostContainer, setShowCostContainer] = useState(false);
+  const [showCanSize, setShowCanSize] = useState(false); // State to show/hide per pack input
 
   const handleDropdownChange = (itemValue) => {
     setValue(itemValue);
@@ -31,21 +30,21 @@ const AlchoholCalculatorLogic = () => {
     switch (itemValue) {
       case '1':
         setDrinkingTypeText('Cans consumed per day?');
-        setCostText('Cost per pack of cans');
-        setAmountText('Cans per pack?');
+        setAmountText('ml per can?');
         setType('Cans');
-        setShowCostContainer(false); 
+        setShowCostContainer(false);
+        setShowCanSize(true);
         break;
       case '2':
         setDrinkingTypeText('Volume consumed per day (ml)?');
-        setCostText('Cost per bottle of spirits');
         setAmountText('Volume per bottle (ml)?');
         setType('Spirits');
-        setShowCostContainer(false); 
+        setShowCostContainer(false);
+        setShowCanSize(false);
         break;
       default:
         setType('Default');
-        setShowCostContainer(false); 
+        setShowCostContainer(false);
     }
 
     handleReset();
@@ -86,34 +85,42 @@ const AlchoholCalculatorLogic = () => {
       return;
     }
 
-    if (drinksPerDay === 0 || drinkVolume === 0 || costPerItem === 0) {
+    if ((drinkType === 'cans') && (drinksPerDay === 0 || drinkVolume === 0)) {
       setModalVisible(true);
       setErrorType('nullValues');
       handleReset();
       return;
     }
 
-    let costPerDay = 0;
+    if ((drinkType === 'spirits') && (drinksPerDay === 0)) {
+      setModalVisible(true);
+      setErrorType('nullValues');
+      handleReset();
+      return; // Exit the function early
+    }
+    let alcoholPerDay = 0; // in milliliters
 
     switch (drinkType) {
       case 'Cans':
-        costPerDay = (drinksPerDay * costPerItem) / drinkVolume;
+        alcoholPerDay = drinksPerDay * drinkVolume; // milliliters
         break;
       case 'Spirits':
-        costPerDay = (drinksPerDay * costPerItem) / drinkVolume;
+        alcoholPerDay =  drinksPerDay; // milliliters
         break;
       default:
         break;
     }
 
-    const costPerWeek = Math.round(costPerDay * 7); 
-    const costPerMonth = Math.round(costPerDay * 30); 
-    const costPerYear = Math.round(costPerDay * 365); 
+    // Convert milliliters to liters
+    const alcoholPerDayLiters = alcoholPerDay / 1000;
+    const alcoholPerWeek = Math.round(alcoholPerDayLiters * 7 * 100) / 100; // in liters
+    const alcoholPerMonth = Math.round(alcoholPerDayLiters * 30 * 100) / 100; // in liters
+    const alcoholPerYear = Math.round(alcoholPerDayLiters * 365 * 100) / 100; // in liters
 
-    setCostPerDay(Math.round(costPerDay));
-    setCostPerWeek(costPerWeek);
-    setCostPerMonth(costPerMonth);
-    setCostPerYear(costPerYear);
+    setAlcoholPerDay(Math.round(alcoholPerDayLiters * 100) / 100); // in liters
+    setAlcoholPerWeek(alcoholPerWeek); // in liters
+    setAlcoholPerMonth(alcoholPerMonth); // in liters
+    setAlcoholPerYear(alcoholPerYear); // in liters
 
     handleReset();
     setShowCostContainer(true);
@@ -121,17 +128,16 @@ const AlchoholCalculatorLogic = () => {
 
   const handleReset = () => {
     setDrinksPerDay(0);
-    setCostPerItem(0);
     setDrinkVolume(0);
 
-      // Clear text inputs
-       drinksPerDayRef.current.clear();
-       costPerItemRef.current.clear();
-       drinkVolumeRef.current.clear();
+    // Clear text inputs
+    drinksPerDayRef.current.clear();
+    if(showCanSize){
+      drinkVolumeRef.current.clear();
+    }
   };
 
   const drinksPerDayRef = useRef(null);
-  const costPerItemRef = useRef(null);
   const drinkVolumeRef = useRef(null);
 
   // Expose state variables and functions for use in UI
@@ -143,20 +149,16 @@ const AlchoholCalculatorLogic = () => {
     setIsFocus,
     drinkingTypeText,
     setDrinkingTypeText,
-    costText,
-    setCostText,
     amountText,
     setAmountText,
     drinksPerDay,
     setDrinksPerDay,
-    costPerItem,
-    setCostPerItem,
     drinkVolume,
     setDrinkVolume,
-    costPerDay,
-    costPerWeek,
-    costPerMonth,
-    costPerYear,
+    alcoholPerDay,
+    alcoholPerWeek,
+    alcoholPerMonth,
+    alcoholPerYear,
     modalVisible,
     setModalVisible,
     errorType,
@@ -166,10 +168,10 @@ const AlchoholCalculatorLogic = () => {
     handleCalculate,
     handleReset,
     drinksPerDayRef,
-    costPerItemRef,
     drinkVolumeRef,
     showCostContainer,
+    showCanSize
   };
 };
 
-export default AlchoholCalculatorLogic;
+export default AlcoholCalculatorLogic;
