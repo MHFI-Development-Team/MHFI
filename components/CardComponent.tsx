@@ -1,24 +1,26 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Colors } from '@/constants/Colors';
 
 interface CardComponentProps {
   image: string;
   title: string;
   description: string;
-  id: string;
+  onPress: () => void;
 }
 
-const CardComponent: React.FC<CardComponentProps> = ({ image, title, description, id }) => {
+const CardComponent: React.FC<CardComponentProps> = ({ image, title, description, onPress }) => {
   return (
-    <View style={styles.cardWrapper}>
-      <Image source={{ uri: image }} style={styles.image} />
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.description}>{description}</Text>
-      <View style={{ alignItems: 'center' }}>
-        <Text style={styles.readMoreText}>Read More</Text>
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.cardWrapper}>
+        <Image source={{ uri: image }} style={styles.image} />
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.description}>{description}</Text>
+        <View style={{ alignItems: 'center' }}>
+          <Text style={styles.readMoreText}>Read More</Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

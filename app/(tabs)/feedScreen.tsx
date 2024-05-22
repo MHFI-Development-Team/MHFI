@@ -8,6 +8,7 @@ import Button from '@/components/Button';
 import CardComponent from '@/components/CardComponent';
 import { Colors } from '@/constants/Colors';
 import { articles } from '@/constants/types';
+import { useRouter } from 'expo-router';
 
 const owner = 'DigitalDemi';
 const repo = 'Test';
@@ -16,6 +17,7 @@ export default function FeedScreen() {
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
   const [contentForYou, setContentForYou] = useState<articles[]>([]);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -95,13 +97,18 @@ export default function FeedScreen() {
           />
         </View>
         <ScrollView style={{ marginTop: 20 }}>
-          {contentForYou.map(content => (
+          {contentForYou.map((content, index) => (
             <CardComponent
-              key={content.id}
+              key={index}
               image={content.image}
               title={content.title}
               description={content.content.substring(245, 345) + '...'}
-              id={content.id}
+              onPress={() =>
+                router.push({
+                  pathname: `/${content.id}`,
+                  params: { content: content.content },
+                })
+              }
             />
           ))}
         </ScrollView>
