@@ -99,7 +99,7 @@ const SmokingCalculator = () => {
     cost: boolean = false
   ) => (
     <Text style={styles.resultText}>
-      {`${capitalizeFirstLetter(type)} ${formatLabel(period.toString())}${cost ? ' Cost' : ''}: ${results[type]?.[period]} ${cost ? 'USD' : ''}`}
+      {`${capitalizeFirstLetter(type)} ${formatLabel(period.toString())}${cost ? ' Cost' : ''}: ${results[type]?.[period]} ${cost ? '€' : ''}`}
     </Text>
   );
 
