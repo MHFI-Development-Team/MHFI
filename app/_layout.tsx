@@ -39,6 +39,14 @@ export default function RootLayout() {
           headerStyle: globalStyles.secondary,
         }}
       />
+      <Stack.Screen
+        name="(smoking)"
+        options={{
+          headerTitle: '',
+          headerLeft: _ => <HeaderLeftIcon />,
+          headerStyle: globalStyles.secondary,
+        }}
+      />
     </Stack>
   );
 }

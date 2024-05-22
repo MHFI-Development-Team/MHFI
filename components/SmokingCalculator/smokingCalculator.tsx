@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet, TextInput, Keyboard, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
-import { FontAwesome6 } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Button from '../Button';
 import { Colors } from '@/constants/Colors';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 type SmokingType = 'cigarettes' | 'cigars' | 'rollies' | 'pipes';
 
@@ -153,10 +153,10 @@ const SmokingCalculator = () => {
             setIsFocus(false);
           }}
           renderLeftIcon={() => (
-            <FontAwesome6
+            <MaterialCommunityIcons
               style={styles.icon}
               color={isFocus ? 'black' : 'black'}
-              name="smoking"
+              name="smoke"
               size={20}
             />
           )}
