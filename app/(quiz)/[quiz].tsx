@@ -5,6 +5,7 @@ import drugsQuestions from '@/components/Quiz/drugsQuestions';
 import smokingQuestions from '@/components/Quiz/smokingQuestions';
 import drinkingQuestions from '@/components/Quiz/drinkingQuestions';
 import { Question } from '@/components/Quiz/Interface';
+import { Colors } from '@/constants/Colors';
 
 const questions: { [key: string]: Question[] } = {
   Smoking: smokingQuestions,
@@ -103,40 +104,54 @@ const QuizData: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: Colors.primary,
     flex: 1,
     padding: 20,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 24,
     marginBottom: 20,
+    color: 'white',
+    fontWeight: 'bold',
   },
   question: {
     fontSize: 18,
     marginBottom: 20,
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: '500',
   },
   optionButton: {
     padding: 10,
     marginVertical: 5,
-    backgroundColor: '#ddd',
+    backgroundColor: Colors.ButtonColor,
     borderRadius: 5,
     alignItems: 'center',
     width: '100%',
   },
   optionText: {
     fontSize: 16,
+    fontWeight: '500',
   },
   score: {
     fontSize: 22,
     marginVertical: 20,
+    color: 'white',
+    fontWeight: '500',
   },
   result: {
-    marginBottom: 10,
+    marginBottom: 20,
+    alignItems: 'center',
+    flex: 1,
   },
   resultQuestion: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center',
+    marginBottom: 10,
   },
   correctAnswer: {
     color: 'green',

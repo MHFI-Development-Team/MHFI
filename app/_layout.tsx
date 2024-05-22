@@ -2,6 +2,7 @@ import { Stack } from 'expo-router';
 
 import HeaderLeftIcon from '@/components/HeaderLeftIcon';
 import globalStyles from '@/constants/globalStyles';
+import FeedHeaderLeftIcon from '@/components/feedHeaderLeftIcon';
 
 export default function RootLayout() {
   return (
@@ -27,7 +28,7 @@ export default function RootLayout() {
         name="[id]"
         options={{
           headerTitle: '',
-          headerLeft: _ => <HeaderLeftIcon />,
+          headerLeft: _ => <FeedHeaderLeftIcon />,
           headerStyle: globalStyles.secondary,
         }}
       />
@@ -47,6 +48,7 @@ export default function RootLayout() {
           headerStyle: globalStyles.secondary,
         }}
       />
+      <Stack.Screen name="(quiz)" options={{ headerShown: false }} />
     </Stack>
   );
 }

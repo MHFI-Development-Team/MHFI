@@ -97,20 +97,22 @@ export default function FeedScreen() {
           />
         </View>
         <ScrollView style={{ marginTop: 20 }}>
-          {contentForYou.map((content, index) => (
-            <CardComponent
-              key={index}
-              image={content.image}
-              title={content.title}
-              description={content.content.substring(245, 345) + '...'}
-              onPress={() =>
-                router.push({
-                  pathname: `/${content.id}`,
-                  params: { content: content.content },
-                })
-              }
-            />
-          ))}
+          <View>
+            {contentForYou.map((content, index) => (
+              <CardComponent
+                key={index}
+                image={content.image}
+                title={content.title}
+                description={content.content.substring(245, 345) + '...'}
+                onPress={() =>
+                  router.push({
+                    pathname: `/${content.id}`,
+                    params: { content: content.content },
+                  })
+                }
+              />
+            ))}
+          </View>
         </ScrollView>
       </View>
     </SafeAreaView>
