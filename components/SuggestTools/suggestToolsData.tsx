@@ -39,9 +39,9 @@ const suggestedTools: SuggestedTool[] = [
   {
     image: '',
     SvgComponent: QuizIcon,
-    name: 'Tool 2',
+    name: 'Quiz',
     link: Link,
-    href: '/messageScreen',
+    href: '/quizScreen',
   },
   {
     image: '',
