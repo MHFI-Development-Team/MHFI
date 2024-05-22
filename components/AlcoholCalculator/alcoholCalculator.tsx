@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TextInput, Keyboard, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
-import { Entypo } from '@expo/vector-icons';
+import { FontAwesome6 } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Button from '../Button';
 import { Colors } from '@/constants/Colors';
@@ -113,10 +113,10 @@ const AlcoholCalculator = () => {
             setIsFocus(false);
           }}
           renderLeftIcon={() => (
-            <Entypo
+            <FontAwesome6
               style={styles.icon}
               color={isFocus ? 'black' : 'black'}
-              name="drink"
+              name="wine-bottle"
               size={20}
             />
           )}
