@@ -32,9 +32,9 @@ const suggestedTools: SuggestedTool[] = [
   {
     image: '',
     SvgComponent: SmokingIcon,
-    name: 'Tool 2',
+    name: 'Smoking Calculator',
     link: Link,
-    href: '/messageScreen',
+    href: '/smokingScreen',
   },
   {
     image: '',
