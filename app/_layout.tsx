@@ -31,6 +31,14 @@ export default function RootLayout() {
           headerStyle: globalStyles.secondary,
         }}
       />
+      <Stack.Screen
+        name="(alcohol)"
+        options={{
+          headerTitle: '',
+          headerLeft: _ => <HeaderLeftIcon />,
+          headerStyle: globalStyles.secondary,
+        }}
+      />
     </Stack>
   );
 }

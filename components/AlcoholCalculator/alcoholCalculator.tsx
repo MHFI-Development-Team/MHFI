@@ -1,17 +1,10 @@
+import { View, Text, StyleSheet, TextInput, Keyboard, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { Dropdown } from 'react-native-element-dropdown';
+import { Entypo } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { useState, useRef, useCallback } from 'react';
-import {
-  View,
-  Text,
-  Platform,
-  StyleSheet,
-  TouchableOpacity,
-  Modal,
-  TouchableWithoutFeedback,
-  FlatList,
-  TextInput,
-  Button,
-} from 'react-native';
+import Button from '../Button';
+import { Colors } from '@/constants/Colors';
 
 type AlcoholType = 'spirits' | 'cans';
 
@@ -31,25 +24,23 @@ interface Results {
   cans?: CalculationResult;
 }
 
+const data: OptionItem[] = [
+  { label: 'Spirits', value: 'spirits' },
+  { label: 'Cans', value: 'cans' },
+];
+
 const AlcoholCalculator = () => {
-  const [alcoholType, setAlcoholType] = useState<AlcoholType>('spirits');
+  const [value, setValue] = useState<AlcoholType>('spirits');
+  const [isFocus, setIsFocus] = useState(false);
   const [drinksPerDay, setDrinksPerDay] = useState('');
   const [volumePerDrink, setVolumePerDrink] = useState('');
   const [results, setResults] = useState<Results>({});
-  const [expanded, setExpanded] = useState(false);
-  const [top, setTop] = useState(0);
-  const buttonRef = useRef<View>(null);
-
-  const toggleExpanded = useCallback(() => setExpanded(!expanded), [expanded]);
-
-  const onSelect = useCallback((item: OptionItem) => {
-    setAlcoholType(item.value);
-    setExpanded(false);
-  }, []);
+  const [isDrinksInputFocused, setIsDrinksInputFocused] = useState(false);
+  const [isVolumeInputFocused, setIsVolumeInputFocused] = useState(false);
 
   const calculateIntake = () => {
     let alcoholPerDayLiters: number;
-    if (alcoholType === 'cans') {
+    if (value === 'cans') {
       alcoholPerDayLiters = (parseFloat(drinksPerDay) * parseFloat(volumePerDrink)) / 1000;
     } else {
       alcoholPerDayLiters = parseFloat(drinksPerDay) / 1000;
@@ -63,14 +54,9 @@ const AlcoholCalculator = () => {
 
     setResults(prevResults => ({
       ...prevResults,
-      [alcoholType]: calculate(alcoholPerDayLiters),
+      [value]: calculate(alcoholPerDayLiters),
     }));
   };
-
-  const data: OptionItem[] = [
-    { label: 'Spirits', value: 'spirits' },
-    { label: 'Cans', value: 'cans' },
-  ];
 
   const capitalizeFirstLetter = (string: string) =>
     string.charAt(0).toUpperCase() + string.slice(1);
@@ -81,80 +67,110 @@ const AlcoholCalculator = () => {
     </Text>
   );
 
+  const handleDismiss = () => {
+    Keyboard.dismiss();
+    setIsDrinksInputFocused(false);
+    setIsVolumeInputFocused(false);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Alcohol Calculator</Text>
-      <View
-        ref={buttonRef}
-        onLayout={event => {
-          const layout = event.nativeEvent.layout;
-          const topOffset = layout.y;
-          const heightOfComponent = layout.height;
-          const finalValue = topOffset + heightOfComponent + (Platform.OS === 'android' ? -32 : 3);
-          setTop(finalValue);
-        }}>
-        <TouchableOpacity style={styles.button} activeOpacity={0.8} onPress={toggleExpanded}>
-          <Text style={styles.text}>
-            {alcoholType
-              ? data.find(item => item.value === alcoholType)?.label
-              : 'Select Alcohol Type'}
-          </Text>
-          <AntDesign name={expanded ? 'caretup' : 'caretdown'} />
-        </TouchableOpacity>
-        {expanded ? (
-          <Modal visible={expanded} transparent>
-            <TouchableWithoutFeedback onPress={() => setExpanded(false)}>
-              <View style={styles.backdrop}>
-                <View
-                  style={[
-                    styles.options,
-                    {
-                      top,
-                    },
-                  ]}>
-                  <FlatList
-                    keyExtractor={item => item.value}
-                    data={data}
-                    renderItem={({ item }) => (
-                      <TouchableOpacity
-                        activeOpacity={0.8}
-                        style={styles.optionItem}
-                        onPress={() => onSelect(item)}>
-                        <Text style={styles.text}>{item.label}</Text>
-                      </TouchableOpacity>
-                    )}
-                    ItemSeparatorComponent={() => <View style={styles.separator} />}
-                  />
-                </View>
-              </View>
-            </TouchableWithoutFeedback>
-          </Modal>
-        ) : null}
+      <View style={{ gap: 5, alignItems: 'center' }}>
+        <Text style={{ color: 'white', fontSize: 16, fontWeight: '500' }}>
+          What does this calculator do?
+        </Text>
+        <Text style={{ color: 'white', fontSize: 14, textAlign: 'center' }}>
+          Calculate how much alcohol you consume in a Weekly - Monthly - Yearly bases
+        </Text>
       </View>
-      <TextInput
-        style={styles.input}
-        placeholder={`Daily ${alcoholType} intake (drinks)`}
-        placeholderTextColor="gray"
-        keyboardType="numeric"
-        value={drinksPerDay}
-        onChangeText={setDrinksPerDay}
-      />
-      {alcoholType === 'cans' && (
-        <TextInput
-          style={styles.input}
-          placeholder="Volume per drink (ml)"
-          placeholderTextColor="gray"
-          keyboardType="numeric"
-          value={volumePerDrink}
-          onChangeText={setVolumePerDrink}
+      <View style={{ marginTop: 20 }}>
+        <Dropdown
+          style={styles.dropdown}
+          placeholderStyle={styles.placeholderStyle}
+          itemTextStyle={{ color: 'white' }}
+          selectedTextStyle={styles.selectedTextStyle}
+          containerStyle={{
+            backgroundColor: Colors.secondary,
+            borderWidth: 0.2,
+            borderRadius: 20,
+            marginTop: 5,
+            borderColor: 'grey',
+          }}
+          activeColor="#FF922E"
+          data={data}
+          autoScroll
+          maxHeight={300}
+          minHeight={100}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? 'Select Alcohol Type' : '...'}
+          value={value}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={item => {
+            setValue(item.value);
+            setIsFocus(false);
+          }}
+          renderLeftIcon={() => (
+            <Entypo
+              style={styles.icon}
+              color={isFocus ? 'black' : 'black'}
+              name="drink"
+              size={20}
+            />
+          )}
         />
-      )}
-      <Button title="Calculate" onPress={calculateIntake} />
-      {results[alcoholType] && (
+      </View>
+      <View style={{ gap: 20 }}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.yinput}
+            placeholder={`Daily ${value} intake (drinks)`}
+            placeholderTextColor="gray"
+            keyboardType="numeric"
+            value={drinksPerDay}
+            onChangeText={setDrinksPerDay}
+            onFocus={() => setIsDrinksInputFocused(true)}
+            onBlur={() => setIsDrinksInputFocused(false)}
+          />
+          {isDrinksInputFocused && (
+            <TouchableOpacity onPress={handleDismiss} style={styles.dismissIcon}>
+              <AntDesign name="checkcircleo" size={20} color={Colors.ButtonColor} />
+            </TouchableOpacity>
+          )}
+        </View>
+        {value === 'cans' && (
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.yinput}
+              placeholder="Volume per drink (ml)"
+              placeholderTextColor="gray"
+              keyboardType="numeric"
+              value={volumePerDrink}
+              onChangeText={setVolumePerDrink}
+              onFocus={() => setIsVolumeInputFocused(true)}
+              onBlur={() => setIsVolumeInputFocused(false)}
+            />
+            {isVolumeInputFocused && (
+              <TouchableOpacity onPress={handleDismiss} style={styles.dismissIcon}>
+                <AntDesign name="checkcircleo" size={20} color={Colors.ButtonColor} />
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
+      </View>
+      <Button
+        title="Calculate"
+        onPress={calculateIntake}
+        style={styles.customButton}
+        textStyle={styles.customText}
+      />
+      {results[value] && (
         <View style={styles.results}>
-          {renderResult(alcoholType, 'weekly')}
-          {renderResult(alcoholType, 'monthly')}
-          {renderResult(alcoholType, 'yearly')}
+          {renderResult(value, 'weekly')}
+          {renderResult(value, 'monthly')}
+          {renderResult(value, 'yearly')}
         </View>
       )}
     </View>
@@ -162,47 +178,87 @@ const AlcoholCalculator = () => {
 };
 
 const styles = StyleSheet.create({
-  backdrop: {
-    padding: 20,
-    justifyContent: 'center',
+  container: {
     alignItems: 'center',
+    backgroundColor: Colors.primary,
     flex: 1,
   },
-  optionItem: {
-    height: 40,
-    justifyContent: 'center',
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 20,
+    marginTop: 20,
   },
-  separator: {
-    height: 4,
-  },
-  options: {
-    position: 'absolute',
-    backgroundColor: 'white',
-    width: '100%',
-    padding: 10,
-    borderRadius: 6,
-    maxHeight: 250,
-  },
-  text: {
-    fontSize: 15,
-    opacity: 0.8,
-  },
-  button: {
+  dropdown: {
     height: 50,
-    justifyContent: 'space-between',
-    backgroundColor: '#fff',
-    flexDirection: 'row',
-    width: '100%',
-    alignItems: 'center',
-    paddingHorizontal: 15,
-    borderRadius: 8,
+    borderRadius: 20,
+    paddingHorizontal: 8,
+    backgroundColor: Colors.secondary,
+    width: 300,
+    marginBottom: 20,
   },
-
-  results: {},
-  resultText: {},
-  container: {},
-  title: {},
-  input: {},
+  icon: {
+    marginRight: 5,
+    color: 'white',
+  },
+  placeholderStyle: {
+    fontSize: 14,
+    color: 'grey',
+    fontWeight: '500',
+  },
+  selectedTextStyle: {
+    fontSize: 14,
+    color: 'white',
+    fontWeight: '500',
+  },
+  input: {
+    width: 300,
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 0.2,
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    color: 'white',
+  },
+  customButton: {
+    backgroundColor: Colors.ButtonColor,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    borderRadius: 20,
+    marginTop: 20,
+  },
+  customText: {
+    color: 'black',
+    fontSize: 15,
+  },
+  results: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  resultText: {
+    fontSize: 16,
+    color: 'white',
+    marginVertical: 5,
+    fontWeight: '500',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: 300,
+    borderColor: 'gray',
+    borderWidth: 0.2,
+    borderRadius: 20,
+  },
+  yinput: {
+    flex: 1,
+    height: 40,
+    paddingHorizontal: 10,
+    color: 'white',
+  },
+  dismissIcon: {
+    padding: 10,
+  },
 });
 
 export default AlcoholCalculator;

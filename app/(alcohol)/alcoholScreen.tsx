@@ -1,10 +1,11 @@
 import AlcoholCalculator from '@/components/AlcoholCalculator/alcoholCalculator';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View } from 'react-native';
+import globalStyles from '@/constants/globalStyles';
 
 export default function feedScreen() {
   return (
-    <SafeAreaView>
+    <View style={globalStyles.container}>
       <AlcoholCalculator />
-    </SafeAreaView>
+    </View>
   );
 }
