@@ -49,6 +49,14 @@ export default function RootLayout() {
         }}
       />
       <Stack.Screen name="(quiz)" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="(BMI)"
+        options={{
+          headerTitle: '',
+          headerLeft: _ => <HeaderLeftIcon />,
+          headerStyle: globalStyles.secondary,
+        }}
+      />
     </Stack>
   );
 }

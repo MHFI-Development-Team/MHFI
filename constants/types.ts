@@ -27,4 +27,5 @@ export type articles = {
   id: string;
   content: string;
   image: string;
+  tags: string[];
 };

@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import globalStyles from '@/constants/globalStyles';
 import Header from '@/components/Header';
@@ -8,13 +15,16 @@ import Button from '@/components/Button';
 import CardComponent from '@/components/CardComponent';
 import { Colors } from '@/constants/Colors';
 import { articles } from '@/constants/types';
+import { FrontmatterAttributes } from '@/components/FrontMatterAttributes';
 import { useRouter } from 'expo-router';
+import fm from 'front-matter';
 
 const owner = 'DigitalDemi';
 const repo = 'Test';
 
 export default function FeedScreen() {
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [contentForYou, setContentForYou] = useState<articles[]>([]);
   const [filteredContent, setFilteredContent] = useState<articles[]>([]);
   const [loading, setLoading] = useState(true);
@@ -36,8 +46,12 @@ export default function FeedScreen() {
           const fileContentResponse = await fetch(file.download_url);
           const content = await fileContentResponse.text();
 
-          const titleMatch = content.match(/^# (.+?):/);
-          const title = titleMatch ? titleMatch[1] : file.name;
+          const parsedContent = fm<FrontmatterAttributes>(content);
+          const frontmatter = parsedContent.attributes;
+
+          const tags = frontmatter.tags || [];
+          const titleMatch = content.match(/^# (.+)/);
+          const title = frontmatter.title || (titleMatch ? titleMatch[1] : file.name);
 
           const imageMatch = content.match(/<img src="([^"]+)" \/>/);
           const imageUrl = imageMatch ? imageMatch[1] : 'https://example.com/default-image.jpg';
@@ -47,6 +61,7 @@ export default function FeedScreen() {
             id: file.name,
             content,
             image: imageUrl,
+            tags,
           };
         });
 
@@ -79,6 +94,18 @@ export default function FeedScreen() {
       setFilteredContent(contentForYou);
     }
   };
+
+  const handleTagPress = (tag: string | null) => {
+    setSelectedTag(tag);
+    if (tag) {
+      const filtered = contentForYou.filter(article => article.tags.includes(tag));
+      setFilteredContent(filtered);
+    } else {
+      setFilteredContent(contentForYou);
+    }
+  };
+
+  const allTags = [...new Set(contentForYou.flatMap(article => article.tags))];
 
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
@@ -113,6 +140,17 @@ export default function FeedScreen() {
             }
           />
         </View>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10 }}>
+          <View style={{ flexDirection: 'row', gap: 10 }}>
+            {allTags.map(tag => (
+              <TouchableOpacity key={tag} onPress={() => handleTagPress(tag)}>
+                <Text style={[styles.tagButton, selectedTag === tag && styles.selectedTagButton]}>
+                  {tag}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
         <ScrollView style={{ marginTop: 20 }} showsVerticalScrollIndicator={false}>
           <View style={styles.cardContainer}>
             {filteredContent.map((content, index) => (
@@ -120,7 +158,7 @@ export default function FeedScreen() {
                 key={index}
                 image={content.image}
                 title={content.title}
-                description={content.content.substring(245, 345) + '...'}
+                description={content.content.substring(376, 450) + '...'}
                 onPress={() =>
                   router.push({
                     pathname: `/${content.id}`,
@@ -171,5 +209,19 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     paddingVertical: 10,
+  },
+  tagButton: {
+    backgroundColor: Colors.ButtonColor,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 3,
+  },
+  selectedTagButton: {
+    backgroundColor: '#aaa',
   },
 });

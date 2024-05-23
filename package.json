@@ -30,6 +30,7 @@
     "expo-status-bar": "~1.12.1",
     "expo-system-ui": "~3.0.4",
     "expo-web-browser": "~13.0.3",
+    "front-matter": "^4.0.2",
     "prettier": "^3.2.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
