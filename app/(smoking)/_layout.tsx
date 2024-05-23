@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 
-export default function DailyLayout() {
+export default function SmokingLayout() {
   return (
     <Stack>
       <Stack.Screen name="smokingScreen" options={{ headerShown: false }} />

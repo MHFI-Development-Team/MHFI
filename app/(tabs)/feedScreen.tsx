@@ -69,9 +69,10 @@ export default function FeedScreen() {
 
   const handleSearch = (query: string) => {
     if (query) {
-      const filtered = contentForYou.filter(article =>
-        article.title.toLowerCase().includes(query.toLowerCase()) ||
-        article.content.toLowerCase().includes(query.toLowerCase())
+      const filtered = contentForYou.filter(
+        article =>
+          article.title.toLowerCase().includes(query.toLowerCase()) ||
+          article.content.toLowerCase().includes(query.toLowerCase())
       );
       setFilteredContent(filtered);
     } else {

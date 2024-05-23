@@ -11,9 +11,9 @@ const suggestedTools: SuggestedTool[] = [
   {
     image: '',
     SvgComponent: BmiIcon,
-    name: 'Tool 1',
+    name: 'BMI Calculator',
     link: Link,
-    href: '/messageScreen',
+    href: '/BMIWeightScreen',
   },
   {
     image: '',
