@@ -9,7 +9,9 @@ import { View } from 'react-native';
 
 const homeScreen = () => {
   return (
-    <SafeAreaView style={[globalStyles.container, { paddingLeft: 16 }]}>
+    <SafeAreaView
+      style={[globalStyles.container, { paddingLeft: 16 }]}
+      edges={['right', 'left', 'top']}>
       <Header />
       <View style={{ justifyContent: 'space-evenly', flex: 1 }}>
         <ContentForYou />

@@ -1,4 +1,12 @@
-import { View, Text, StyleSheet, TextInput, Keyboard, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Keyboard,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import React, { useState } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -98,9 +106,16 @@ const SmokingCalculator = () => {
     period: keyof CalculationResult,
     cost: boolean = false
   ) => (
-    <Text style={styles.resultText}>
-      {`${capitalizeFirstLetter(type)} ${formatLabel(period.toString())}${cost ? ' Cost' : ''}: ${results[type]?.[period]} ${cost ? '€' : ''}`}
-    </Text>
+    <View style={styles.resultCard} key={period}>
+      <Text style={styles.resultTitle}>
+        {capitalizeFirstLetter(formatLabel(period.toString()))}
+        {cost ? ' Cost' : ''}
+      </Text>
+      <Text style={styles.resultValue}>
+        {results[type]?.[period]}
+        {cost ? ' €' : ' units'}
+      </Text>
+    </View>
   );
 
   const capitalizeFirstLetter = (string: string) =>
@@ -114,14 +129,12 @@ const SmokingCalculator = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
       <Text style={styles.title}>Smoking Calculator</Text>
-      <View style={{ gap: 5, alignItems: 'center' }}>
-        <Text style={{ color: 'white', fontSize: 16, fontWeight: '500' }}>
-          What does this calculator do?
-        </Text>
-        <Text style={{ color: 'white', fontSize: 14, textAlign: 'center' }}>
-          Calculate how much you smoke and its cost on a Weekly - Monthly - Yearly basis
+      <View style={styles.descriptionContainer}>
+        <Text style={styles.descriptionTitle}>What does this calculator do?</Text>
+        <Text style={styles.descriptionText}>
+          Calculate how much you smoke and its cost on a Weekly, Monthly, and Yearly basis
         </Text>
       </View>
       <View style={{ marginTop: 20 }}>
@@ -130,13 +143,7 @@ const SmokingCalculator = () => {
           placeholderStyle={styles.placeholderStyle}
           itemTextStyle={{ color: 'white' }}
           selectedTextStyle={styles.selectedTextStyle}
-          containerStyle={{
-            backgroundColor: Colors.secondary,
-            borderWidth: 0.2,
-            borderRadius: 20,
-            marginTop: 5,
-            borderColor: 'grey',
-          }}
+          containerStyle={styles.dropdownContainer}
           activeColor="#FF922E"
           data={data}
           autoScroll
@@ -155,17 +162,17 @@ const SmokingCalculator = () => {
           renderLeftIcon={() => (
             <MaterialCommunityIcons
               style={styles.icon}
-              color={isFocus ? 'black' : 'black'}
+              color={isFocus ? 'white' : 'white'}
               name="smoke"
               size={20}
             />
           )}
         />
       </View>
-      <View style={{ gap: 20 }}>
+      <View style={styles.inputsContainer}>
         <View style={styles.inputContainer}>
           <TextInput
-            style={styles.yinput}
+            style={styles.input}
             placeholder={`Daily ${value} intake`}
             placeholderTextColor="gray"
             keyboardType="numeric"
@@ -182,7 +189,7 @@ const SmokingCalculator = () => {
         </View>
         <View style={styles.inputContainer}>
           <TextInput
-            style={styles.yinput}
+            style={styles.input}
             placeholder={`Cost per ${value === 'cigarettes' ? 'pack' : 'unit'}`}
             placeholderTextColor="gray"
             keyboardType="numeric"
@@ -200,7 +207,7 @@ const SmokingCalculator = () => {
         {(value === 'cigars' || value === 'rollies' || value === 'pipes') && (
           <View style={styles.inputContainer}>
             <TextInput
-              style={styles.yinput}
+              style={styles.input}
               placeholder="Units per pack"
               placeholderTextColor="gray"
               keyboardType="numeric"
@@ -234,7 +241,7 @@ const SmokingCalculator = () => {
           {renderResult(value, 'costOver5years', true)}
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 };
 
@@ -242,14 +249,28 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     backgroundColor: Colors.primary,
-    flex: 1,
+    flexGrow: 1,
+    padding: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 20,
-    marginTop: 20,
+  },
+  descriptionContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  descriptionTitle: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  descriptionText: {
+    color: 'white',
+    fontSize: 14,
+    textAlign: 'center',
   },
   dropdown: {
     height: 50,
@@ -259,9 +280,15 @@ const styles = StyleSheet.create({
     width: 300,
     marginBottom: 20,
   },
+  dropdownContainer: {
+    backgroundColor: Colors.secondary,
+    borderWidth: 0.2,
+    borderRadius: 20,
+    marginTop: 5,
+    borderColor: 'grey',
+  },
   icon: {
     marginRight: 5,
-    color: 'white',
   },
   placeholderStyle: {
     fontSize: 14,
@@ -273,45 +300,21 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '500',
   },
-  input: {
-    width: 300,
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 0.2,
-    borderRadius: 20,
-    paddingHorizontal: 10,
-    color: 'white',
-  },
-  customButton: {
-    backgroundColor: Colors.ButtonColor,
-    paddingHorizontal: 15,
-    paddingVertical: 5,
-    borderRadius: 20,
-    marginTop: 20,
-  },
-  customText: {
-    color: 'black',
-    fontSize: 15,
-  },
-  results: {
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  resultText: {
-    fontSize: 16,
-    color: 'white',
-    marginVertical: 5,
-    fontWeight: '500',
+  inputsContainer: {
+    width: '100%',
+    marginBottom: 20,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: 300,
+    width: '100%',
     borderColor: 'gray',
     borderWidth: 0.2,
     borderRadius: 20,
+    backgroundColor: Colors.secondary,
+    marginBottom: 10,
   },
-  yinput: {
+  input: {
     flex: 1,
     height: 40,
     paddingHorizontal: 10,
@@ -319,6 +322,40 @@ const styles = StyleSheet.create({
   },
   dismissIcon: {
     padding: 10,
+  },
+  customButton: {
+    backgroundColor: Colors.ButtonColor,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 20,
+  },
+  customText: {
+    color: 'black',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  results: {
+    marginTop: 20,
+    alignItems: 'center',
+    width: '100%',
+  },
+  resultCard: {
+    backgroundColor: Colors.secondary,
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 10,
+    width: '90%',
+    alignItems: 'center',
+  },
+  resultTitle: {
+    fontSize: 18,
+    color: 'white',
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  resultValue: {
+    fontSize: 16,
+    color: 'white',
   },
 });
 

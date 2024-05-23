@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { useLocalSearchParams } from 'expo-router';
 import drugsQuestions from '@/components/Quiz/drugsQuestions';
 import smokingQuestions from '@/components/Quiz/smokingQuestions';
 import drinkingQuestions from '@/components/Quiz/drinkingQuestions';
@@ -83,21 +83,23 @@ const QuizData: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {quizCompleted ? (
-        <>
-          <Text style={styles.title}>Quiz Completed</Text>
-          <Text style={styles.score}>
-            Your Score: {score} / {questions[category].length}
-          </Text>
-          {renderResults()}
-        </>
-      ) : (
-        <>
-          <Text style={styles.title}>{category} Quiz</Text>
-          <Text style={styles.question}>{currentQuestion.question}</Text>
-          {renderOptions()}
-        </>
-      )}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {quizCompleted ? (
+          <>
+            <Text style={styles.title}>Quiz Completed</Text>
+            <Text style={styles.score}>
+              Your Score: {score} / {questions[category].length}
+            </Text>
+            {renderResults()}
+          </>
+        ) : (
+          <>
+            <Text style={styles.title}>{category} Quiz</Text>
+            <Text style={styles.question}>{currentQuestion.question}</Text>
+            {renderOptions()}
+          </>
+        )}
+      </ScrollView>
     </View>
   );
 };
@@ -105,49 +107,62 @@ const QuizData: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.primary,
-    flex: 1,
-    padding: 20,
+    flexGrow: 1,
+    paddingHorizontal: 16,
     alignItems: 'center',
     justifyContent: 'center',
   },
   title: {
-    fontSize: 24,
-    marginBottom: 20,
+    fontSize: 28,
+    marginTop: 20,
+    marginBottom: 5,
     color: 'white',
     fontWeight: 'bold',
+    textAlign: 'center',
   },
   question: {
-    fontSize: 18,
+    fontSize: 20,
     marginBottom: 20,
     color: 'white',
     textAlign: 'center',
     fontWeight: '500',
   },
   optionButton: {
-    padding: 10,
-    marginVertical: 5,
+    padding: 15,
+    marginVertical: 10,
     backgroundColor: Colors.ButtonColor,
-    borderRadius: 5,
+    borderRadius: 10,
     alignItems: 'center',
     width: '100%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
   },
   optionText: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '500',
+    color: 'black',
   },
   score: {
-    fontSize: 22,
+    fontSize: 24,
     marginVertical: 20,
     color: 'white',
-    fontWeight: '500',
+    fontWeight: '600',
+    textAlign: 'center',
   },
   result: {
     marginBottom: 20,
     alignItems: 'center',
-    flex: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    backgroundColor: Colors.secondary,
+    borderRadius: 10,
+    width: '100%',
   },
   resultQuestion: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
     textAlign: 'center',
@@ -155,9 +170,11 @@ const styles = StyleSheet.create({
   },
   correctAnswer: {
     color: 'green',
+    fontSize: 16,
   },
   wrongAnswer: {
     color: 'red',
+    fontSize: 16,
   },
 });
 

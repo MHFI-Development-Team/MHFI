@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { Colors } from '@/constants/Colors'; // Assuming you have a Colors file for your theme
 
 const Quiz = () => {
   const router = useRouter();
@@ -8,20 +9,25 @@ const Quiz = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Choose a Quiz</Text>
-      <Button
-        title="Smoking"
-        onPress={() => router.push({ pathname: '/(quiz)/[quiz]', params: { category: 'Smoking' } })}
-      />
-      <Button
-        title="Drinking"
+      <TouchableOpacity
+        style={[styles.button, { backgroundColor: Colors.ButtonColor }]}
+        onPress={() =>
+          router.push({ pathname: '/(quiz)/[quiz]', params: { category: 'Smoking' } })
+        }>
+        <Text style={styles.buttonText}>Smoking</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, { backgroundColor: Colors.ButtonColor }]}
         onPress={() =>
           router.push({ pathname: '/(quiz)/[quiz]', params: { category: 'Drinking' } })
-        }
-      />
-      <Button
-        title="Drugs"
-        onPress={() => router.push({ pathname: '/(quiz)/[quiz]', params: { category: 'Drugs' } })}
-      />
+        }>
+        <Text style={styles.buttonText}>Drinking</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, { backgroundColor: Colors.ButtonColor }]}
+        onPress={() => router.push({ pathname: '/(quiz)/[quiz]', params: { category: 'Drugs' } })}>
+        <Text style={styles.buttonText}>Drugs</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -31,11 +37,32 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: Colors.background, // Assuming you have a background color in your Colors file
+    padding: 20,
   },
   title: {
     color: 'white',
-    fontSize: 24,
+    fontSize: 32,
+    marginBottom: 40,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  button: {
+    width: '80%',
+    paddingVertical: 15,
+    borderRadius: 25,
     marginBottom: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  buttonText: {
+    color: 'black',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 

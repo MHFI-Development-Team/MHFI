@@ -16,6 +16,7 @@ const repo = 'Test';
 export default function FeedScreen() {
   const [selectedButton, setSelectedButton] = useState<string | null>(null);
   const [contentForYou, setContentForYou] = useState<articles[]>([]);
+  const [filteredContent, setFilteredContent] = useState<articles[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -51,6 +52,7 @@ export default function FeedScreen() {
 
         const articles = await Promise.all(articlePromises);
         setContentForYou(articles);
+        setFilteredContent(articles);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching articles from GitHub:', error);
@@ -65,15 +67,29 @@ export default function FeedScreen() {
     setSelectedButton(button);
   };
 
+  const handleSearch = (query: string) => {
+    if (query) {
+      const filtered = contentForYou.filter(article =>
+        article.title.toLowerCase().includes(query.toLowerCase()) ||
+        article.content.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredContent(filtered);
+    } else {
+      setFilteredContent(contentForYou);
+    }
+  };
+
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
 
   return (
-    <SafeAreaView style={[globalStyles.container, { paddingHorizontal: 16 }]}>
-      <Header />
+    <View style={[globalStyles.container, { paddingHorizontal: 16 }]}>
+      <SafeAreaView>
+        <Header />
+      </SafeAreaView>
       <View style={{ flex: 1 }}>
-        <SearchBar placeholder="Search articles, videos and more" onSearch={undefined} />
+        <SearchBar placeholder="Search articles, videos and more" onSearch={handleSearch} />
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 10 }}>
           <Button
             title="Popular"
@@ -96,9 +112,9 @@ export default function FeedScreen() {
             }
           />
         </View>
-        <ScrollView style={{ marginTop: 20 }}>
-          <View>
-            {contentForYou.map((content, index) => (
+        <ScrollView style={{ marginTop: 20 }} showsVerticalScrollIndicator={false}>
+          <View style={styles.cardContainer}>
+            {filteredContent.map((content, index) => (
               <CardComponent
                 key={index}
                 image={content.image}
@@ -115,7 +131,7 @@ export default function FeedScreen() {
           </View>
         </ScrollView>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -125,19 +141,34 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 3,
   },
   customText: {
     color: 'black',
     fontSize: 15,
+    fontWeight: '600',
   },
   notFocusedStyleButton: {
     backgroundColor: Colors.secondary,
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 2,
   },
   notFocusedStyleButtonText: {
     color: 'white',
     fontSize: 15,
+    fontWeight: '500',
+  },
+  cardContainer: {
+    paddingVertical: 10,
   },
 });

@@ -11,14 +11,12 @@ interface CardComponentProps {
 
 const CardComponent: React.FC<CardComponentProps> = ({ image, title, description, onPress }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={styles.cardWrapper}>
-        <Image source={{ uri: image }} style={styles.image} />
+    <TouchableOpacity onPress={onPress} style={styles.cardWrapper}>
+      <Image source={{ uri: image }} style={styles.image} />
+      <View style={styles.textContainer}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.description}>{description}</Text>
-        <View style={{ alignItems: 'center' }}>
-          <Text style={styles.readMoreText}>Read More</Text>
-        </View>
+        <Text style={styles.readMore}>Read More</Text>
       </View>
     </TouchableOpacity>
   );
@@ -28,36 +26,35 @@ const styles = StyleSheet.create({
   cardWrapper: {
     backgroundColor: Colors.secondary,
     borderRadius: 10,
-    padding: 16,
-    marginVertical: 10,
+    overflow: 'hidden',
+    marginBottom: 20,
     shadowColor: '#000',
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.3,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 5 },
-    elevation: 3,
+    elevation: 5,
   },
   image: {
     width: '100%',
     height: 200,
-    borderRadius: 10,
+  },
+  textContainer: {
+    padding: 16,
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
-    marginVertical: 10,
+    marginBottom: 10,
   },
   description: {
     fontSize: 14,
-    color: 'grey',
+    color: 'gray',
     marginBottom: 10,
   },
-  readMoreButton: {
-    alignItems: 'center',
-  },
-  readMoreText: {
-    color: Colors.ButtonColor,
+  readMore: {
     fontSize: 14,
+    color: Colors.ButtonColor,
     fontWeight: 'bold',
   },
 });
