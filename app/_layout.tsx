@@ -1,5 +1,4 @@
 import { Stack } from 'expo-router';
-
 import HeaderLeftIcon from '@/components/HeaderLeftIcon';
 import globalStyles from '@/constants/globalStyles';
 import FeedHeaderLeftIcon from '@/components/feedHeaderLeftIcon';
@@ -49,8 +48,9 @@ export default function RootLayout() {
         }}
       />
       <Stack.Screen name="(quiz)" options={{ headerShown: false }} />
+      <Stack.Screen name="(BMI)" options={{ headerShown: false }} />
       <Stack.Screen
-        name="(BMI)"
+        name="(sign)"
         options={{
           headerTitle: '',
           headerLeft: _ => <HeaderLeftIcon />,

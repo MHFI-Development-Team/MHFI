@@ -1,11 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Dimensions } from 'react-native';
-import { GiftedChat, Bubble, IMessage, Reply } from 'react-native-gifted-chat';
+import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import messageQuestions from './messageScreenQuestions';
-import ProfileIcon from '@/assets/svg/profileIcon';
+import { Colors } from '@/constants/Colors';
+
+interface Message {
+  _id: number;
+  text: string;
+  createdAt: Date;
+  user: {
+    _id: number;
+    name: string;
+    avatar?: any;
+  };
+  quickReplies?: {
+    type: 'radio' | 'checkbox';
+    values: { title: string; value: string }[];
+  };
+}
 
 export default function Chatbot() {
-  const [messages, setMessages] = useState<IMessage[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [step, setStep] = useState<number>(0);
 
   useEffect(() => {
@@ -13,14 +27,13 @@ export default function Chatbot() {
   }, []);
 
   const loadInitialMessage = () => {
-    const message: IMessage = {
+    const message: Message = {
       _id: messageQuestions[step].id,
       text: messageQuestions[step].text,
       createdAt: new Date(),
       user: {
         _id: 2,
         name: 'Assistant',
-        avatar: ProfileIcon,
       },
       quickReplies: {
         type: 'radio',
@@ -33,93 +46,83 @@ export default function Chatbot() {
     setMessages([message]);
   };
 
-  const onQuickReply = (replies: Reply[]) => {
-    const chosenReply = replies[0];
-    const answer = messageQuestions[step].answers.find(a => a.text === chosenReply.title);
+  const onQuickReply = (reply: string) => {
+    const answer = messageQuestions[step].answers.find(a => a.text === reply);
     if (answer) {
-      setMessages(previousMessages =>
-        GiftedChat.append(previousMessages, [
-          {
-            _id: Math.random().toString(),
-            text: chosenReply.title,
-            createdAt: new Date(),
-            user: {
-              _id: 1,
-              name: 'You',
-            },
-          },
-        ])
-      );
+      const userMessage: Message = {
+        _id: Math.random().toString(),
+        text: reply,
+        createdAt: new Date(),
+        user: {
+          _id: 1,
+          name: 'You',
+        },
+      };
+
+      setMessages(previousMessages => [...previousMessages, userMessage]);
 
       if (answer.next !== null) {
         const nextQuestion = messageQuestions.find(q => q.id === answer.next);
         if (nextQuestion) {
           setStep(messageQuestions.indexOf(nextQuestion));
-          setMessages(previousMessages =>
-            GiftedChat.append(previousMessages, [
-              {
-                _id: nextQuestion.id,
-                text: nextQuestion.text,
-                createdAt: new Date(),
-                user: {
-                  _id: 2,
-                  name: 'Assistant',
-                  avatar: ProfileIcon, // update later
-                },
-                quickReplies: {
-                  type: 'radio',
-                  values: nextQuestion.answers.map(a => ({
-                    title: a.text,
-                    value: a.text,
-                  })),
-                },
-              },
-            ])
-          );
+          const assistantMessage: Message = {
+            _id: nextQuestion.id,
+            text: nextQuestion.text,
+            createdAt: new Date(),
+            user: {
+              _id: 2,
+              name: 'Assistant',
+            },
+            quickReplies: {
+              type: 'radio',
+              values: nextQuestion.answers.map(a => ({
+                title: a.text,
+                value: a.text,
+              })),
+            },
+          };
+          setMessages(previousMessages => [...previousMessages, assistantMessage]);
         }
       }
     }
   };
 
-  const renderBubble = (props: any) => {
+  const renderMessage = (message: Message) => {
+    const isUser = message.user._id === 1;
     return (
-      <Bubble
-        {...props}
-        wrapperStyle={{
-          right: {
-            backgroundColor: '#FF922E', // Orange color for user messages
-          },
-          left: {
-            backgroundColor: '#303345', // Dark blue color for assistant messages
-          },
-        }}
-        textStyle={{
-          right: {
-            color: '#fff',
-          },
-          left: {
-            color: '#fff',
-          },
-        }}
-      />
+      <View
+        key={message._id}
+        style={[styles.messageContainer, isUser ? styles.userMessage : styles.assistantMessage]}>
+        <Text style={styles.messageText}>{message.text}</Text>
+      </View>
     );
   };
 
-  const renderInputToolbar = (props: any) => {
-    return null;
+  const renderQuickReplies = (quickReplies: { title: string; value: string }[]) => {
+    return (
+      <View style={styles.quickRepliesContainer}>
+        {quickReplies.map(reply => (
+          <TouchableOpacity
+            key={reply.value}
+            style={styles.quickReplyButton}
+            onPress={() => onQuickReply(reply.value)}>
+            <Text style={styles.quickReplyButtonText}>{reply.title}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    );
   };
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <GiftedChat
-        messages={messages}
-        onQuickReply={onQuickReply}
-        user={{ _id: 1 }}
-        scrollToBottom
-        renderBubble={renderBubble}
-        renderInputToolbar={renderInputToolbar}
-        listViewProps={{ style: styles.chat }}
-      />
+      <ScrollView style={styles.chat}>
+        {messages.map(message => (
+          <View key={message._id}>
+            {renderMessage(message)}
+            {message.quickReplies && renderQuickReplies(message.quickReplies.values)}
+          </View>
+        ))}
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -127,9 +130,43 @@ export default function Chatbot() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#0C0F14',
   },
   chat: {
+    padding: 15,
+  },
+  messageContainer: {
     padding: 10,
+    borderRadius: 15,
+    marginVertical: 5,
+    maxWidth: '80%',
+  },
+  userMessage: {
+    backgroundColor: '#FF922E',
+    alignSelf: 'flex-end',
+  },
+  assistantMessage: {
+    backgroundColor: Colors.secondary,
+    alignSelf: 'flex-start',
+  },
+  messageText: {
+    color: '#fff',
+    fontSize: 16,
+  },
+  quickRepliesContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginVertical: 10,
+  },
+  quickReplyButton: {
+    backgroundColor: '#FF922E',
+    borderRadius: 15,
+    marginRight: 5,
+    marginBottom: 5,
+  },
+  quickReplyButtonText: {
+    fontSize: 14,
+    fontWeight: '500',
+    paddingVertical: 5,
+    paddingHorizontal: 10,
   },
 });

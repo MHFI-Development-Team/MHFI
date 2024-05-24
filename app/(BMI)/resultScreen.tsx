@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import { Colors } from '@/constants/Colors';
 
-const BMIResultScreen: React.FC = () => {
+const ResultScreen: React.FC = () => {
   const { bmi, age, weight, height } = useLocalSearchParams<{
     bmi: string;
     age: string;
@@ -12,7 +13,7 @@ const BMIResultScreen: React.FC = () => {
   const router = useRouter();
 
   const handleRetry = () => {
-    router.push('/BMIWeightScreen');
+    router.push('/bmiScreen');
   };
 
   if (!bmi || !age || !weight || !height) {
@@ -29,14 +30,15 @@ const BMIResultScreen: React.FC = () => {
           ? 'Overweight'
           : 'Obese';
 
+  const bmiStatusColor = bmiValue < 18.5 ? 'red' : bmiValue <= 24.9 ? 'green' : 'red';
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <Text style={styles.title}>Your Result</Text>
         <View style={styles.resultCircle}>
           <Text style={styles.bmiValue}>{bmiValue}</Text>
-          <Text style={styles.bmiStatus}>{bmiStatus}</Text>
-          <Text style={styles.viewDetails}>View details</Text>
+          <Text style={[styles.bmiStatus, { color: bmiStatusColor }]}>{bmiStatus}</Text>
         </View>
         <View style={styles.bodyComposition}>
           <Text style={styles.bodyCompositionTitle}>Body Composition</Text>
@@ -64,7 +66,7 @@ const BMIResultScreen: React.FC = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#0C0F14',
+    backgroundColor: Colors.primary,
   },
   container: {
     flex: 1,
@@ -73,40 +75,28 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
     color: '#FFF',
     marginBottom: 30,
   },
   resultCircle: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    backgroundColor: '#6A1B9A',
+    width: 220,
+    height: 220,
+    borderRadius: 110,
+    backgroundColor: Colors.ButtonColor,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 5,
   },
   bmiValue: {
     fontSize: 48,
     fontWeight: 'bold',
-    color: '#FFF',
+    color: 'black',
   },
   bmiStatus: {
     fontSize: 18,
-    color: '#FFF',
     marginTop: 5,
-  },
-  viewDetails: {
-    fontSize: 16,
-    color: '#FFD700',
-    marginTop: 10,
-    textDecorationLine: 'underline',
   },
   bodyComposition: {
     width: '100%',
@@ -114,7 +104,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   bodyCompositionTitle: {
-    fontSize: 20,
+    fontSize: 22,
     color: '#FFF',
     marginBottom: 10,
   },
@@ -137,16 +127,17 @@ const styles = StyleSheet.create({
     color: '#FFF',
   },
   retryButton: {
-    backgroundColor: '#FF6347',
-    padding: 10,
+    backgroundColor: Colors.ButtonColor,
     borderRadius: 20,
-    marginTop: 20,
+    marginTop: 30,
   },
   retryButtonText: {
     fontSize: 20,
-    color: '#FFF',
+    color: 'black',
     textAlign: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 30,
   },
 });
 
-export default BMIResultScreen;
+export default ResultScreen;

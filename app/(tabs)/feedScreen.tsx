@@ -11,7 +11,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import globalStyles from '@/constants/globalStyles';
 import Header from '@/components/Header';
 import SearchBar from '@/components/SearchBar';
-import Button from '@/components/Button';
 import CardComponent from '@/components/CardComponent';
 import { Colors } from '@/constants/Colors';
 import { articles } from '@/constants/types';
@@ -23,7 +22,6 @@ const owner = 'DigitalDemi';
 const repo = 'Test';
 
 export default function FeedScreen() {
-  const [selectedButton, setSelectedButton] = useState<string | null>(null);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [contentForYou, setContentForYou] = useState<articles[]>([]);
   const [filteredContent, setFilteredContent] = useState<articles[]>([]);
@@ -78,10 +76,6 @@ export default function FeedScreen() {
     fetchArticles();
   }, []);
 
-  const handleButtonPress = (button: string) => {
-    setSelectedButton(button);
-  };
-
   const handleSearch = (query: string) => {
     if (query) {
       const filtered = contentForYou.filter(
@@ -96,12 +90,13 @@ export default function FeedScreen() {
   };
 
   const handleTagPress = (tag: string | null) => {
-    setSelectedTag(tag);
-    if (tag) {
+    if (selectedTag === tag) {
+      setSelectedTag(null);
+      setFilteredContent(contentForYou);
+    } else {
+      setSelectedTag(tag);
       const filtered = contentForYou.filter(article => article.tags.includes(tag));
       setFilteredContent(filtered);
-    } else {
-      setFilteredContent(contentForYou);
     }
   };
 
@@ -113,44 +108,32 @@ export default function FeedScreen() {
 
   return (
     <View style={[globalStyles.container, { paddingHorizontal: 16 }]}>
-      <SafeAreaView>
+      <SafeAreaView edges={['right', 'left', 'top']}>
         <Header />
       </SafeAreaView>
       <View style={{ flex: 1 }}>
         <SearchBar placeholder="Search articles, videos and more" onSearch={handleSearch} />
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 10 }}>
-          <Button
-            title="Popular"
-            onPress={() => handleButtonPress('Popular')}
-            style={
-              selectedButton === 'Popular' ? styles.customButton : styles.notFocusedStyleButton
-            }
-            textStyle={
-              selectedButton === 'Popular' ? styles.customText : styles.notFocusedStyleButtonText
-            }
-          />
-          <Button
-            title="Following"
-            onPress={() => handleButtonPress('Following')}
-            style={
-              selectedButton === 'Following' ? styles.customButton : styles.notFocusedStyleButton
-            }
-            textStyle={
-              selectedButton === 'Following' ? styles.customText : styles.notFocusedStyleButtonText
-            }
-          />
-        </View>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10 }}>
-          <View style={{ flexDirection: 'row', gap: 10 }}>
+        <View>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.tagScrollView}>
             {allTags.map(tag => (
-              <TouchableOpacity key={tag} onPress={() => handleTagPress(tag)}>
-                <Text style={[styles.tagButton, selectedTag === tag && styles.selectedTagButton]}>
+              <TouchableOpacity
+                key={tag}
+                onPress={() => handleTagPress(tag)}
+                style={[styles.tagButton, selectedTag === tag && styles.selectedTagButton]}>
+                <Text
+                  style={[
+                    styles.tagButtonText,
+                    selectedTag === tag && styles.selectedTagButtonText,
+                  ]}>
                   {tag}
                 </Text>
               </TouchableOpacity>
             ))}
-          </View>
-        </ScrollView>
+          </ScrollView>
+        </View>
         <ScrollView style={{ marginTop: 20 }} showsVerticalScrollIndicator={false}>
           <View style={styles.cardContainer}>
             {filteredContent.map((content, index) => (
@@ -175,53 +158,33 @@ export default function FeedScreen() {
 }
 
 const styles = StyleSheet.create({
-  customButton: {
-    backgroundColor: Colors.ButtonColor,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 20,
-    shadowColor: '#000',
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 3,
-  },
-  customText: {
-    color: 'black',
-    fontSize: 15,
-    fontWeight: '600',
-  },
-  notFocusedStyleButton: {
-    backgroundColor: Colors.secondary,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 20,
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 2,
-  },
-  notFocusedStyleButtonText: {
-    color: 'white',
-    fontSize: 15,
-    fontWeight: '500',
-  },
   cardContainer: {
     paddingVertical: 10,
   },
+  tagScrollView: {
+    marginVertical: 10,
+  },
   tagButton: {
     backgroundColor: Colors.ButtonColor,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
     borderRadius: 20,
-    shadowColor: '#000',
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 3,
+    marginHorizontal: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    maxHeight: 35,
+    minHeight: 35,
+    minWidth: 100,
+  },
+  tagButtonText: {
+    color: 'black',
+    fontSize: 14,
+    fontWeight: '600',
+    paddingHorizontal: 15,
+    paddingVertical: 5,
   },
   selectedTagButton: {
-    backgroundColor: '#aaa',
+    backgroundColor: Colors.secondary,
+  },
+  selectedTagButtonText: {
+    color: 'white',
   },
 });

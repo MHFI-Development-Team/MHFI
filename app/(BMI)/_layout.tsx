@@ -1,12 +1,32 @@
-import React from 'react';
-import { View } from 'react-native';
+import HeaderLeftIcon from '@/components/HeaderLeftIcon';
 import globalStyles from '@/constants/globalStyles';
-import { Slot } from 'expo-router';
+import { Stack } from 'expo-router';
 
-export default function BMILayout() {
+export default function bmiLayout() {
   return (
-    <View style={[globalStyles.container, { paddingHorizontal: 16 }]}>
-      <Slot />
-    </View>
+    <Stack>
+      <Stack.Screen
+        name="bmiScreen"
+        options={{
+          headerTitle: '',
+          headerStyle: globalStyles.secondary,
+          headerLeft: _ => <HeaderLeftIcon />,
+        }}
+      />
+      <Stack.Screen
+        name="bmiHeight"
+        options={{
+          headerTitle: '',
+          headerStyle: globalStyles.secondary,
+        }}
+      />
+      <Stack.Screen
+        name="resultScreen"
+        options={{
+          headerTitle: '',
+          headerStyle: globalStyles.secondary,
+        }}
+      />
+    </Stack>
   );
 }

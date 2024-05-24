@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import { Colors } from '@/constants/Colors';
 
-const screenWidth = Dimensions.get('window').width;
-
-const BMIHeightScreen: React.FC = () => {
+const bmiHeight: React.FC = () => {
   const { age, weight } = useLocalSearchParams<{ age: string; weight: string }>();
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [heightCm, setHeightCm] = useState(162);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [heightFeet, setHeightFeet] = useState(5);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [heightInches, setHeightInches] = useState(4);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [unit, setUnit] = useState<'cm' | 'feet'>('cm');
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const router = useRouter();
 
   if (!age || !weight) {
@@ -36,7 +40,7 @@ const BMIHeightScreen: React.FC = () => {
   const handleNext = () => {
     const bmiResult = calculateBMI();
     router.push({
-      pathname: '/BMIResultScreen',
+      pathname: '/resultScreen',
       params: {
         bmi: bmiResult,
         age,
@@ -52,12 +56,12 @@ const BMIHeightScreen: React.FC = () => {
         <Text style={styles.title}>Select Your Height</Text>
         <View style={styles.unitSwitchContainer}>
           <TouchableOpacity
-            style={[styles.unitButton, unit === 'cm' ? styles.unitButtonActive : null]}
+            style={[styles.unitButton, unit === 'cm' && styles.unitButtonActive]}
             onPress={() => setUnit('cm')}>
             <Text style={styles.unitButtonText}>CM</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.unitButton, unit === 'feet' ? styles.unitButtonActive : null]}
+            style={[styles.unitButton, unit === 'feet' && styles.unitButtonActive]}
             onPress={() => setUnit('feet')}>
             <Text style={styles.unitButtonText}>Feet</Text>
           </TouchableOpacity>
@@ -71,8 +75,8 @@ const BMIHeightScreen: React.FC = () => {
               step={1}
               value={heightCm}
               onValueChange={setHeightCm}
-              minimumTrackTintColor="#FFFFFF"
-              maximumTrackTintColor="#000000"
+              minimumTrackTintColor="#FFFF00"
+              maximumTrackTintColor="#FFFFFF"
               thumbTintColor="#FFFF00"
             />
           ) : (
@@ -84,8 +88,8 @@ const BMIHeightScreen: React.FC = () => {
                 step={1}
                 value={heightFeet}
                 onValueChange={setHeightFeet}
-                minimumTrackTintColor="#FFFFFF"
-                maximumTrackTintColor="#000000"
+                minimumTrackTintColor="#FFFF00"
+                maximumTrackTintColor="#FFFFFF"
                 thumbTintColor="#FFFF00"
               />
               <Slider
@@ -95,8 +99,8 @@ const BMIHeightScreen: React.FC = () => {
                 step={1}
                 value={heightInches}
                 onValueChange={setHeightInches}
-                minimumTrackTintColor="#FFFFFF"
-                maximumTrackTintColor="#000000"
+                minimumTrackTintColor="#FFFF00"
+                maximumTrackTintColor="#FFFFFF"
                 thumbTintColor="#FFFF00"
               />
             </>
@@ -114,12 +118,13 @@ const BMIHeightScreen: React.FC = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#0C0F14',
+    backgroundColor: Colors.primary,
   },
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 20,
   },
   title: {
     color: '#FFF',
@@ -132,25 +137,27 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   unitButton: {
-    padding: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     marginHorizontal: 5,
-    backgroundColor: '#24263B',
+    backgroundColor: Colors.secondary,
+    borderRadius: 5,
   },
   unitButtonActive: {
-    backgroundColor: '#444',
+    backgroundColor: Colors.ButtonColor,
   },
   unitButtonText: {
     color: '#FFF',
     fontSize: 18,
   },
   heightSliderContainer: {
-    width: screenWidth - 40,
+    width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 300,
+    marginBottom: 20,
   },
   slider: {
-    width: screenWidth - 80,
+    width: '100%',
     height: 40,
     marginVertical: 10,
   },
@@ -162,15 +169,17 @@ const styles = StyleSheet.create({
   },
   nextButton: {
     marginTop: 20,
-    backgroundColor: '#24263B',
-    padding: 10,
+    backgroundColor: Colors.ButtonColor,
+    paddingVertical: 15,
+    paddingHorizontal: 40,
     borderRadius: 10,
+    alignItems: 'center',
   },
   nextButtonText: {
-    color: '#FFF',
+    color: 'black',
     fontSize: 20,
-    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });
 
-export default BMIHeightScreen;
+export default bmiHeight;

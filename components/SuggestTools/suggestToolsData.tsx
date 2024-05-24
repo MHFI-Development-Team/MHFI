@@ -13,7 +13,7 @@ const suggestedTools: SuggestedTool[] = [
     SvgComponent: BmiIcon,
     name: 'BMI Calculator',
     link: Link,
-    href: '/BMIWeightScreen',
+    href: '/bmiScreen',
   },
   {
     image: '',
@@ -46,9 +46,9 @@ const suggestedTools: SuggestedTool[] = [
   {
     image: '',
     SvgComponent: SignIcon,
-    name: 'Tool 2',
+    name: 'Sign Posting',
     link: Link,
-    href: '/messageScreen',
+    href: '/signPosting',
   },
 ];
 export default suggestedTools;

@@ -1,4 +1,4 @@
-import { Question, Answer } from './IMessageQuestion';
+import { Question } from './IMessageQuestion';
 
 const messageQustions: Question[] = [
   {

@@ -4,6 +4,8 @@ import { Link } from 'expo-router';
 import CircularCard from '../CircularCard';
 import globalStyles from '@/constants/globalStyles';
 import dailyGoalsTasks from '@/components/DailyGoals/dailyGoalsData';
+import { AntDesign } from '@expo/vector-icons';
+import { Colors } from '@/constants/Colors';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -20,7 +22,7 @@ const DailyGoals = () => {
           <View style={{ flexDirection: 'row', gap: 25 }}>
             {dailyGoalsTasks.map((goal, index) => (
               <Link key={index} href="/dailyGoalsEdit" asChild>
-                <TouchableOpacity key={index} style={{ flexDirection: 'column' }}>
+                <TouchableOpacity style={{ flexDirection: 'column' }}>
                   <CircularCard imageUri={goal.image} size={windowHeight * 0.125} />
                   <View style={{ marginTop: windowHeight * 0.005, alignItems: 'center' }}>
                     <Text style={[globalStyles.text, { fontWeight: '500' }]}>{goal.task}</Text>
@@ -31,6 +33,13 @@ const DailyGoals = () => {
                 </TouchableOpacity>
               </Link>
             ))}
+            <Link href="/dailyGoalsTasks" asChild>
+              <TouchableOpacity style={styles.addButton}>
+                <View style={styles.iconWrapper}>
+                  <AntDesign name="plus" size={windowHeight * 0.05} color={Colors.ButtonColor} />
+                </View>
+              </TouchableOpacity>
+            </Link>
           </View>
         </ScrollView>
       </View>
@@ -43,6 +52,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
     alignContent: 'center',
+  },
+  addButton: {
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  iconWrapper: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.primary,
+    borderRadius: (windowHeight * 0.125) / 2,
+    width: windowHeight * 0.125,
+    height: windowHeight * 0.125,
   },
 });
 
