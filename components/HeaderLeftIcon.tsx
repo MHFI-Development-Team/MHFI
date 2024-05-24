@@ -1,5 +1,5 @@
 import { Link } from 'expo-router';
-import TabBarIcon from '@/components/navigation/TabBarIcon';
+import TabBarIcon from '@/components/Navigation/TabBarIcon';
 import { View, TouchableOpacity } from 'react-native';
 
 const HeaderLeftIcon = () => (

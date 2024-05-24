@@ -4,7 +4,7 @@ import { useLocalSearchParams } from 'expo-router';
 import drugsQuestions from '@/components/Quiz/drugsQuestions';
 import smokingQuestions from '@/components/Quiz/smokingQuestions';
 import drinkingQuestions from '@/components/Quiz/drinkingQuestions';
-import { Question } from '@/components/Quiz/Interface';
+import { Question } from '@/components/Quiz/IQuizQuestion';
 import { Colors } from '@/constants/Colors';
 
 const questions: { [key: string]: Question[] } = {

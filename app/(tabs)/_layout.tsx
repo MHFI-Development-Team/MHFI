@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tabs } from 'expo-router';
-import { TabBarIcon, TabBarIconName } from '@/components/navigation/TabBarIcon';
+import { TabBarIcon, TabBarIconName } from '@/components/Navigation/TabBarIcon';
 
 const tabs = [
   { name: 'index', title: 'Home', icon: 'home' },

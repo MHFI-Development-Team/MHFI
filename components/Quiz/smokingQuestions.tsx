@@ -1,4 +1,4 @@
-import { Question } from './Interface';
+import { Question } from './IQuizQuestion';
 
 const smokingQuestions: Question[] = [
   {

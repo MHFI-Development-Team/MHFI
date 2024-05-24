@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import TabBarIcon from './navigation/TabBarIcon';
+import TabBarIcon from './Navigation/TabBarIcon';
 import { Link } from 'expo-router';
 
 const windowHeight = Dimensions.get('window').height;

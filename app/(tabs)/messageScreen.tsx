@@ -1,13 +1,12 @@
-import { Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import React from 'react';
+import { View } from 'react-native';
+import globalStyles from '@/constants/globalStyles';
+import Chatbot from '@/components/Messages/messages';
 
-const messageScreen = () => {
+export default function BMILayout() {
   return (
-    <SafeAreaView>
-      <Text>messageScreen</Text>
-    </SafeAreaView>
+    <View style={[globalStyles.container, { paddingHorizontal: 16 }]}>
+      <Chatbot />
+    </View>
   );
-};
-
-export default messageScreen;
+}
