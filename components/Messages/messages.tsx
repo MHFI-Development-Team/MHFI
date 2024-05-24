@@ -4,7 +4,6 @@ import { GiftedChat, Bubble, IMessage, Reply } from 'react-native-gifted-chat';
 import messageQuestions from './messageScreenQuestions';
 import ProfileIcon from '@/assets/svg/profileIcon';
 
-
 export default function Chatbot() {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [step, setStep] = useState<number>(0);
