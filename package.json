@@ -3,6 +3,7 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
+    "prestart": "node ./scripts/generate-articles.js",
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
@@ -45,7 +46,10 @@
     "react-native-web": "~0.19.10",
     "rn-mdx": "^0.0.7",
     "expo-image-picker": "~15.0.5",
-    "expo-secure-store": "~13.0.1"
+    "expo-secure-store": "~13.0.1",
+    "expo-file-system": "~17.0.1",
+    "expo-asset": "~10.0.6",
+    "expo-image": "~1.12.9"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

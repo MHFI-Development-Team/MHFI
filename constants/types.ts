@@ -22,7 +22,7 @@ export type ContentForYou = {
   link: typeof Link;
 };
 
-export type articles = {
+export type Articles = {
   title: string;
   id: string;
   content: string;

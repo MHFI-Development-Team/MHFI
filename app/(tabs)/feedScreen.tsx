@@ -13,67 +13,54 @@ import Header from '@/components/Header';
 import SearchBar from '@/components/SearchBar';
 import CardComponent from '@/components/CardComponent';
 import { Colors } from '@/constants/Colors';
-import { articles } from '@/constants/types';
 import { FrontmatterAttributes } from '@/components/FrontMatterAttributes';
 import { useRouter } from 'expo-router';
 import fm from 'front-matter';
+import { Articles } from '@/constants/types';
+import { Asset } from 'expo-asset';
+import * as FileSystem from 'expo-file-system';
 
-const owner = 'DigitalDemi';
-const repo = 'Test';
+const getArticle = async (requireNumber: number) => {
+  const [{ name, localUri }] = await Asset.loadAsync(requireNumber);
+  const content = await FileSystem.readAsStringAsync(localUri!);
+
+  const parsedContent = fm<FrontmatterAttributes>(content);
+  const frontmatter = parsedContent.attributes;
+
+  const tags = frontmatter.tags || [];
+  const titleMatch = content.match(/^# (.+)/);
+  const title = frontmatter.title || (titleMatch ? titleMatch[1] : name);
+
+  const imageMatch = content.match(/<img src="([^"]+)" \/>/);
+  const imageUrl = imageMatch ? imageMatch[1] : 'https://example.com/default-image.jpg';
+
+  return {
+    title,
+    id: name,
+    content,
+    image: imageUrl,
+    tags,
+  } as Articles;
+};
 
 export default function FeedScreen() {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
-  const [contentForYou, setContentForYou] = useState<articles[]>([]);
-  const [filteredContent, setFilteredContent] = useState<articles[]>([]);
+  const [contentForYou, setContentForYou] = useState<Articles[]>([]);
+  const [filteredContent, setFilteredContent] = useState<Articles[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const fileListResponse = await fetch(
-          `https://api.github.com/repos/${owner}/${repo}/contents/`
-        );
-        const fileListData = await fileListResponse.json();
-        const fileNames = fileListData.map((file: any) => ({
-          name: file.name,
-          download_url: file.download_url,
-        }));
+    const getArticles = async () => {
+      const articles: number[] = require('../../assets/articles/generated-articles.js');
+      const content = await Promise.all(articles.map(a => getArticle(a)));
 
-        const articlePromises = fileNames.map(async (file: any) => {
-          const fileContentResponse = await fetch(file.download_url);
-          const content = await fileContentResponse.text();
-
-          const parsedContent = fm<FrontmatterAttributes>(content);
-          const frontmatter = parsedContent.attributes;
-
-          const tags = frontmatter.tags || [];
-          const titleMatch = content.match(/^# (.+)/);
-          const title = frontmatter.title || (titleMatch ? titleMatch[1] : file.name);
-
-          const imageMatch = content.match(/<img src="([^"]+)" \/>/);
-          const imageUrl = imageMatch ? imageMatch[1] : 'https://example.com/default-image.jpg';
-
-          return {
-            title,
-            id: file.name,
-            content,
-            image: imageUrl,
-            tags,
-          };
-        });
-
-        const articles = await Promise.all(articlePromises);
-        setContentForYou(articles);
-        setFilteredContent(articles);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching articles from GitHub:', error);
-        setLoading(false);
-      }
+      setContentForYou(content!);
+      setFilteredContent(content!);
+      setLoading(false);
     };
 
-    fetchArticles();
+    getArticles();
   }, []);
 
   const handleSearch = (query: string) => {

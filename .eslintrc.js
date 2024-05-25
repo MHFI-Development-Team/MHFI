@@ -11,5 +11,8 @@ module.exports = {
               "endOfLine": "auto"
             },
           ],
+    },
+    globals: {
+      "__dirname": "true"
     }
 };

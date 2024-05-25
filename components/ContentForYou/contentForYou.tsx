@@ -8,60 +8,47 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { articles } from '@/constants/types';
+import { Articles } from '@/constants/types';
 import globalStyles from '@/constants/globalStyles';
 import ContentCard from '@/components/ContentCard';
-
-const owner = 'DigitalDemi';
-const repo = 'Test';
+import { Asset } from 'expo-asset';
+import * as FileSystem from 'expo-file-system';
 
 const windowHeight = Dimensions.get('window').height;
 
+const getArticle = async (requireNumber: number) => {
+  const [{ name, localUri }] = await Asset.loadAsync(requireNumber);
+  const content = await FileSystem.readAsStringAsync(localUri!);
+
+  const titleMatch = content.match(/^# (.+?):/);
+  const title = titleMatch ? titleMatch[1] : name;
+
+  const imageMatch = content.match(/<img src="([^"]+)" \/>/);
+  const imageUrl = imageMatch ? imageMatch[1] : 'https://example.com/default-image.jpg';
+
+  return {
+    title,
+    id: name,
+    content,
+    image: imageUrl,
+  } as Articles;
+};
+
 const ContentForYou = () => {
-  const [contentForYou, setContentForYou] = useState<articles[]>([]);
+  const [contentForYou, setContentForYou] = useState<Articles[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const fileListResponse = await fetch(
-          `https://api.github.com/repos/${owner}/${repo}/contents/`
-        );
-        const fileListData = await fileListResponse.json();
-        const fileNames = fileListData.map((file: any) => ({
-          name: file.name,
-          download_url: file.download_url,
-        }));
+    const getArticles = async () => {
+      const articles: number[] = require('../../assets/articles/generated-articles.js');
+      const content = await Promise.all(articles.map(a => getArticle(a)));
 
-        const articlePromises = fileNames.map(async (file: any) => {
-          const fileContentResponse = await fetch(file.download_url);
-          const content = await fileContentResponse.text();
-
-          const titleMatch = content.match(/^# (.+?):/);
-          const title = titleMatch ? titleMatch[1] : file.name;
-
-          const imageMatch = content.match(/<img src="([^"]+)" \/>/);
-          const imageUrl = imageMatch ? imageMatch[1] : 'https://example.com/default-image.jpg';
-
-          return {
-            title,
-            id: file.name,
-            content,
-            image: imageUrl,
-          };
-        });
-
-        const articles = await Promise.all(articlePromises);
-        setContentForYou(articles);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching articles from GitHub:', error);
-        setLoading(false);
-      }
+      setContentForYou(content!);
+      setLoading(false);
     };
 
-    fetchArticles();
+    getArticles();
   }, []);
 
   if (loading) {

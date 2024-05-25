@@ -1,0 +1,1 @@
+module.exports = [require('./fueling_your_body.mdx'), require('./gear_up_good.mdx')]
