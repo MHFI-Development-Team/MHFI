@@ -6,6 +6,7 @@ import ContentForYou from '@/components/ContentForYou/contentForYou';
 import DailyGoals from '@/components/DailyGoals/dailyGoals';
 import SuggestedTools from '@/components/SuggestTools/suggestTools';
 import { View } from 'react-native';
+import HabitList from '@/components/HabitTracker/HabitList';
 
 const homeScreen = () => {
   return (
@@ -16,7 +17,7 @@ const homeScreen = () => {
       <View style={{ justifyContent: 'space-evenly', flex: 1 }}>
         <ContentForYou />
         <SuggestedTools />
-        <DailyGoals />
+        <HabitList />
       </View>
     </SafeAreaView>
   );
