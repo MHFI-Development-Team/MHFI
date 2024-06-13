@@ -1,9 +1,36 @@
+import React, { useEffect, useState } from 'react';
 import { Stack } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
 import HeaderLeftIcon from '@/components/HeaderLeftIcon';
-import globalStyles from '@/constants/globalStyles';
 import FeedHeaderLeftIcon from '@/components/feedHeaderLeftIcon';
+import globalStyles from '@/constants/globalStyles';
+
+
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  const [appIsReady, setAppIsReady] = useState(false);
+
+  useEffect(() => {
+    const prepare = async () => {
+      try {
+       
+        await new Promise(resolve => setTimeout(resolve, 5000)); 
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setAppIsReady(true);
+        await SplashScreen.hideAsync();
+      }
+    };
+
+    prepare();
+  }, []);
+
+  if (!appIsReady) {
+    return null; 
+  }
+
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
