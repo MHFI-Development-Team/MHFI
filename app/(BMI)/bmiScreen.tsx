@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-na
 import Slider from '@react-native-community/slider';
 import { useRouter } from 'expo-router';
 import { Colors } from '@/constants/Colors';
+import { Vibration } from 'react-native';
 
 const bmiScreen: React.FC = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -55,7 +56,7 @@ const bmiScreen: React.FC = () => {
           />
           <Text style={styles.indicatorText}>{weight}</Text>
         </View>
-        <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+        <TouchableOpacity style={styles.nextButton} onPress={() => {Vibration.vibrate(100); handleNext(); }}>
           <Text style={styles.nextButtonText}>Next</Text>
         </TouchableOpacity>
       </View>

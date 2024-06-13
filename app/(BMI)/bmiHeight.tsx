@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-na
 import Slider from '@react-native-community/slider';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Colors } from '@/constants/Colors';
+import { Vibration } from 'react-native';
 
 const bmiHeight: React.FC = () => {
   const { age, weight } = useLocalSearchParams<{ age: string; weight: string }>();
@@ -75,9 +76,9 @@ const bmiHeight: React.FC = () => {
               step={1}
               value={heightCm}
               onValueChange={setHeightCm}
-              minimumTrackTintColor="#FFFF00"
-              maximumTrackTintColor="#FFFFFF"
-              thumbTintColor="#FFFF00"
+              minimumTrackTintColor="#FF922E"
+              maximumTrackTintColor="#3E3E3E"
+              thumbTintColor="#FF922E"
             />
           ) : (
             <>
@@ -88,9 +89,9 @@ const bmiHeight: React.FC = () => {
                 step={1}
                 value={heightFeet}
                 onValueChange={setHeightFeet}
-                minimumTrackTintColor="#FFFF00"
-                maximumTrackTintColor="#FFFFFF"
-                thumbTintColor="#FFFF00"
+                minimumTrackTintColor="#FF922E"
+                maximumTrackTintColor="#3E3E3E"
+                thumbTintColor="#FF922E"
               />
               <Slider
                 style={styles.slider}
@@ -99,15 +100,15 @@ const bmiHeight: React.FC = () => {
                 step={1}
                 value={heightInches}
                 onValueChange={setHeightInches}
-                minimumTrackTintColor="#FFFF00"
-                maximumTrackTintColor="#FFFFFF"
-                thumbTintColor="#FFFF00"
+                minimumTrackTintColor="#FF922E"
+              maximumTrackTintColor="#3E3E3E"
+              thumbTintColor="#FF922E"
               />
             </>
           )}
           <Text style={styles.heightIndicator}>{heightDisplay}</Text>
         </View>
-        <TouchableOpacity style={styles.nextButton} onPress={handleNext}>
+        <TouchableOpacity style={styles.nextButton} onPress={() => {Vibration.vibrate(100); handleNext(); }}>
           <Text style={styles.nextButtonText}>Next</Text>
         </TouchableOpacity>
       </View>

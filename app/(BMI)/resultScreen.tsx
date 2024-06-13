@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Modal, TouchableWithoutFeedback, Vibration } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 
@@ -11,9 +11,23 @@ const ResultScreen: React.FC = () => {
     height: string;
   }>();
   const router = useRouter();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalContent, setModalContent] = useState<{ title: string; content: string }>({ title: '', content: '' });
 
   const handleRetry = () => {
+    Vibration.vibrate();
     router.push('/bmiScreen');
+  };
+
+  const openModal = (title: string, content: string) => {
+    Vibration.vibrate();
+    setModalContent({ title, content });
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    Vibration.vibrate();
+    setModalVisible(false);
   };
 
   if (!bmi || !age || !weight || !height) {
@@ -32,6 +46,13 @@ const ResultScreen: React.FC = () => {
 
   const bmiStatusColor = bmiValue < 18.5 ? 'red' : bmiValue <= 24.9 ? 'green' : 'red';
 
+  const bmiInfo = {
+    Underweight: 'BMI is less than 18.5. This might indicate malnutrition, an eating disorder, or other health issues. It’s recommended to consult a healthcare provider.',
+    Normal: 'BMI is between 18.5 and 24.9. This range is considered healthy for most adults. Maintaining this BMI can help reduce the risk of serious health conditions.',
+    Overweight: 'BMI is between 25 and 29.9. This can increase the risk of cardiovascular diseases, diabetes, and other health conditions. Consider a balanced diet and regular physical activity.',
+    Obese: 'BMI is 30 or higher. This significantly increases the risk of many health issues including heart disease, diabetes, and certain cancers. Medical consultation is advised.'
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -39,6 +60,9 @@ const ResultScreen: React.FC = () => {
         <View style={styles.resultCircle}>
           <Text style={styles.bmiValue}>{bmiValue}</Text>
           <Text style={[styles.bmiStatus, { color: bmiStatusColor }]}>{bmiStatus}</Text>
+          <TouchableOpacity onPress={() => {Vibration.vibrate(100);openModal(bmiStatus, bmiInfo[bmiStatus]);}}>
+            <Text style={styles.infoText}>Info</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.bodyComposition}>
           <Text style={styles.bodyCompositionTitle}>Body Composition</Text>
@@ -59,6 +83,23 @@ const ResultScreen: React.FC = () => {
           <Text style={styles.retryButtonText}>Retry</Text>
         </TouchableOpacity>
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={closeModal}>
+        <TouchableWithoutFeedback onPress={closeModal}>
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>{modalContent.title}</Text>
+              <Text style={styles.modalText}>{modalContent.content}</Text>
+              <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
+                <Text style={styles.closeButtonText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -97,6 +138,12 @@ const styles = StyleSheet.create({
   bmiStatus: {
     fontSize: 18,
     marginTop: 5,
+  },
+  infoText: {
+    fontSize: 16,
+    color: '#FFF',
+    textDecorationLine: 'underline',
+    marginTop: 10,
   },
   bodyComposition: {
     width: '100%',
@@ -137,6 +184,42 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingVertical: 15,
     paddingHorizontal: 30,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    width: '80%',
+    backgroundColor: Colors.primary,
+    padding: 20,
+    borderRadius: 20,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 24,
+    color: '#FFF',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  modalText: {
+    fontSize: 18,
+    color: '#FFF',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  closeButton: {
+    backgroundColor: Colors.ButtonColor,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+  },
+  closeButtonText: {
+    fontSize: 18,
+    color: 'black',
   },
 });
 

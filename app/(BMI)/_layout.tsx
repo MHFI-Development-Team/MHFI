@@ -10,7 +10,7 @@ export default function bmiLayout() {
         options={{
           headerTitle: '',
           headerStyle: globalStyles.secondary,
-          headerLeft: _ => <HeaderLeftIcon />,
+          headerLeft: () => <HeaderLeftIcon />, 
         }}
       />
       <Stack.Screen
@@ -18,6 +18,7 @@ export default function bmiLayout() {
         options={{
           headerTitle: '',
           headerStyle: globalStyles.secondary,
+          headerLeft: () => <HeaderLeftIcon />, 
         }}
       />
       <Stack.Screen
@@ -25,6 +26,7 @@ export default function bmiLayout() {
         options={{
           headerTitle: '',
           headerStyle: globalStyles.secondary,
+          headerLeft: () => <HeaderLeftIcon />,
         }}
       />
     </Stack>
