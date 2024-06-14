@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   },
   messageContainer: {
     padding: 10,
-    borderRadius: 15,
+    borderRadius: 8,
     marginVertical: 5,
     maxWidth: '80%',
   },
@@ -159,7 +159,8 @@ const styles = StyleSheet.create({
   },
   quickReplyButton: {
     backgroundColor: '#FF922E',
-    borderRadius: 15,
+    height: 40,
+    borderRadius: 8,
     marginRight: 5,
     marginBottom: 5,
   },

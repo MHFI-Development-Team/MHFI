@@ -10,17 +10,22 @@ import {
   ScrollView,
   SafeAreaView,
   TextInput,
+  Dimensions,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '@/constants/Colors';
 import { useProfile } from '@/components/ProfileContext';
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 const PROFILE_PICTURE_KEY = 'PROFILE_PICTURE_KEY';
 const USERNAME_KEY = 'USERNAME_KEY';
+const CURRENCY_KEY = 'CURRENCY_KEY';
 
 const Profile = () => {
-  const { profilePicture, setProfilePicture, name, setName } = useProfile();
+  const { profilePicture, setProfilePicture, name, setName, currency, setCurrency, resetProfile } = useProfile();
   const [notificationEnabled, setNotificationEnabled] = useState(true);
 
   useEffect(() => {
@@ -56,6 +61,15 @@ const Profile = () => {
     }
   };
 
+  const saveCurrency = async (currency: string) => {
+    try {
+      await AsyncStorage.setItem(CURRENCY_KEY, currency);
+      setCurrency(currency);
+    } catch (error) {
+      console.error('Failed to save currency', error);
+    }
+  };
+
   const toggleNotification = () => {
     setNotificationEnabled(!notificationEnabled);
   };
@@ -78,7 +92,7 @@ const Profile = () => {
       'Are you sure you want to reset the app?',
       [
         { text: 'Cancel', style: 'cancel' },
-        { text: 'Reset', style: 'destructive', onPress: () => console.log('App Reset') },
+        { text: 'Reset', style: 'destructive', onPress: resetProfile },
       ],
       { cancelable: true }
     );
@@ -113,7 +127,9 @@ const Profile = () => {
               style={styles.profilePicture}
             />
           </TouchableOpacity>
-          <Text style={styles.changePictureText}>Change Profile Picture</Text>
+          <TouchableOpacity onPress={pickImage}>
+            <Text style={styles.changePictureText}>Change Profile Picture</Text>
+          </TouchableOpacity>
           <TextInput
             style={styles.textInput}
             placeholder="Enter your name"
@@ -133,6 +149,23 @@ const Profile = () => {
               trackColor={{ false: '#767577', true: '#767577' }}
             />
           </View>
+          <View style={styles.settingItem}>
+            <Text style={styles.settingText}>Currency</Text>
+            <View style={styles.currencyContainer}>
+              <TouchableOpacity
+                style={[styles.currencyButton, currency === '€' && styles.currencyButtonSelected]}
+                onPress={() => saveCurrency('€')}
+              >
+                <Text style={styles.currencyButtonText}>€</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.currencyButton, currency === '£' && styles.currencyButtonSelected]}
+                onPress={() => saveCurrency('£')}
+              >
+                <Text style={styles.currencyButtonText}>£</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
           <TouchableOpacity style={styles.settingItem} onPress={handleDeleteApp}>
             <Text style={[styles.settingText, styles.destructiveText]}>Delete App</Text>
           </TouchableOpacity>
@@ -151,60 +184,78 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
   },
   container: {
-    padding: 20,
+    padding: windowWidth * 0.05,
     alignItems: 'center',
   },
   header: {
-    fontSize: 28,
+    fontSize: windowHeight * 0.035,
     fontWeight: 'bold',
     color: '#FFF',
-    marginBottom: 20,
+    marginBottom: windowHeight * 0.025,
   },
   profileSection: {
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: windowHeight * 0.035,
   },
   profilePicture: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
+    width: windowWidth * 0.3,
+    height: windowWidth * 0.3,
+    borderRadius: windowWidth * 0.15,
     backgroundColor: '#FFF',
   },
   changePictureText: {
-    marginTop: 10,
+    marginTop: windowHeight * 0.012,
     color: Colors.ButtonColor,
-    fontSize: 16,
+    fontSize: windowHeight * 0.02,
   },
   textInput: {
     width: '100%',
-    padding: 10,
-    paddingHorizontal: 70,
-    marginTop: 10, 
+    padding: windowWidth * 0.025,
+    paddingHorizontal: windowWidth * 0.18,
+    marginTop: windowHeight * 0.012,
     borderColor: '#444',
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: windowHeight * 0.006,
     color: '#FFF',
-    fontSize: 18,
+    fontSize: windowHeight * 0.022,
   },
   settingsSection: {
     width: '100%',
   },
   sectionHeader: {
-    fontSize: 22,
+    fontSize: windowHeight * 0.028,
     color: '#FFF',
-    marginBottom: 10,
+    marginBottom: windowHeight * 0.012,
   },
   settingItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 15,
+    paddingVertical: windowHeight * 0.018,
     borderBottomColor: '#444',
     borderBottomWidth: 1,
   },
   settingText: {
     color: '#FFF',
-    fontSize: 18,
+    fontSize: windowHeight * 0.022,
+  },
+  currencyContainer: {
+    flexDirection: 'row',
+  },
+  currencyButton: {
+    padding: windowWidth * 0.025,
+    paddingHorizontal: windowWidth * 0.037,
+    borderRadius: windowHeight * 0.012,
+    borderColor: '#FFF',
+    borderWidth: 1,
+    marginHorizontal: windowWidth * 0.012,
+  },
+  currencyButtonSelected: {
+    backgroundColor: Colors.ButtonColor,
+  },
+  currencyButtonText: {
+    color: '#FFF',
+    fontSize: windowHeight * 0.022,
   },
   destructiveText: {
     color: Colors.ButtonColor,

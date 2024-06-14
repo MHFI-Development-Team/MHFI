@@ -1,20 +1,16 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  Keyboard,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
 import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, Keyboard, TouchableOpacity, Dimensions, SafeAreaView, ScrollView } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
+import { FontAwesome6 } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import Button from '../Button';
 import { Colors } from '@/constants/Colors';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useProfile } from '../ProfileContext';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 type SmokingType = 'cigarettes' | 'cigars' | 'rollies' | 'pipes';
+type CostPeriod = 'costPerWeek' | 'costPerMonth' | 'costPerYear' | 'costOver5years';
 
 interface OptionItem {
   label: string;
@@ -22,9 +18,6 @@ interface OptionItem {
 }
 
 interface CalculationResult {
-  weekly: number;
-  monthly: number;
-  yearly: number;
   costPerWeek: number;
   costPerMonth: number;
   costPerYear: number;
@@ -48,43 +41,29 @@ const data: OptionItem[] = [
 const SmokingCalculator = () => {
   const [value, setValue] = useState<SmokingType>('cigarettes');
   const [isFocus, setIsFocus] = useState(false);
-  const [smokesPerDay, setSmokesPerDay] = useState('');
+  const [packsPerDay, setPacksPerDay] = useState('');
   const [costPerPack, setCostPerPack] = useState('');
-  const [smokesPerPack, setSmokesPerPack] = useState('');
   const [results, setResults] = useState<Results>({});
-  const [isSmokesInputFocused, setIsSmokesInputFocused] = useState(false);
+  const [isPacksInputFocused, setIsPacksInputFocused] = useState(false);
   const [isCostInputFocused, setIsCostInputFocused] = useState(false);
-  const [isPackInputFocused, setIsPackInputFocused] = useState(false);
+  const { currency } = useProfile();
 
-  const calculateIntake = () => {
-    const dailySmokes = parseFloat(smokesPerDay);
+  const calculateCost = () => {
+    Keyboard.dismiss();
+    const dailyPacks = parseFloat(packsPerDay);
     const packCost = parseFloat(costPerPack);
-    const smokesInPack = parseFloat(smokesPerPack);
-    let costPerWeek: number;
-    let costPerMonth: number;
-    let costPerYear: number;
-    let costOver5years: number;
 
-    if (value === 'cigarettes') {
-      costPerWeek = Math.round((7 * packCost * dailySmokes) / 20);
-      costPerMonth = Math.round((364 * packCost * dailySmokes) / 240);
-      costPerYear = Math.round((365 * packCost * dailySmokes) / 20);
-      costOver5years = Math.round((5 * 365 * packCost * dailySmokes) / 20);
-    } else {
-      costPerWeek = Math.round((7 * packCost * dailySmokes) / smokesInPack);
-      costPerMonth = Math.round((365 * packCost * dailySmokes) / (12 * smokesInPack));
-      costPerYear = Math.round((365 * packCost * dailySmokes) / smokesInPack);
-      costOver5years = Math.round((5 * 365 * packCost * dailySmokes) / smokesInPack);
-    }
+    const costPerDay = dailyPacks * packCost;
+    const costPerWeek = costPerDay * 7;
+    const costPerMonth = costPerDay * 30;
+    const costPerYear = costPerDay * 365;
+    const costOver5years = costPerYear * 5;
 
     const calculate = (): CalculationResult => ({
-      weekly: Math.round(dailySmokes * 7 * 100) / 100,
-      monthly: Math.round(dailySmokes * 30 * 100) / 100,
-      yearly: Math.round(dailySmokes * 365 * 100) / 100,
-      costPerWeek,
-      costPerMonth,
-      costPerYear,
-      costOver5years,
+      costPerWeek: Math.round(costPerWeek * 100) / 100,
+      costPerMonth: Math.round(costPerMonth * 100) / 100,
+      costPerYear: Math.round(costPerYear * 100) / 100,
+      costOver5years: Math.round(costOver5years * 100) / 100,
     });
 
     setResults(prevResults => ({
@@ -93,51 +72,55 @@ const SmokingCalculator = () => {
     }));
   };
 
-  const formatLabel = (label: string) => {
-    return label
-      .replace(/([A-Z])/g, ' $1')
-      .replace(/^./, str => str.toUpperCase())
-      .replace(/(\d+)([A-Z])/g, '$1 $2')
-      .trim();
-  };
-
-  const renderResult = (
-    type: SmokingType,
-    period: keyof CalculationResult,
-    cost: boolean = false
-  ) => (
-    <View style={styles.resultCard} key={period}>
-      <Text style={styles.resultTitle}>
-        {capitalizeFirstLetter(formatLabel(period.toString()))}
-        {cost ? ' Cost' : ''}
-      </Text>
-      <Text style={styles.resultValue}>
-        {results[type]?.[period]}
-        {cost ? ' €' : ' units'}
-      </Text>
-    </View>
-  );
-
   const capitalizeFirstLetter = (string: string) =>
     string.charAt(0).toUpperCase() + string.slice(1);
 
+  const formatCurrency = (amount: number): string => {
+    return new Intl.NumberFormat('en-IE', {
+      style: 'currency',
+      currency: currency === '£' ? 'GBP' : 'EUR'
+    }).format(amount);
+  };
+
+  const renderResult = (type: SmokingType, period: CostPeriod) => {
+    const amount = results[type]?.[period] ?? 0; // Provide a default value of 0 if undefined
+    let periodLabel = period
+      .replace('costPer', 'Cost Per ')
+      .replace(/([A-Z])/g, ' $1')
+      .trim();
+
+    if (period === 'costOver5years') {
+      periodLabel = 'Cost Over 5 Years';
+    }
+
+    return (
+      <View style={styles.resultCard} key={period}>
+        <Text style={styles.resultTitle}>{capitalizeFirstLetter(periodLabel)}</Text>
+        <Text style={styles.resultValue}>
+          {formatCurrency(amount)}
+        </Text>
+      </View>
+    );
+  };
+
   const handleDismiss = () => {
     Keyboard.dismiss();
-    setIsSmokesInputFocused(false);
+    setIsPacksInputFocused(false);
     setIsCostInputFocused(false);
-    setIsPackInputFocused(false);
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-      <Text style={styles.title}>Smoking Calculator</Text>
-      <View style={styles.descriptionContainer}>
-        <Text style={styles.descriptionTitle}>What does this calculator do?</Text>
-        <Text style={styles.descriptionText}>
-          Calculate how much you smoke and its cost on a Weekly, Monthly, and Yearly basis
-        </Text>
-      </View>
-      <View style={{ marginTop: 20 }}>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>Smoking Calculator</Text>
+        </View>
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.descriptionTitle}>What does this calculator do?</Text>
+          <Text style={styles.descriptionText}>
+            Calculate the cost of your smoking habit on a weekly, monthly, and yearly basis based on your input.
+          </Text>
+        </View>
         <Dropdown
           style={styles.dropdown}
           placeholderStyle={styles.placeholderStyle}
@@ -147,8 +130,8 @@ const SmokingCalculator = () => {
           activeColor="#FF922E"
           data={data}
           autoScroll
-          maxHeight={300}
-          minHeight={100}
+          maxHeight={windowHeight * 0.3}
+          minHeight={windowHeight * 0.1}
           labelField="label"
           valueField="value"
           placeholder={!isFocus ? 'Select Smoking Type' : '...'}
@@ -160,149 +143,135 @@ const SmokingCalculator = () => {
             setIsFocus(false);
           }}
           renderLeftIcon={() => (
-            <MaterialCommunityIcons
+            <FontAwesome6
               style={styles.icon}
               color={isFocus ? 'white' : 'white'}
-              name="smoke"
-              size={20}
+              name="smoking"
+              size={windowHeight * 0.03}
             />
           )}
         />
-      </View>
-      <View style={styles.inputsContainer}>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder={`Daily ${value} intake`}
-            placeholderTextColor="gray"
-            keyboardType="numeric"
-            value={smokesPerDay}
-            onChangeText={setSmokesPerDay}
-            onFocus={() => setIsSmokesInputFocused(true)}
-            onBlur={() => setIsSmokesInputFocused(false)}
-          />
-          {isSmokesInputFocused && (
-            <TouchableOpacity onPress={handleDismiss} style={styles.dismissIcon}>
-              <AntDesign name="checkcircleo" size={20} color={Colors.ButtonColor} />
-            </TouchableOpacity>
-          )}
-        </View>
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder={`Cost per ${value === 'cigarettes' ? 'pack' : 'unit'}`}
-            placeholderTextColor="gray"
-            keyboardType="numeric"
-            value={costPerPack}
-            onChangeText={setCostPerPack}
-            onFocus={() => setIsCostInputFocused(true)}
-            onBlur={() => setIsCostInputFocused(false)}
-          />
-          {isCostInputFocused && (
-            <TouchableOpacity onPress={handleDismiss} style={styles.dismissIcon}>
-              <AntDesign name="checkcircleo" size={20} color={Colors.ButtonColor} />
-            </TouchableOpacity>
-          )}
-        </View>
-        {(value === 'cigars' || value === 'rollies' || value === 'pipes') && (
+        <View style={styles.inputsContainer}>
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.input}
-              placeholder="Units per pack"
+              placeholder="Packs per day"
               placeholderTextColor="gray"
               keyboardType="numeric"
-              value={smokesPerPack}
-              onChangeText={setSmokesPerPack}
-              onFocus={() => setIsPackInputFocused(true)}
-              onBlur={() => setIsPackInputFocused(false)}
+              value={packsPerDay}
+              onChangeText={setPacksPerDay}
+              onFocus={() => setIsPacksInputFocused(true)}
+              onBlur={() => setIsPacksInputFocused(false)}
             />
-            {isPackInputFocused && (
+            {isPacksInputFocused && (
               <TouchableOpacity onPress={handleDismiss} style={styles.dismissIcon}>
-                <AntDesign name="checkcircleo" size={20} color={Colors.ButtonColor} />
+                <AntDesign name="checkcircleo" size={windowHeight * 0.03} color={Colors.ButtonColor} />
               </TouchableOpacity>
             )}
           </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder={`Cost per pack (${currency})`}
+              placeholderTextColor="gray"
+              keyboardType="numeric"
+              value={costPerPack}
+              onChangeText={setCostPerPack}
+              onFocus={() => setIsCostInputFocused(true)}
+              onBlur={() => setIsCostInputFocused(false)}
+            />
+            {isCostInputFocused && (
+              <TouchableOpacity onPress={handleDismiss} style={styles.dismissIcon}>
+                <AntDesign name="checkcircleo" size={windowHeight * 0.03} color={Colors.ButtonColor} />
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
+        <TouchableOpacity style={styles.calculateButton} onPress={calculateCost}>
+          <Text style={styles.calculateButtonText}>Calculate</Text>
+        </TouchableOpacity>
+        {results[value] && (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.resultsContainer} style={{ overflow: "visible" }}>
+            <View style={styles.results}>
+              {['costPerWeek', 'costPerMonth', 'costPerYear', 'costOver5years'].map(period => renderResult(value, period as CostPeriod))}
+            </View>
+          </ScrollView>
         )}
       </View>
-      <Button
-        title="Calculate"
-        onPress={calculateIntake}
-        style={styles.customButton}
-        textStyle={styles.customText}
-      />
-      {results[value] && (
-        <View style={styles.results}>
-          {renderResult(value, 'weekly')}
-          {renderResult(value, 'monthly')}
-          {renderResult(value, 'yearly')}
-          {renderResult(value, 'costPerWeek', true)}
-          {renderResult(value, 'costPerMonth', true)}
-          {renderResult(value, 'costPerYear', true)}
-          {renderResult(value, 'costOver5years', true)}
-        </View>
-      )}
-    </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: Colors.primary,
+  },
   container: {
     alignItems: 'center',
-    backgroundColor: Colors.primary,
-    flexGrow: 1,
-    padding: 20,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
   },
-  title: {
+  headerContainer: {
+    backgroundColor: '#24263B',
+    width: '100%',
+    padding: 20,
+    borderRadius: 10,
+    marginBottom: 30,
+    marginTop: windowHeight * 0.08,
+    alignItems: 'center',
+  },
+  headerText: {
+    color: '#FFF',
     fontSize: 24,
     fontWeight: 'bold',
-    color: 'white',
-    marginBottom: 20,
+    textAlign: 'center',
   },
   descriptionContainer: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 30,
   },
   descriptionTitle: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '500',
   },
   descriptionText: {
     color: 'white',
-    fontSize: 14,
+    fontSize: 16,
     textAlign: 'center',
   },
   dropdown: {
-    height: 50,
-    borderRadius: 20,
-    paddingHorizontal: 8,
+    height: windowHeight * 0.06,
+    borderRadius: windowHeight * 0.015,
+    paddingHorizontal: windowWidth * 0.02,
     backgroundColor: Colors.secondary,
-    width: 300,
-    marginBottom: 20,
+    width: '100%',
+    marginBottom: windowHeight * 0.03,
   },
   dropdownContainer: {
     backgroundColor: Colors.secondary,
     borderWidth: 0.2,
-    borderRadius: 20,
-    marginTop: 5,
+    borderRadius: windowHeight * 0.015,
+    marginTop: windowHeight * 0.01,
     borderColor: 'grey',
   },
   icon: {
-    marginRight: 5,
+    marginRight: windowWidth * 0.02,
   },
   placeholderStyle: {
-    fontSize: 14,
+    fontSize: windowHeight * 0.018,
     color: 'grey',
     fontWeight: '500',
   },
   selectedTextStyle: {
-    fontSize: 14,
+    fontSize: windowHeight * 0.018,
     color: 'white',
     fontWeight: '500',
   },
   inputsContainer: {
     width: '100%',
-    marginBottom: 20,
+    marginBottom: windowHeight * 0.03,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -310,51 +279,54 @@ const styles = StyleSheet.create({
     width: '100%',
     borderColor: 'gray',
     borderWidth: 0.2,
-    borderRadius: 20,
+    borderRadius: windowHeight * 0.015,
     backgroundColor: Colors.secondary,
-    marginBottom: 10,
+    marginBottom: windowHeight * 0.015,
   },
   input: {
     flex: 1,
-    height: 40,
-    paddingHorizontal: 10,
+    height: windowHeight * 0.06,
+    paddingHorizontal: windowWidth * 0.025,
     color: 'white',
   },
   dismissIcon: {
-    padding: 10,
+    padding: windowHeight * 0.015,
   },
-  customButton: {
+  calculateButton: {
     backgroundColor: Colors.ButtonColor,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 20,
+    paddingHorizontal: windowWidth * 0.1,
+    paddingVertical: windowHeight * 0.02,
+    borderRadius: windowHeight * 0.015,
+    alignItems: 'center',
   },
-  customText: {
-    color: 'black',
-    fontSize: 16,
+  calculateButtonText: {
+    color: '#0C0F14',
+    fontSize: 18,
     fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  resultsContainer: {
+    marginTop: windowHeight * 0.02,
   },
   results: {
-    marginTop: 20,
+    flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
   },
   resultCard: {
     backgroundColor: Colors.secondary,
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 10,
-    width: '90%',
+    borderRadius: windowHeight * 0.015,
+    padding: windowHeight * 0.02,
+    marginHorizontal: windowWidth * 0.01,
     alignItems: 'center',
   },
   resultTitle: {
-    fontSize: 18,
+    fontSize: windowHeight * 0.022,
     color: 'white',
     fontWeight: 'bold',
-    marginBottom: 5,
+    marginBottom: windowHeight * 0.01,
   },
   resultValue: {
-    fontSize: 16,
+    fontSize: windowHeight * 0.02,
     color: 'white',
   },
 });

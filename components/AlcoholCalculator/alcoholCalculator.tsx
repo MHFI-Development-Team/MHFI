@@ -4,7 +4,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { FontAwesome6 } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Colors } from '@/constants/Colors';
-
+import { useProfile } from '../ProfileContext';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -38,6 +38,7 @@ const avgAlcoholPercentage = {
 };
 
 const AlcoholCalculator = () => {
+  const { currency } = useProfile(); // Use the currency context
   const [value, setValue] = useState<AlcoholType>('spirits');
   const [isFocus, setIsFocus] = useState(false);
   const [drinksPerDay, setDrinksPerDay] = useState('');
