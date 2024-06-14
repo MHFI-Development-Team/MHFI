@@ -7,12 +7,16 @@ import DailyGoals from '@/components/DailyGoals/dailyGoals';
 import SuggestedTools from '@/components/SuggestTools/suggestTools';
 import { View } from 'react-native';
 import HabitList from '@/components/HabitTracker/HabitList';
+import { Dimensions } from 'react-native';
+
+const windowWidth = Dimensions.get('window').width;
 
 const homeScreen = () => {
   return (
     <SafeAreaView
-      style={[globalStyles.container, { paddingLeft: 16 }]}
-      edges={['right', 'left', 'top']}>
+      style={[globalStyles.container, { paddingHorizontal: windowWidth * 0.05, paddingTop: 0 }]} 
+      edges={['right', 'left', 'top']}
+    >
       <Header />
       <View style={{ justifyContent: 'space-evenly', flex: 1 }}>
         <ContentForYou />

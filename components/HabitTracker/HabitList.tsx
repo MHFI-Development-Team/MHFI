@@ -79,14 +79,14 @@ const HabitList: React.FC = () => {
   };
 
   return (
-    <View>
+    <View style={{ transform: [{ translateY: -20 }] }}>
       <View style={styles.HabitListContent}>
         <View>
           <Text style={[globalStyles.textHeader, { fontWeight: 'bold', fontSize: 20 }]}>
             Your Habits
           </Text>
         </View>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10 }}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10, overflow: "visible" }}>
           <View style={{ flexDirection: 'row', gap: 25 }}>
             {habits.length === 0 ? (
               <View style={styles.emptyContainer}>

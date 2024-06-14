@@ -1,10 +1,13 @@
-import { View, Text, StyleSheet, TextInput, Keyboard, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Keyboard, TouchableOpacity, Dimensions } from 'react-native';
 import React, { useState } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
 import { FontAwesome6 } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Button from '../Button';
 import { Colors } from '@/constants/Colors';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 type AlcoholType = 'spirits' | 'cans';
 type Period = 'weekly' | 'monthly' | 'yearly';
@@ -78,45 +81,45 @@ const AlcoholCalculator = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Alcohol Calculator</Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.title}>Alcohol Calculator</Text>
+      </View>
       <View style={styles.descriptionContainer}>
         <Text style={styles.descriptionTitle}>What does this calculator do?</Text>
         <Text style={styles.descriptionText}>
           Calculate how much alcohol you consume on a Weekly, Monthly, and Yearly basis
         </Text>
       </View>
-      <View style={{ marginTop: 20 }}>
-        <Dropdown
-          style={styles.dropdown}
-          placeholderStyle={styles.placeholderStyle}
-          itemTextStyle={{ color: 'white' }}
-          selectedTextStyle={styles.selectedTextStyle}
-          containerStyle={styles.dropdownContainer}
-          activeColor="#FF922E"
-          data={data}
-          autoScroll
-          maxHeight={300}
-          minHeight={100}
-          labelField="label"
-          valueField="value"
-          placeholder={!isFocus ? 'Select Alcohol Type' : '...'}
-          value={value}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          onChange={item => {
-            setValue(item.value);
-            setIsFocus(false);
-          }}
-          renderLeftIcon={() => (
-            <FontAwesome6
-              style={styles.icon}
-              color={isFocus ? 'white' : 'white'}
-              name="wine-bottle"
-              size={20}
-            />
-          )}
-        />
-      </View>
+      <Dropdown
+        style={styles.dropdown}
+        placeholderStyle={styles.placeholderStyle}
+        itemTextStyle={{ color: 'white' }}
+        selectedTextStyle={styles.selectedTextStyle}
+        containerStyle={styles.dropdownContainer}
+        activeColor="#FF922E"
+        data={data}
+        autoScroll
+        maxHeight={windowHeight * 0.3}
+        minHeight={windowHeight * 0.1}
+        labelField="label"
+        valueField="value"
+        placeholder={!isFocus ? 'Select Alcohol Type' : '...'}
+        value={value}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+        onChange={item => {
+          setValue(item.value);
+          setIsFocus(false);
+        }}
+        renderLeftIcon={() => (
+          <FontAwesome6
+            style={styles.icon}
+            color={isFocus ? 'white' : 'white'}
+            name="wine-bottle"
+            size={windowHeight * 0.03}
+          />
+        )}
+      />
       <View style={styles.inputsContainer}>
         <View style={styles.inputContainer}>
           <TextInput
@@ -131,7 +134,7 @@ const AlcoholCalculator = () => {
           />
           {isDrinksInputFocused && (
             <TouchableOpacity onPress={handleDismiss} style={styles.dismissIcon}>
-              <AntDesign name="checkcircleo" size={20} color={Colors.ButtonColor} />
+              <AntDesign name="checkcircleo" size={windowHeight * 0.03} color={Colors.ButtonColor} />
             </TouchableOpacity>
           )}
         </View>
@@ -149,18 +152,15 @@ const AlcoholCalculator = () => {
             />
             {isVolumeInputFocused && (
               <TouchableOpacity onPress={handleDismiss} style={styles.dismissIcon}>
-                <AntDesign name="checkcircleo" size={20} color={Colors.ButtonColor} />
+                <AntDesign name="checkcircleo" size={windowHeight * 0.03} color={Colors.ButtonColor} />
               </TouchableOpacity>
             )}
           </View>
         )}
       </View>
-      <Button
-        title="Calculate"
-        onPress={calculateIntake}
-        style={styles.customButton}
-        textStyle={styles.customText}
-      />
+      <TouchableOpacity style={styles.calculateButton} onPress={calculateIntake}>
+        <Text style={styles.calculateButtonText}>Calculate</Text>
+      </TouchableOpacity>
       {results[value] && (
         <View style={styles.results}>
           {['weekly', 'monthly', 'yearly'].map(period => renderResult(value, period as Period))}
@@ -175,59 +175,68 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Colors.primary,
     flex: 1,
-    padding: 20,
+    paddingHorizontal: windowWidth * 0.05,
+    paddingVertical: windowHeight * 0.02,
+  },
+  headerContainer: {
+    backgroundColor: '#24263B',
+    width: '100%',
+    padding: windowHeight * 0.025,
+    borderRadius: windowHeight * 0.015,
+    marginBottom: windowHeight * 0.04,
+    alignItems: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: windowHeight * 0.03,
     fontWeight: 'bold',
     color: 'white',
-    marginBottom: 20,
+    textAlign: 'center',
   },
   descriptionContainer: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: windowHeight * 0.04,
   },
   descriptionTitle: {
     color: 'white',
-    fontSize: 16,
+    fontSize: windowHeight * 0.02,
     fontWeight: '500',
   },
   descriptionText: {
     color: 'white',
-    fontSize: 14,
+    fontSize: windowHeight * 0.018,
     textAlign: 'center',
   },
   dropdown: {
-    height: 50,
-    borderRadius: 20,
-    paddingHorizontal: 8,
+    height: windowHeight * 0.06,
+    borderRadius: windowHeight * 0.015,
+    paddingHorizontal: windowWidth * 0.02,
     backgroundColor: Colors.secondary,
-    width: 300,
-    marginBottom: 20,
+    width: windowWidth * 0.75,
+    marginBottom: windowHeight * 0.03,
   },
   dropdownContainer: {
     backgroundColor: Colors.secondary,
     borderWidth: 0.2,
-    borderRadius: 20,
-    marginTop: 5,
+    borderRadius: windowHeight * 0.015,
+    marginTop: windowHeight * 0.01,
     borderColor: 'grey',
   },
   icon: {
-    marginRight: 5,
+    marginRight: windowWidth * 0.02,
   },
   placeholderStyle: {
-    fontSize: 14,
+    fontSize: windowHeight * 0.018,
     color: 'grey',
     fontWeight: '500',
   },
   selectedTextStyle: {
-    fontSize: 14,
+    fontSize: windowHeight * 0.018,
     color: 'white',
     fontWeight: '500',
   },
   inputsContainer: {
     width: '100%',
-    marginBottom: 20,
+    marginBottom: windowHeight * 0.03,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -235,51 +244,53 @@ const styles = StyleSheet.create({
     width: '100%',
     borderColor: 'gray',
     borderWidth: 0.2,
-    borderRadius: 20,
+    borderRadius: windowHeight * 0.015,
     backgroundColor: Colors.secondary,
-    marginBottom: 10,
+    marginBottom: windowHeight * 0.015,
   },
   input: {
     flex: 1,
-    height: 40,
-    paddingHorizontal: 10,
+    height: windowHeight * 0.06,
+    paddingHorizontal: windowWidth * 0.025,
     color: 'white',
   },
   dismissIcon: {
-    padding: 10,
+    padding: windowHeight * 0.015,
   },
-  customButton: {
+  calculateButton: {
     backgroundColor: Colors.ButtonColor,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 20,
+    paddingHorizontal: windowWidth * 0.1,
+    paddingVertical: windowHeight * 0.02,
+    borderRadius: windowHeight * 0.015,
+    marginTop: windowHeight * 0.02,
+    alignItems: 'center',
   },
-  customText: {
+  calculateButtonText: {
     color: 'black',
-    fontSize: 16,
+    fontSize: windowHeight * 0.022,
     fontWeight: 'bold',
   },
   results: {
-    marginTop: 20,
+    marginTop: windowHeight * 0.03,
     alignItems: 'center',
     width: '100%',
   },
   resultCard: {
     backgroundColor: Colors.secondary,
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 10,
+    borderRadius: windowHeight * 0.015,
+    padding: windowHeight * 0.02,
+    marginBottom: windowHeight * 0.02,
     width: '90%',
     alignItems: 'center',
   },
   resultTitle: {
-    fontSize: 18,
+    fontSize: windowHeight * 0.022,
     color: 'white',
     fontWeight: 'bold',
-    marginBottom: 5,
+    marginBottom: windowHeight * 0.01,
   },
   resultValue: {
-    fontSize: 16,
+    fontSize: windowHeight * 0.02,
     color: 'white',
   },
 });

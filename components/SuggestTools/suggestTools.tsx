@@ -10,13 +10,16 @@ const windowHeight = Dimensions.get('window').height;
 const SuggestedTools = () => {
   return (
     <>
-      <View>
+      <View style={{ transform: [{ translateY: -20 }] }}>
         <View>
           <Text style={[globalStyles.textHeader, { fontWeight: 'bold', fontSize: 20 }]}>
             Suggested tools
           </Text>
         </View>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10 }}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{ marginTop: 10, overflow: 'visible' }}>
           <View style={{ flexDirection: 'row', gap: 25 }}>
             {suggestedTools.map((tool, index) => (
               <Link key={index} href={tool.href} asChild>

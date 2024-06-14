@@ -4,7 +4,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import HeaderLeftIcon from '@/components/HeaderLeftIcon';
 import FeedHeaderLeftIcon from '@/components/feedHeaderLeftIcon';
 import globalStyles from '@/constants/globalStyles';
-
+import { ProfileProvider } from '@/components/ProfileContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,6 +32,7 @@ export default function RootLayout() {
   }
 
   return (
+    <ProfileProvider>
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen
@@ -85,5 +86,6 @@ export default function RootLayout() {
         }}
       />
     </Stack>
+    </ProfileProvider>
   );
 }
