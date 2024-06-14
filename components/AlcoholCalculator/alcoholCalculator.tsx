@@ -32,6 +32,11 @@ const data: OptionItem[] = [
   { label: 'Cans', value: 'cans' },
 ];
 
+const avgAlcoholPercentage = {
+  spirits: 40, // average percentage of alcohol in spirits
+  cans: 5, // average percentage of alcohol in cans
+};
+
 const AlcoholCalculator = () => {
   const [value, setValue] = useState<AlcoholType>('spirits');
   const [isFocus, setIsFocus] = useState(false);
@@ -43,11 +48,15 @@ const AlcoholCalculator = () => {
 
   const calculateIntake = () => {
     Keyboard.dismiss();
-    let alcoholPerDayLiters: number;
+    const drinksPerDayNum = parseFloat(drinksPerDay);
+    const volumePerDrinkNum = parseFloat(volumePerDrink);
+    const avgPercentage = avgAlcoholPercentage[value];
+
+    let alcoholPerDayMl: number;
     if (value === 'cans') {
-      alcoholPerDayLiters = (parseFloat(drinksPerDay) * parseFloat(volumePerDrink)) / 1000;
+      alcoholPerDayMl = (drinksPerDayNum * volumePerDrinkNum * avgPercentage) / 100;
     } else {
-      alcoholPerDayLiters = parseFloat(drinksPerDay) / 1000;
+      alcoholPerDayMl = (drinksPerDayNum * avgPercentage) / 100;
     }
 
     const calculate = (amountPerDay: number): CalculationResult => ({
@@ -58,19 +67,24 @@ const AlcoholCalculator = () => {
 
     setResults(prevResults => ({
       ...prevResults,
-      [value]: calculate(alcoholPerDayLiters),
+      [value]: calculate(alcoholPerDayMl),
     }));
   };
 
   const capitalizeFirstLetter = (string: string) =>
     string.charAt(0).toUpperCase() + string.slice(1);
 
-  const renderResult = (type: AlcoholType, period: Period) => (
-    <View style={styles.resultCard} key={period}>
-      <Text style={styles.resultTitle}>{capitalizeFirstLetter(period)}</Text>
-      <Text style={styles.resultValue}>{results[type]?.[period]} liters</Text>
-    </View>
-  );
+  const renderResult = (type: AlcoholType, period: Period) => {
+    const amount = results[type]?.[period] ?? 0; // Provide a default value of 0 if undefined
+    return (
+      <View style={styles.resultCard} key={period}>
+        <Text style={styles.resultTitle}>{capitalizeFirstLetter(period)}</Text>
+        <Text style={styles.resultValue}>
+          {amount >= 1000 ? `${(amount / 1000).toFixed(2)} liters` : `${amount} ml`}
+        </Text>
+      </View>
+    );
+  };
 
   const handleDismiss = () => {
     Keyboard.dismiss();
@@ -87,7 +101,7 @@ const AlcoholCalculator = () => {
         <View style={styles.descriptionContainer}>
           <Text style={styles.descriptionTitle}>What does this calculator do?</Text>
           <Text style={styles.descriptionText}>
-            Calculate how much alcohol you consume on a Weekly, Monthly, and Yearly basis
+            Calculate the average amount of alcohol you consume on a weekly, monthly, and yearly basis based on your input.
           </Text>
         </View>
         <Dropdown
@@ -179,7 +193,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
   },
   container: {
-
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
@@ -273,9 +286,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   calculateButtonText: {
-    color: 'black',
-    fontSize: windowHeight * 0.022,
+    color: '#0C0F14',
+    fontSize: 18,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
   resultsContainer: {
     marginTop: windowHeight * 0.06,
