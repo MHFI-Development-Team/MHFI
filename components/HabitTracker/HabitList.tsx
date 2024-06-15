@@ -83,7 +83,7 @@ const HabitList: React.FC = () => {
       <View style={styles.HabitListContent}>
         <View>
           <Text style={[globalStyles.textHeader, { fontWeight: 'bold', fontSize: 20 }]}>
-            Your Habits
+           Milestone Tracker
           </Text>
         </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 10, overflow: "visible" }}>

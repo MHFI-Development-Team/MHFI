@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Dimensions, Text, Image } from 'react-native';
 import { Link } from 'expo-router';
 import { useProfile } from './ProfileContext';
-import TabBarIcon from './Navigation/TabBarIcon';
+import UserIcon from '@/assets/svg/UserIcon'; // Make sure this path is correct
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#FFF',
   },
   profileName: {
     color: '#FFF',
@@ -115,7 +114,9 @@ export default function Header() {
               style={styles.profilePicture}
             />
           ) : (
-            <TabBarIcon name="user" color="white" />
+            <View style={styles.profilePicture}>
+              <UserIcon width={40} height={40} />
+            </View>
           )}
         </Link>
       </TouchableOpacity>

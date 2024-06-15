@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import { Colors } from '@/constants/Colors'; // Assuming you have a Colors file for your theme
+import { Colors } from '@/constants/Colors';
 
 const Quiz = () => {
   const router = useRouter();
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.background, // Assuming you have a background color in your Colors file
+    backgroundColor: Colors.background, 
     padding: 20,
   },
   title: {

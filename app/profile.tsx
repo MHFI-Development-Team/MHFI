@@ -16,6 +16,7 @@ import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '@/constants/Colors';
 import { useProfile } from '@/components/ProfileContext';
+import UserIcon from '@/assets/svg/UserIcon';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -118,14 +119,16 @@ const Profile = () => {
         <Text style={styles.header}>Profile</Text>
         <View style={styles.profileSection}>
           <TouchableOpacity onPress={pickImage}>
-            <Image
-              source={
-                profilePicture
-                  ? { uri: profilePicture }
-                  : require('@/assets/images/adaptive-icon.png')
-              }
-              style={styles.profilePicture}
-            />
+            {profilePicture ? (
+              <Image
+                source={{ uri: profilePicture }}
+                style={styles.profilePicture}
+              />
+            ) : (
+              <View style={styles.profilePicture}>
+                <UserIcon width={styles.profilePicture.width} height={styles.profilePicture.height} />
+              </View>
+            )}
           </TouchableOpacity>
           <TouchableOpacity onPress={pickImage}>
             <Text style={styles.changePictureText}>Change Profile Picture</Text>
@@ -146,7 +149,7 @@ const Profile = () => {
               value={notificationEnabled}
               onValueChange={toggleNotification}
               thumbColor={notificationEnabled ? Colors.ButtonColor : '#f4f3f4'}
-              trackColor={{ false: '#767577', true: '#767577' }}
+              trackColor={{ false: '#444', true: '#444' }}
             />
           </View>
           <View style={styles.settingItem}>
@@ -201,7 +204,8 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.3,
     height: windowWidth * 0.3,
     borderRadius: windowWidth * 0.15,
-    backgroundColor: '#FFF',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   changePictureText: {
     marginTop: windowHeight * 0.012,
@@ -245,7 +249,7 @@ const styles = StyleSheet.create({
   currencyButton: {
     padding: windowWidth * 0.025,
     paddingHorizontal: windowWidth * 0.037,
-    borderRadius: windowHeight * 0.012,
+    borderRadius: windowHeight * 0.007,
     borderColor: '#FFF',
     borderWidth: 1,
     marginHorizontal: windowWidth * 0.012,
