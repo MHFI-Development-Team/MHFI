@@ -19,6 +19,9 @@ import fm from 'front-matter';
 import { Articles } from '@/constants/types';
 import { Asset } from 'expo-asset';
 import * as FileSystem from 'expo-file-system';
+import { Dimensions } from 'react-native';
+
+const windowWidth = Dimensions.get("window").width;
 
 const getArticle = async (requireNumber: number) => {
   const [{ name, localUri }] = await Asset.loadAsync(requireNumber);
@@ -94,7 +97,7 @@ export default function FeedScreen() {
   }
 
   return (
-    <View style={[globalStyles.container, { paddingHorizontal: 16 }]}>
+    <View style={[globalStyles.container, { paddingHorizontal: windowWidth * 0.05 }]}>
       <SafeAreaView edges={['right', 'left', 'top']}>
         <Header />
       </SafeAreaView>

@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity, ScrollView, Image, Dimensions, TextInput, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Colors } from '@/constants/Colors';
 import { useProfile } from '@/components/ProfileContext';
 import { OPENAI_API_KEY } from '@env';
+import UserIcon from '@/assets/svg/UserIcon';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -22,13 +24,54 @@ interface Message {
 export default function Chatbot() {
   const [inputText, setInputText] = useState<string>('');
   const { profilePicture, messages, setMessages } = useProfile();
+  const [userName, setUserName] = useState<string | null>(null);
+  const [conversationEnded, setConversationEnded] = useState<boolean>(false);
+  const [userMessageCount, setUserMessageCount] = useState<number>(0);
   const scrollViewRef = useRef<ScrollView>(null);
 
   useEffect(() => {
-    if (messages.length === 0) {
-      loadInitialMessage();
-    }
+    const loadUserName = async () => {
+      const name = await AsyncStorage.getItem('userName');
+      setUserName(name);
+    };
+
+    const loadMessages = async () => {
+      const storedMessages = await AsyncStorage.getItem('messages');
+      if (storedMessages) {
+        setMessages(JSON.parse(storedMessages));
+      }
+    };
+
+    const checkConversationStatus = async () => {
+      const endTime = await AsyncStorage.getItem('conversationEndTime');
+      if (endTime) {
+        const endTimeDate = new Date(endTime);
+        const currentTime = new Date();
+        const timeDifference = currentTime.getTime() - endTimeDate.getTime();
+        const hoursDifference = timeDifference / (1000 * 3600);
+        if (hoursDifference >= 0.1) {
+          setConversationEnded(false);
+          loadInitialMessage();
+          await AsyncStorage.removeItem('conversationEndTime');
+        } else {
+          setConversationEnded(true);
+        }
+      } else if (messages.length === 0) {
+        loadInitialMessage();
+      }
+    };
+
+    loadUserName();
+    loadMessages().then(checkConversationStatus);
   }, []);
+
+  useEffect(() => {
+    const storeMessages = async () => {
+      await AsyncStorage.setItem('messages', JSON.stringify(messages));
+    };
+
+    storeMessages();
+  }, [messages]);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', scrollToBottom);
@@ -40,9 +83,10 @@ export default function Chatbot() {
   }, []);
 
   const loadInitialMessage = () => {
+    const greetingText = userName ? `Hello ${userName}! How are you feeling today?` : "Hello! How are you feeling today?";
     const message: Message = {
       _id: 1,
-      text: "Hello! I'm here to support your mental health. How are you feeling today?",
+      text: greetingText,
       createdAt: new Date(),
       user: {
         _id: 2,
@@ -53,7 +97,7 @@ export default function Chatbot() {
   };
 
   const handleSend = async () => {
-    if (inputText.trim()) {
+    if (inputText.trim() && !conversationEnded) {
       const userMessage: Message = {
         _id: Math.random().toString(),
         text: inputText,
@@ -61,82 +105,101 @@ export default function Chatbot() {
         user: {
           _id: 1,
           name: 'You',
-          avatar: profilePicture,
+          avatar: profilePicture || '', // Use the latest profile picture, ensure it is a string
         },
       };
 
       setMessages((previousMessages) => [...previousMessages, userMessage]);
       setInputText('');
+      setUserMessageCount(userMessageCount + 1);
 
       // Generate AI response
-      const assistantMessage = await generateAIResponse(inputText);
+      const assistantMessage = await generateAIResponse([...messages, userMessage]);
       setMessages((previousMessages) => [...previousMessages, assistantMessage]);
-    }
-  };
 
-  const generateAIResponse = async (userInput: string): Promise<Message> => {
-    const maxRetries = 5;
-    let retryCount = 0;
-    let backoff = 1000; // Initial backoff duration in ms
-
-    while (retryCount < maxRetries) {
-      try {
-        const response = await axios.post('https://api.openai.com/v1/chat/completions', {
-          model: 'gpt-3.5-turbo-16k',
-          messages: [
-            { role: 'system', content: "You are a helpful health therapist for men's mental health." },
-            { role: 'user', content: userInput }
-          ],
-          max_tokens: 150,
-          n: 1,
-          stop: null,
-          temperature: 0.9,
-        }, {
-          headers: {
-            'Authorization': `Bearer ${OPENAI_API_KEY}`,
-            'Content-Type': 'application/json',
-          },
-        });
-
-        const aiText = response.data.choices[0].message.content.trim();
-        return {
+      if (userMessageCount >= 14) {
+        const closingMessage = {
           _id: Math.random().toString(),
-          text: aiText,
+          text: "It's been great chatting with you. Let's catch up again soon. Have a wonderful day!",
           createdAt: new Date(),
           user: {
             _id: 2,
             name: 'Assistant',
           },
         };
-      } catch (error) {
-        if (axios.isAxiosError(error) && error.response && error.response.status === 429) {
-          retryCount++;
-          await new Promise(res => setTimeout(res, backoff));
-          backoff *= 2; 
-        } else {
-          console.error('Error generating AI response:', error);
-          return {
-            _id: Math.random().toString(),
-            text: "I'm sorry, I'm having trouble understanding right now. Please try again later.",
-            createdAt: new Date(),
-            user: {
-              _id: 2,
-              name: 'Assistant',
-            },
-          };
-        }
+        setMessages((previousMessages) => [...previousMessages, closingMessage]);
+        setConversationEnded(true);
+        const endTime = new Date();
+        await AsyncStorage.setItem('conversationEndTime', endTime.toISOString());
+      } else if (userMessageCount >= 12) {
+        const gentleClosingMessage = {
+          _id: Math.random().toString(),
+          text: "We've had a great chat today. Is there anything else you'd like to discuss before we wrap up?",
+          createdAt: new Date(),
+          user: {
+            _id: 2,
+            name: 'Assistant',
+          },
+        };
+        setMessages((previousMessages) => [...previousMessages, gentleClosingMessage]);
+      }
+
+      // Check for end-of-conversation indicators
+      const endPhrases = ["goodbye", "talk to you later", "bye", "have a wonderful day", "take care", "see you soon", "catch you later", "farewell", "until next time"];
+      if (endPhrases.some(phrase => assistantMessage.text.toLowerCase().includes(phrase))) {
+        setConversationEnded(true);
+        const endTime = new Date();
+        await AsyncStorage.setItem('conversationEndTime', endTime.toISOString());
       }
     }
+  };
 
-    return {
-      _id: Math.random().toString(),
-      text: "I'm sorry, I'm having trouble understanding right now. Please try again later.",
-      createdAt: new Date(),
-      user: {
-        _id: 2,
-        name: 'Assistant',
-      },
-    };
+  const generateAIResponse = async (conversationHistory: Message[]): Promise<Message> => {
+    try {
+      const formattedMessages = conversationHistory.map(message => ({
+        role: message.user._id === 1 ? 'user' : 'assistant',
+        content: message.text
+      }));
+
+      const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+        model: 'gpt-3.5-turbo',
+        messages: [
+          { role: 'system', content: "You are a helpful health therapist for men from the ages of 18-35, specifically catering to individuals in Ireland and the United Kingdom. Make the responses more human and open ended. Be honest and authentic, and don't provide any harmful advice or recommendations. Your goal is to check in on their health and emotions in a kind, masculine engaging manner. send a wide range of emojis but not too frequently. If users ask for health locations, General Practitioners etc tell them to navigate to the Geolocator in the Suggested Tools in the app to find their nearest health centers. If relevant let the user know they can take quizzes in app to test their knowledge. If users say they would like to read more and understand their health or something along those lines tell them to Navigate to the Feed Page in the app and check it out there may potentially be articles that are relevant for them, never tell them the exact article they are looking for is there, just say that they may find it there." },
+          ...formattedMessages,
+        ],
+        max_tokens: 150,
+        n: 1,
+        stop: null,
+        temperature: 0.9,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${OPENAI_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const aiText = response.data.choices[0].message.content.trim();
+      return {
+        _id: Math.random().toString(),
+        text: aiText,
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: 'Assistant',
+        },
+      };
+    } catch (error) {
+      console.error('Error generating AI response:', error);
+      return {
+        _id: Math.random().toString(),
+        text: "I'm sorry, I'm having trouble understanding right now. Please try again later.",
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: 'Assistant',
+        },
+      };
+    }
   };
 
   const scrollToBottom = () => {
@@ -151,9 +214,13 @@ export default function Chatbot() {
           <Text style={styles.messageText}>{message.text}</Text>
           <Text style={styles.timestamp}>{new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
         </View>
-        {isUser && message.user.avatar && (
-          <Image source={{ uri: message.user.avatar }} style={styles.avatar} />
-        )}
+        {isUser ? (
+          message.user.avatar ? (
+            <Image source={{ uri: message.user.avatar }} style={styles.avatar} />
+          ) : (
+            <UserIcon style={styles.avatar} />
+          )
+        ) : null}
       </View>
     );
   };
@@ -163,7 +230,7 @@ export default function Chatbot() {
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 0}
       >
         <ScrollView 
           style={styles.chat} 
@@ -178,11 +245,12 @@ export default function Chatbot() {
             style={styles.input}
             value={inputText}
             onChangeText={setInputText}
-            placeholder="Type a message..."
+            placeholder={conversationEnded ? "Check back in tomorrow!" : "Type a message..."}
             placeholderTextColor="#888"
             onFocus={scrollToBottom}
+            editable={!conversationEnded}
           />
-          <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
+          <TouchableOpacity style={styles.sendButton} onPress={handleSend} disabled={conversationEnded}>
             <Text style={styles.sendButtonText}>Send</Text>
           </TouchableOpacity>
         </View>
@@ -233,7 +301,7 @@ const styles = StyleSheet.create({
     fontSize: windowHeight * 0.02,
   },
   timestamp: {
-    color: '#ccc',
+    color: 'white',
     fontSize: windowHeight * 0.015,
     alignSelf: 'flex-end',
   },
@@ -245,7 +313,6 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    backgroundColor: '#fff',
     width: '100%',
     padding: windowWidth * 0.025,
     paddingHorizontal: windowWidth * 0.06,
