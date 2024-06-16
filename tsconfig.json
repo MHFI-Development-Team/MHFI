@@ -6,12 +6,18 @@
       "@/*": [
         "./*"
       ]
-    }
+    },
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "module": "ESNext",
+    "target": "ES6",
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
-, "components/DailyGoals/DailyGoals.d.ts"  ]
+    "expo-env.d.ts",
+    "components/DailyGoals/DailyGoals.d.ts"
+  ]
 }

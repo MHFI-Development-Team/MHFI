@@ -4,7 +4,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Habit } from '@/components/HabitTracker/HabitList';
+import { Habit } from '@/components/EmotionTracker/HabitList';
 
 const HabitEdit: React.FC = () => {
   const router = useRouter();

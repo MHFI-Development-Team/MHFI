@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, Button } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Habit } from '@/components/HabitTracker/HabitList';
+import { Habit } from '@/components/EmotionTracker/HabitList';
 import { useFocusEffect } from '@react-navigation/native';
 
 const HabitDetails: React.FC = () => {

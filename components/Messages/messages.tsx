@@ -23,22 +23,18 @@ interface Message {
 
 export default function Chatbot() {
   const [inputText, setInputText] = useState<string>('');
-  const { profilePicture, messages, setMessages } = useProfile();
-  const [userName, setUserName] = useState<string | null>(null);
+  const { profilePicture, messages, setMessages, name: userName, setTodayEmotion, setTodayRecommendation, setEmotionColors, setRecommendationColors } = useProfile();
   const [conversationEnded, setConversationEnded] = useState<boolean>(false);
   const [userMessageCount, setUserMessageCount] = useState<number>(0);
   const scrollViewRef = useRef<ScrollView>(null);
 
   useEffect(() => {
-    const loadUserName = async () => {
-      const name = await AsyncStorage.getItem('userName');
-      setUserName(name);
-    };
-
     const loadMessages = async () => {
       const storedMessages = await AsyncStorage.getItem('messages');
       if (storedMessages) {
         setMessages(JSON.parse(storedMessages));
+      } else {
+        loadInitialMessage();
       }
     };
 
@@ -49,19 +45,16 @@ export default function Chatbot() {
         const currentTime = new Date();
         const timeDifference = currentTime.getTime() - endTimeDate.getTime();
         const hoursDifference = timeDifference / (1000 * 3600);
-        if (hoursDifference >= 0.1) {
+        if (hoursDifference >= 0.01) {
           setConversationEnded(false);
           loadInitialMessage();
           await AsyncStorage.removeItem('conversationEndTime');
         } else {
           setConversationEnded(true);
         }
-      } else if (messages.length === 0) {
-        loadInitialMessage();
       }
     };
 
-    loadUserName();
     loadMessages().then(checkConversationStatus);
   }, []);
 
@@ -117,39 +110,13 @@ export default function Chatbot() {
       const assistantMessage = await generateAIResponse([...messages, userMessage]);
       setMessages((previousMessages) => [...previousMessages, assistantMessage]);
 
-      if (userMessageCount >= 14) {
-        const closingMessage = {
-          _id: Math.random().toString(),
-          text: "It's been great chatting with you. Let's catch up again soon. Have a wonderful day!",
-          createdAt: new Date(),
-          user: {
-            _id: 2,
-            name: 'Assistant',
-          },
-        };
-        setMessages((previousMessages) => [...previousMessages, closingMessage]);
-        setConversationEnded(true);
-        const endTime = new Date();
-        await AsyncStorage.setItem('conversationEndTime', endTime.toISOString());
-      } else if (userMessageCount >= 12) {
-        const gentleClosingMessage = {
-          _id: Math.random().toString(),
-          text: "We've had a great chat today. Is there anything else you'd like to discuss before we wrap up?",
-          createdAt: new Date(),
-          user: {
-            _id: 2,
-            name: 'Assistant',
-          },
-        };
-        setMessages((previousMessages) => [...previousMessages, gentleClosingMessage]);
-      }
-
       // Check for end-of-conversation indicators
-      const endPhrases = ["goodbye", "talk to you later", "bye", "have a wonderful day", "take care", "see you soon", "catch you later", "farewell", "until next time"];
+      const endPhrases = ["goodbye", "i will talk to you tomorrow", "talk to you tomorrow"];
       if (endPhrases.some(phrase => assistantMessage.text.toLowerCase().includes(phrase))) {
         setConversationEnded(true);
         const endTime = new Date();
         await AsyncStorage.setItem('conversationEndTime', endTime.toISOString());
+        await generateTodayEmotionAndRecommendation([...messages, userMessage, assistantMessage]);
       }
     }
   };
@@ -164,7 +131,7 @@ export default function Chatbot() {
       const response = await axios.post('https://api.openai.com/v1/chat/completions', {
         model: 'gpt-3.5-turbo',
         messages: [
-          { role: 'system', content: "You are a helpful health therapist for men from the ages of 18-35, specifically catering to individuals in Ireland and the United Kingdom. Make the responses more human and open ended. Be honest and authentic, and don't provide any harmful advice or recommendations. Your goal is to check in on their health and emotions in a kind, masculine engaging manner. send a wide range of emojis but not too frequently. If users ask for health locations, General Practitioners etc tell them to navigate to the Geolocator in the Suggested Tools in the app to find their nearest health centers. If relevant let the user know they can take quizzes in app to test their knowledge. If users say they would like to read more and understand their health or something along those lines tell them to Navigate to the Feed Page in the app and check it out there may potentially be articles that are relevant for them, never tell them the exact article they are looking for is there, just say that they may find it there." },
+          { role: 'system', content: "You are a helpful health therapist for men from the ages of 18-35, specifically catering to individuals in Ireland and the Nothern Ireland. Make the responses more human and open ended. Be honest and authentic, and don't provide any harmful advice or recommendations. Your goal is to check in on their health and emotions in a kind, masculine engaging manner. send a wide range of emojis but not too frequently and make sure they are masculine and empowering when you send them. If users ask for health locations, General Practitioners etc tell them to navigate to the Geolocator in the Suggested Tools in the app to find their nearest health centers. If relevant let the user know they can take quizzes in app to test their knowledge. If users say they would like to read more and understand their health or something along those lines tell them to Navigate to the Feed Page in the app and check it out there may potentially be articles that are relevant for them, never tell them the exact article they are looking for is there, just say that they may find it there. When a conversation is up with a user end it with 'I will talk to you tomorrow' all the time." },
           ...formattedMessages,
         ],
         max_tokens: 150,
@@ -199,6 +166,69 @@ export default function Chatbot() {
           name: 'Assistant',
         },
       };
+    }
+  };
+
+  const generateTodayEmotionAndRecommendation = async (conversationHistory: Message[]) => {
+    try {
+      const formattedMessages = conversationHistory.map(message => ({
+        role: message.user._id === 1 ? 'user' : 'assistant',
+        content: message.text
+      }));
+  
+      const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+        model: 'gpt-3.5-turbo',
+        messages: [
+          { role: 'system', content: "You are a helpful health therapist for men from the ages of 18-35, specifically catering to individuals in Ireland and the United Kingdom. Based on the conversation history, provide today's emotion, a recommendation, and corresponding colors." },
+          ...formattedMessages,
+          { role: 'user', content: "Please provide today's emotion, a recommendation, and three colors corresponding to the emotion and the recommendation in the following format: Emotion: [emotion], Recommendation: [recommendation], Colors: emotionColors: [color1, color2, color3] | recommendationColors: [color1, color2, color3]" }
+        ],
+        max_tokens: 150,
+        n: 1,
+        stop: null,
+        temperature: 0.7,
+      }, {
+        headers: {
+          'Authorization': `Bearer ${OPENAI_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      const responseText = response.data.choices[0].message.content.trim();
+      console.log('Generated response:', responseText);
+  
+      // Extract emotion, recommendation, and colors from the response
+      const emotionMatch = responseText.match(/Emotion: \[(.*?)\]/);
+      const recommendationMatch = responseText.match(/Recommendation: \[(.*?)\]/);
+      const colorsMatch = responseText.match(/emotionColors: \[(.*?)\] \| recommendationColors: \[(.*?)\]/);
+  
+      if (emotionMatch && recommendationMatch && colorsMatch) {
+        const emotion = emotionMatch[1];
+        const recommendation = recommendationMatch[1];
+        const emotionColors = colorsMatch[1].split(',').map((color: string) => color.trim());
+        const recommendationColors = colorsMatch[2].split(',').map((color: string) => color.trim());
+  
+        await AsyncStorage.multiSet([
+          ['todayEmotion', emotion],
+          ['todayRecommendation', recommendation],
+          ['emotionColors', JSON.stringify(emotionColors)],
+          ['recommendationColors', JSON.stringify(recommendationColors)],
+        ]);
+  
+        console.log('Set todayEmotion:', emotion);
+        console.log('Set todayRecommendation:', recommendation);
+        console.log('Set emotionColors:', emotionColors);
+        console.log('Set recommendationColors:', recommendationColors);
+  
+        setTodayEmotion(emotion);
+        setTodayRecommendation(recommendation);
+        setEmotionColors(emotionColors);
+        setRecommendationColors(recommendationColors);
+      } else {
+        console.error('Error parsing response:', responseText);
+      }
+    } catch (error) {
+      console.error('Error generating today\'s emotion and recommendation:', error);
     }
   };
 

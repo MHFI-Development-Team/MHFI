@@ -6,7 +6,7 @@ import ContentForYou from '@/components/ContentForYou/contentForYou';
 import DailyGoals from '@/components/DailyGoals/dailyGoals';
 import SuggestedTools from '@/components/SuggestTools/suggestTools';
 import { View } from 'react-native';
-import HabitList from '@/components/HabitTracker/HabitList';
+import EmotionList from '@/components/EmotionTracker/EmotionList';
 import { Dimensions } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
@@ -21,7 +21,7 @@ const homeScreen = () => {
       <View style={{ justifyContent: 'space-evenly', flex: 1 }}>
         <ContentForYou />
         <SuggestedTools />
-        <HabitList />
+        <EmotionList />
       </View>
     </SafeAreaView>
   );
