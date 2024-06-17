@@ -18,9 +18,9 @@ const suggestedTools: SuggestedTool[] = [
   {
     image: '',
     SvgComponent: GeoIcon,
-    name: 'Tool 2',
+    name: 'Geolocator',
     link: Link,
-    href: '/messageScreen',
+    href: '/geoLocatorScreen',
   },
   {
     image: '',

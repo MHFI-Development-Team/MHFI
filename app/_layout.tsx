@@ -5,6 +5,8 @@ import HeaderLeftIcon from '@/components/HeaderLeftIcon';
 import FeedHeaderLeftIcon from '@/components/feedHeaderLeftIcon';
 import globalStyles from '@/constants/globalStyles';
 import { ProfileProvider } from '@/components/ProfileContext';
+import { Image, View } from 'react-native';
+import { Colors } from '@/constants/Colors';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -14,8 +16,7 @@ export default function RootLayout() {
   useEffect(() => {
     const prepare = async () => {
       try {
-       
-        await new Promise(resolve => setTimeout(resolve, 5000)); 
+        await new Promise(resolve => setTimeout(resolve, 5000));
       } catch (e) {
         console.warn(e);
       } finally {
@@ -28,64 +29,86 @@ export default function RootLayout() {
   }, []);
 
   if (!appIsReady) {
-    return null; 
+    return null;
   }
 
   return (
-    <ProfileProvider>
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="profile"
-        options={{
-          headerTitle: '',
-          headerLeft: _ => <HeaderLeftIcon />,
-          headerStyle: globalStyles.secondary,
-        }}
-      />
-      <Stack.Screen
-        name="(dailygoals)"
-        options={{
-          headerTitle: '',
-          headerLeft: _ => <HeaderLeftIcon />,
-          headerStyle: globalStyles.secondary,
-        }}
-      />
-      <Stack.Screen
-        name="[id]"
-        options={{
-          headerTitle: '',
-          headerLeft: _ => <FeedHeaderLeftIcon />,
-          headerStyle: globalStyles.secondary,
-        }}
-      />
-      <Stack.Screen
-        name="(alcohol)"
-        options={{
-          headerTitle: '',
-          headerLeft: _ => <HeaderLeftIcon />,
-          headerStyle: globalStyles.secondary,
-        }}
-      />
-      <Stack.Screen
-        name="(smoking)"
-        options={{
-          headerTitle: '',
-          headerLeft: _ => <HeaderLeftIcon />,
-          headerStyle: globalStyles.secondary,
-        }}
-      />
-      <Stack.Screen name="(quiz)" options={{ headerShown: false }} />
-      <Stack.Screen name="(BMI)" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="(sign)"
-        options={{
-          headerTitle: '',
-          headerLeft: _ => <HeaderLeftIcon />,
-          headerStyle: globalStyles.secondary,
-        }}
-      />
-    </Stack>
-    </ProfileProvider>
+    <>
+      {appIsReady ? (
+        <ProfileProvider>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="profile"
+              options={{
+                headerTitle: '',
+                headerLeft: _ => <HeaderLeftIcon />,
+                headerStyle: globalStyles.secondary,
+              }}
+            />
+            <Stack.Screen
+              name="(dailygoals)"
+              options={{
+                headerTitle: '',
+                headerLeft: _ => <HeaderLeftIcon />,
+                headerStyle: globalStyles.secondary,
+              }}
+            />
+            <Stack.Screen
+              name="(geolocator)"
+              options={{
+                headerTitle: '',
+                headerLeft: _ => <HeaderLeftIcon />,
+                headerStyle: globalStyles.secondary,
+              }}
+            />
+            <Stack.Screen
+              name="[id]"
+              options={{
+                headerTitle: '',
+                headerLeft: _ => <FeedHeaderLeftIcon />,
+                headerStyle: globalStyles.secondary,
+              }}
+            />
+            <Stack.Screen
+              name="(alcohol)"
+              options={{
+                headerTitle: '',
+                headerLeft: _ => <HeaderLeftIcon />,
+                headerStyle: globalStyles.secondary,
+              }}
+            />
+            <Stack.Screen
+              name="(smoking)"
+              options={{
+                headerTitle: '',
+                headerLeft: _ => <HeaderLeftIcon />,
+                headerStyle: globalStyles.secondary,
+              }}
+            />
+            <Stack.Screen name="(quiz)" options={{ headerShown: false }} />
+            <Stack.Screen name="(BMI)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="(sign)"
+              options={{
+                headerTitle: '',
+                headerLeft: _ => <HeaderLeftIcon />,
+                headerStyle: globalStyles.secondary,
+              }}
+            />
+          </Stack>
+        </ProfileProvider>
+      ) : (
+        <View
+          style={{
+            backgroundColor: Colors.primary,
+            flex: 1,
+            width: '100%',
+            height: '100%',
+          }}>
+          <Image src={require('../assets/images/sixuni.png')} />
+        </View>
+      )}
+    </>
   );
 }
