@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import { Colors } from '@/constants/Colors';
-import EmotionTriangles from './PulsatingCircle';
+import { useProfile } from '../ProfileContext';
+import PulsatingCircle from './PulsatingCircle';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -12,39 +12,61 @@ interface EmotionCardProps {
 }
 
 const EmotionCard: React.FC<EmotionCardProps> = ({ type, text }) => {
-  const displayText = type === 'emotion' ? `You are feeling ${text}` : `Recommendation: ${text}`;
+  const { emotionBackground, recommendationBackground, emotionColors, recommendationColors } = useProfile();
+  const displayText = type === 'emotion' ? `${text}` : `Recommendation: ${text}`;
+  const backgroundColor = type === 'emotion' ? emotionBackground : recommendationBackground;
+  const colors = type === 'emotion' ? emotionColors : recommendationColors;
 
   return (
-    <View style={styles.card}>
-      <View style={styles.animationContainer}>
-        <PulsatingCircle />
+    <View style={styles.centerContainer}>
+      <View style={[styles.card, { backgroundColor }]}>
+        <View style={styles.textContainer}>
+          <Text style={styles.cardText}>{displayText}</Text>
+        </View>
+        <View style={styles.animationContainer}>
+          <PulsatingCircle colors={colors}/>
+        </View>
       </View>
-      <Text style={styles.cardText}>{displayText}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  centerContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   card: {
-    backgroundColor: Colors.secondary,
+    flexDirection: 'row',
     borderRadius: 10,
     padding: 20,
-    margin: 10,
+    marginVertical: 10,
+    marginHorizontal: 20,
+    height: windowHeight * 0.2,
     width: windowWidth - 40,
-    height: windowHeight * 0.6, // Increased height
-    alignSelf: 'center',
     alignItems: 'center',
-    justifyContent: 'center', // Center text vertically
+    borderWidth: 1,
+    borderColor: '#ccc',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  textContainer: {
+    flex: 1,
+    marginRight: 20,
   },
   animationContainer: {
-    height: 300,
-    width: 300,
-    marginBottom: 10,
+    height: windowHeight * 0.15,
+    width: windowHeight * 0.15,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   cardText: {
     color: '#fff',
     fontSize: 18,
-    textAlign: 'center', // Added to center the text horizontally
+    textAlign: 'left',
   },
 });
 

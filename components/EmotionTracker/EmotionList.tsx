@@ -41,20 +41,28 @@ const EmotionList: React.FC = () => {
   return (
     <View style={{ transform: [{ translateY: -20 }] }}>
       <View style={styles.EmotionListContent}>
-        <Text style={[globalStyles.textHeader, { fontWeight: 'bold', fontSize: 20 }]}>
+        <Text style={[globalStyles.textHeader, { fontWeight: 'bold', fontSize: 20, marginLeft: windowWidth * 0.05 }]}>
           Emotion Tracker
         </Text>
         {todayEmotion ? (
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            style={{ marginTop: 10, overflow: 'visible' }}
-            snapToInterval={windowWidth - 20}
+            contentContainerStyle={styles.scrollViewContent}
+            snapToInterval={windowWidth}
+            snapToAlignment="center"
             decelerationRate="fast"
+            pagingEnabled
           >
-            <View style={{ flexDirection: 'row', gap: 25 }}>
-              <EmotionCard type="emotion" text={todayEmotion} />
-              <EmotionCard type="recommendation" text={todayRecommendation} />
+            <View style={styles.emotionCardWrapper}>
+              <View style={styles.emotionCardContainer}>
+                <EmotionCard type="emotion" text={todayEmotion} />
+              </View>
+            </View>
+            <View style={styles.emotionCardWrapper}>
+              <View style={styles.emotionCardContainer}>
+                <EmotionCard type="recommendation" text={todayRecommendation} />
+              </View>
             </View>
           </ScrollView>
         ) : (
@@ -62,7 +70,7 @@ const EmotionList: React.FC = () => {
             <View style={styles.checkInMessageContent}>
               <View style={styles.textAndTriangleContainer}>
                 <Text style={styles.checkInText}>
-                  No emotion recorded today.{'\n'}{'\n'}Tap here to check in!
+                  No emotion {'\n'}recorded today.{'\n'}{'\n'}Tap here to check in!
                 </Text>
                 <PulsatingCircle colors={['#FF922E', '#303345', '#171621']} style={styles.triangleContainer} />
               </View>
@@ -79,17 +87,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
     alignContent: 'center',
+    width: "100%",
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    
+  },
+  emotionCardWrapper: {
+    width: windowWidth,
+    alignItems: 'center',
   },
   emotionCardContainer: {
-    height: windowHeight * 0.2,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
+   
   },
   checkInMessage: {
     justifyContent: 'center',
@@ -99,10 +113,11 @@ const styles = StyleSheet.create({
     padding: 20,
     margin: 10,
     height: windowHeight * 0.2,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: Colors.ButtonColor,
     width: windowWidth - 40,
     alignSelf: 'center',
+     overflow: "visible"
   },
   checkInMessageContent: {
     flexDirection: 'row',
@@ -118,11 +133,14 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     flex: 1,
+    marginRight: windowHeight * 0.06,
     textAlign: 'left',
   },
   triangleContainer: {
-    marginLeft: windowHeight * 0.06,
-    marginTop: windowHeight * 0.009,
+    marginTop: windowHeight * 0.02,
+  },
+  scrollViewContent: {
+    alignItems: 'center',
   },
 });
 

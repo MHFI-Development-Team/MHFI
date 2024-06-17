@@ -2,7 +2,12 @@ import React, { useEffect } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
 import Svg, { Defs, LinearGradient, Stop, Circle } from 'react-native-svg';
 
-const PulsatingCircle = ({ colors, style }) => {
+interface PulsatingCircleProps {
+  colors: string[];
+  style?: object;
+}
+
+const PulsatingCircle: React.FC<PulsatingCircleProps> = ({ colors, style }) => {
   const scaleAnim = new Animated.Value(0);
   const gradientAnim = new Animated.Value(0);
 
@@ -29,12 +34,12 @@ const PulsatingCircle = ({ colors, style }) => {
         Animated.sequence([
           Animated.timing(gradientAnim, {
             toValue: 1,
-            duration: 4000, // Slower gradient animation
+            duration: 5000, // Slower gradient animation
             useNativeDriver: false,
           }),
           Animated.timing(gradientAnim, {
             toValue: 0,
-            duration: 4000, // Slower gradient animation
+            duration: 5000, // Slower gradient animation
             useNativeDriver: false,
           }),
         ])
@@ -51,11 +56,11 @@ const PulsatingCircle = ({ colors, style }) => {
       scaleAnimation.stop();
       gradientAnimation.stop();
     };
-  }, []);
+  }, [scaleAnim, gradientAnim]);
 
   const scale = scaleAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: [1, 1.2], // Smaller pulse effect
+    outputRange: [1, 1.1], // Smaller pulse effect
   });
 
   const stop1 = gradientAnim.interpolate({
@@ -76,12 +81,12 @@ const PulsatingCircle = ({ colors, style }) => {
   return (
     <View style={[styles.container, style]}>
       <Animated.View style={{ transform: [{ scale }] }}>
-        <Svg height="150" width="150"> 
+        <Svg height="150" width="150">
           <Defs>
             <LinearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <Stop offset={stop1} stopColor={colors[0]} />
-              <Stop offset={stop2} stopColor={colors[1]} />
-              <Stop offset={stop3} stopColor={colors[2]} />
+              <Stop offset={stop1 as unknown as string} stopColor={colors[0]} />
+              <Stop offset={stop2 as unknown as string} stopColor={colors[1]} />
+              <Stop offset={stop3 as unknown as string} stopColor={colors[2]} />
             </LinearGradient>
           </Defs>
           <Circle

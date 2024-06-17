@@ -29,6 +29,10 @@ interface ProfileContextType {
   setEmotionColors: React.Dispatch<React.SetStateAction<string[]>>;
   recommendationColors: string[];
   setRecommendationColors: React.Dispatch<React.SetStateAction<string[]>>;
+  emotionBackground: string;
+  setEmotionBackground: React.Dispatch<React.SetStateAction<string>>;
+  recommendationBackground: string;
+  setRecommendationBackground: React.Dispatch<React.SetStateAction<string>>;
   resetProfile: () => void;
 }
 
@@ -46,6 +50,8 @@ const TODAY_EMOTION_KEY = 'TODAY_EMOTION_KEY';
 const TODAY_RECOMMENDATION_KEY = 'TODAY_RECOMMENDATION_KEY';
 const EMOTION_COLORS_KEY = 'EMOTION_COLORS_KEY';
 const RECOMMENDATION_COLORS_KEY = 'RECOMMENDATION_COLORS_KEY';
+const EMOTION_BACKGROUND_KEY = 'EMOTION_BACKGROUND_KEY';
+const RECOMMENDATION_BACKGROUND_KEY = 'RECOMMENDATION_BACKGROUND_KEY';
 
 export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) => {
   const [profilePicture, setProfilePicture] = useState<string | null>(null);
@@ -56,6 +62,8 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
   const [todayRecommendation, setTodayRecommendation] = useState<string>('');
   const [emotionColors, setEmotionColors] = useState<string[]>([]);
   const [recommendationColors, setRecommendationColors] = useState<string[]>([]);
+  const [emotionBackground, setEmotionBackground] = useState<string>('');
+  const [recommendationBackground, setRecommendationBackground] = useState<string>('');
 
   useEffect(() => {
     const loadProfileData = async () => {
@@ -68,6 +76,8 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
         const storedTodayRecommendation = await AsyncStorage.getItem(TODAY_RECOMMENDATION_KEY);
         const storedEmotionColors = await AsyncStorage.getItem(EMOTION_COLORS_KEY);
         const storedRecommendationColors = await AsyncStorage.getItem(RECOMMENDATION_COLORS_KEY);
+        const storedEmotionBackground = await AsyncStorage.getItem(EMOTION_BACKGROUND_KEY);
+        const storedRecommendationBackground = await AsyncStorage.getItem(RECOMMENDATION_BACKGROUND_KEY);
 
         if (storedProfilePicture) setProfilePicture(storedProfilePicture);
         if (storedName) setNameState(storedName);
@@ -77,6 +87,8 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
         if (storedTodayRecommendation) setTodayRecommendation(storedTodayRecommendation);
         if (storedEmotionColors) setEmotionColors(JSON.parse(storedEmotionColors));
         if (storedRecommendationColors) setRecommendationColors(JSON.parse(storedRecommendationColors));
+        if (storedEmotionBackground) setEmotionBackground(storedEmotionBackground);
+        if (storedRecommendationBackground) setRecommendationBackground(storedRecommendationBackground);
       } catch (error) {
         console.error('Failed to load profile data', error);
       }
@@ -93,7 +105,7 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
   const resetProfile = async () => {
     try {
       await AsyncStorage.multiRemove([
-        PROFILE_PICTURE_KEY, USERNAME_KEY, CURRENCY_KEY, MESSAGES_KEY, TODAY_EMOTION_KEY, TODAY_RECOMMENDATION_KEY, EMOTION_COLORS_KEY, RECOMMENDATION_COLORS_KEY
+        PROFILE_PICTURE_KEY, USERNAME_KEY, CURRENCY_KEY, MESSAGES_KEY, TODAY_EMOTION_KEY, TODAY_RECOMMENDATION_KEY, EMOTION_COLORS_KEY, RECOMMENDATION_COLORS_KEY, EMOTION_BACKGROUND_KEY, RECOMMENDATION_BACKGROUND_KEY
       ]);
       setProfilePicture(null);
       setNameState('');
@@ -103,6 +115,8 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
       setTodayRecommendation('');
       setEmotionColors([]);
       setRecommendationColors([]);
+      setEmotionBackground('');
+      setRecommendationBackground('');
     } catch (error) {
       console.error('Failed to reset profile', error);
     }
@@ -128,11 +142,19 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
     AsyncStorage.setItem(RECOMMENDATION_COLORS_KEY, JSON.stringify(recommendationColors));
   }, [recommendationColors]);
 
+  useEffect(() => {
+    AsyncStorage.setItem(EMOTION_BACKGROUND_KEY, emotionBackground);
+  }, [emotionBackground]);
+
+  useEffect(() => {
+    AsyncStorage.setItem(RECOMMENDATION_BACKGROUND_KEY, recommendationBackground);
+  }, [recommendationBackground]);
+
   return (
     <ProfileContext.Provider value={{
       profilePicture, setProfilePicture, name, setName, currency, setCurrency,
       messages, setMessages, todayEmotion, setTodayEmotion, todayRecommendation, setTodayRecommendation,
-      emotionColors, setEmotionColors, recommendationColors, setRecommendationColors, resetProfile
+      emotionColors, setEmotionColors, recommendationColors, setRecommendationColors, emotionBackground, setEmotionBackground, recommendationBackground, setRecommendationBackground, resetProfile
     }}>
       {children}
     </ProfileContext.Provider>

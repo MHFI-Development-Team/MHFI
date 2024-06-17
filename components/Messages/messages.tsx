@@ -23,7 +23,7 @@ interface Message {
 
 export default function Chatbot() {
   const [inputText, setInputText] = useState<string>('');
-  const { profilePicture, messages, setMessages, name: userName, setTodayEmotion, setTodayRecommendation, setEmotionColors, setRecommendationColors } = useProfile();
+  const { profilePicture, messages, setMessages, name: userName, setTodayEmotion, setTodayRecommendation, setEmotionColors, setRecommendationColors, setEmotionBackground, setRecommendationBackground } = useProfile();
   const [conversationEnded, setConversationEnded] = useState<boolean>(false);
   const [userMessageCount, setUserMessageCount] = useState<number>(0);
   const scrollViewRef = useRef<ScrollView>(null);
@@ -111,7 +111,7 @@ export default function Chatbot() {
       setMessages((previousMessages) => [...previousMessages, assistantMessage]);
 
       // Check for end-of-conversation indicators
-      const endPhrases = ["goodbye", "i will talk to you tomorrow", "talk to you tomorrow"];
+      const endPhrases = ["goodbye", "i will talk to you tomorrow", "talk to you tomorrow" , "See you tomorrow,", "Take care of yourself"];
       if (endPhrases.some(phrase => assistantMessage.text.toLowerCase().includes(phrase))) {
         setConversationEnded(true);
         const endTime = new Date();
@@ -131,7 +131,7 @@ export default function Chatbot() {
       const response = await axios.post('https://api.openai.com/v1/chat/completions', {
         model: 'gpt-3.5-turbo',
         messages: [
-          { role: 'system', content: "You are a helpful health therapist for men from the ages of 18-35, specifically catering to individuals in Ireland and the Nothern Ireland. Make the responses more human and open ended. Be honest and authentic, and don't provide any harmful advice or recommendations. Your goal is to check in on their health and emotions in a kind, masculine engaging manner. send a wide range of emojis but not too frequently and make sure they are masculine and empowering when you send them. If users ask for health locations, General Practitioners etc tell them to navigate to the Geolocator in the Suggested Tools in the app to find their nearest health centers. If relevant let the user know they can take quizzes in app to test their knowledge. If users say they would like to read more and understand their health or something along those lines tell them to Navigate to the Feed Page in the app and check it out there may potentially be articles that are relevant for them, never tell them the exact article they are looking for is there, just say that they may find it there. When a conversation is up with a user end it with 'I will talk to you tomorrow' all the time." },
+          { role: 'system', content: "You are a helpful health therapist for men from the ages of 18-35, specifically catering to individuals in Ireland and the Nothern Ireland. Make the responses more human and open ended. Be honest and authentic, and don't provide any harmful advice or recommendations. Your goal is to check in on their health and emotions in a kind, masculine engaging manner. send a wide range of emojis but not too frequently and make sure they cant be misinterpreted, please dont send hearts or rainbows or unicorns. If users ask for health locations, General Practitioners etc tell them to navigate to the Geolocator in the Suggested Tools in the app to find their nearest health centers. If relevant let the user know they can take quizzes in app to test their knowledge. If users say they would like to read more and understand their health or something along those lines tell them to Navigate to the Feed Page in the app and check it out there may potentially be articles that are relevant for them, never tell them the exact article they are looking for is there, just say that they may find it there. When a conversation is finished with a user end it with 'I will talk to you tomorrow' all the time never anything else." },
           ...formattedMessages,
         ],
         max_tokens: 150,
@@ -179,9 +179,9 @@ export default function Chatbot() {
       const response = await axios.post('https://api.openai.com/v1/chat/completions', {
         model: 'gpt-3.5-turbo',
         messages: [
-          { role: 'system', content: "You are a helpful health therapist for men from the ages of 18-35, specifically catering to individuals in Ireland and the United Kingdom. Based on the conversation history, provide today's emotion, a recommendation, and corresponding colors." },
+          { role: 'system', content: "You are a helpful health therapist for men from the ages of 18-35, specifically catering to individuals in Ireland and the United Kingdom. Based on the conversation history, provide today's emotion, a concise one-sentence recommendation, and corresponding colors in #hex format with dark tones. Additionally, provide a matching background color for each set of colors in JSON format." },
           ...formattedMessages,
-          { role: 'user', content: "Please provide today's emotion, a recommendation, and three colors corresponding to the emotion and the recommendation in the following format: Emotion: [emotion], Recommendation: [recommendation], Colors: emotionColors: [color1, color2, color3] | recommendationColors: [color1, color2, color3]" }
+          { role: 'user', content: "Please provide today's emotion, a concise one-sentence recommendation, and corresponding colors and background colors in the following JSON format: {\"Emotion\": \"You are feeling emotion today\", make sure the emotion is singular so you are feeling sad today, happy today \"Recommendation\": \"recommendation\", \"EmotionColors\": [\"#color1\", \"#color2\", \"#color3\"], \"RecommendationColors\": [\"#color1\", \"#color2\", \"#color3\"], \"EmotionBackground\": \"#color\", \"RecommendationBackground\": \"#color\"}, also ensure that the recommendation word count of around 10 words, and the colors and background color should be different for the but relevant for both emotion and recommendation. The colors you provide for the background, emotion and recommendation should be dark tones to match the dark aesthetic of the app. let the emotions and recommendations be different colors."}
         ],
         max_tokens: 150,
         n: 1,
@@ -197,33 +197,33 @@ export default function Chatbot() {
       const responseText = response.data.choices[0].message.content.trim();
       console.log('Generated response:', responseText);
   
-      // Extract emotion, recommendation, and colors from the response
-      const emotionMatch = responseText.match(/Emotion: \[(.*?)\]/);
-      const recommendationMatch = responseText.match(/Recommendation: \[(.*?)\]/);
-      const colorsMatch = responseText.match(/emotionColors: \[(.*?)\] \| recommendationColors: \[(.*?)\]/);
+      const parsedResponse = JSON.parse(responseText);
   
-      if (emotionMatch && recommendationMatch && colorsMatch) {
-        const emotion = emotionMatch[1];
-        const recommendation = recommendationMatch[1];
-        const emotionColors = colorsMatch[1].split(',').map((color: string) => color.trim());
-        const recommendationColors = colorsMatch[2].split(',').map((color: string) => color.trim());
+      if (parsedResponse) {
+        const { Emotion, Recommendation, EmotionColors, RecommendationColors, EmotionBackground, RecommendationBackground } = parsedResponse;
   
         await AsyncStorage.multiSet([
-          ['todayEmotion', emotion],
-          ['todayRecommendation', recommendation],
-          ['emotionColors', JSON.stringify(emotionColors)],
-          ['recommendationColors', JSON.stringify(recommendationColors)],
+          ['TODAY_EMOTION_KEY', Emotion],
+          ['TODAY_RECOMMENDATION_KEY', Recommendation],
+          ['EMOTION_COLORS_KEY', JSON.stringify(EmotionColors)],
+          ['RECOMMENDATION_COLORS_KEY', JSON.stringify(RecommendationColors)],
+          ['EMOTION_BACKGROUND_KEY', EmotionBackground],
+          ['RECOMMENDATION_BACKGROUND_KEY', RecommendationBackground],
         ]);
   
-        console.log('Set todayEmotion:', emotion);
-        console.log('Set todayRecommendation:', recommendation);
-        console.log('Set emotionColors:', emotionColors);
-        console.log('Set recommendationColors:', recommendationColors);
+        console.log('Set todayEmotion:', Emotion);
+        console.log('Set todayRecommendation:', Recommendation);
+        console.log('Set emotionColors:', EmotionColors);
+        console.log('Set recommendationColors:', RecommendationColors);
+        console.log('Set emotionBackground:', EmotionBackground);
+        console.log('Set recommendationBackground:', RecommendationBackground);
   
-        setTodayEmotion(emotion);
-        setTodayRecommendation(recommendation);
-        setEmotionColors(emotionColors);
-        setRecommendationColors(recommendationColors);
+        setTodayEmotion(Emotion);
+        setTodayRecommendation(Recommendation);
+        setEmotionColors(EmotionColors);
+        setRecommendationColors(RecommendationColors);
+        setEmotionBackground(EmotionBackground);
+        setRecommendationBackground(RecommendationBackground);
       } else {
         console.error('Error parsing response:', responseText);
       }

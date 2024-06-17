@@ -22,11 +22,13 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 18,
     fontWeight: '700',
+    paddingLeft: windowWidth * 0.05
   },
   subText: {
     color: '#FFF',
     fontSize: 14,
     fontWeight: '300',
+    paddingLeft: windowWidth * 0.05
   },
   profileSection: {
     flexDirection: 'row',
@@ -100,7 +102,7 @@ export default function Header() {
   return (
     <View style={styles.headerContainer}>
       <View style={styles.greetingContainer}>
-        <Text style={styles.greetingText}>
+        <Text style={styles.greetingText} >
           {getGreeting()}
           {name ? `, ${name}` : ''}
         </Text>
