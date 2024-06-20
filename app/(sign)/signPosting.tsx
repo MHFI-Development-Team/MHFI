@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, Linking, TouchableOpacity } from 'react-native';
 import { signPostLinks } from './signPostingData';
 import { Colors } from '@/constants/Colors';
-import { Vibration } from 'react-native';
+
+import * as Haptics from 'expo-haptics';
 
 const SignPosting = () => {
   return (
@@ -11,7 +12,10 @@ const SignPosting = () => {
       {signPostLinks.map((link, index) => (
         <TouchableOpacity
           key={index}
-          onPress={() => {{Vibration.vibrate(50);  Linking.openURL(link.href)}}}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            Linking.openURL(link.href);
+          }}
           style={styles.linkContainer}>
           <Text style={styles.linkText}>{link.name}</Text>
         </TouchableOpacity>

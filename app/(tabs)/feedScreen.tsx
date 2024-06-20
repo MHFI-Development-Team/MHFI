@@ -21,7 +21,8 @@ import { Asset } from 'expo-asset';
 import * as FileSystem from 'expo-file-system';
 import { Dimensions } from 'react-native';
 import { ArticleContext, ArticleContextType } from '@/components/AcrticleContext';
-import { Vibration } from 'react-native';
+
+import * as Haptics from 'expo-haptics';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -84,10 +85,8 @@ export default function FeedScreen() {
               <TouchableOpacity
                 key={tag}
                 onPress={() => {
-                  {
-                    Vibration.vibrate(50);
-                    handleTagPress(tag);
-                  }
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  handleTagPress(tag);
                 }}
                 style={[styles.tagButton, selectedTag === tag && styles.selectedTagButton]}>
                 <Text
@@ -110,7 +109,7 @@ export default function FeedScreen() {
                 title={article.title}
                 description={article.content.substring(376, 450) + '...'}
                 onPress={() => {
-                  Vibration.vibrate(50);
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
                   router.push({
                     pathname: `/${article.id}`,

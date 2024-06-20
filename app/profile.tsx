@@ -16,7 +16,7 @@ import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '@/constants/Colors';
 import { useProfile } from '@/components/ProfileContext';
-import { Vibration } from 'react-native';
+import * as Haptics from 'expo-haptics';
 import UserIcon from '@/assets/svg/UserIcon';
 
 const windowWidth = Dimensions.get('window').width;
@@ -27,7 +27,8 @@ const USERNAME_KEY = 'USERNAME_KEY';
 const CURRENCY_KEY = 'CURRENCY_KEY';
 
 const Profile = () => {
-  const { profilePicture, setProfilePicture, name, setName, currency, setCurrency, resetProfile } = useProfile();
+  const { profilePicture, setProfilePicture, name, setName, currency, setCurrency, resetProfile } =
+    useProfile();
   const [notificationEnabled, setNotificationEnabled] = useState(true);
 
   useEffect(() => {
@@ -119,19 +120,27 @@ const Profile = () => {
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.header}>Profile</Text>
         <View style={styles.profileSection}>
-          <TouchableOpacity onPress={() => {{Vibration.vibrate(50); {pickImage}}}}>
+          <TouchableOpacity
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              pickImage();
+            }}>
             {profilePicture ? (
-              <Image
-                source={{ uri: profilePicture }}
-                style={styles.profilePicture}
-              />
+              <Image source={{ uri: profilePicture }} style={styles.profilePicture} />
             ) : (
               <View style={styles.profilePicture}>
-                <UserIcon width={styles.profilePicture.width} height={styles.profilePicture.height} />
+                <UserIcon
+                  width={styles.profilePicture.width}
+                  height={styles.profilePicture.height}
+                />
               </View>
             )}
           </TouchableOpacity>
-          <TouchableOpacity onPress={pickImage}>
+          <TouchableOpacity
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              pickImage();
+            }}>
             <Text style={styles.changePictureText}>Change Profile Picture</Text>
           </TouchableOpacity>
           <TextInput
@@ -158,22 +167,36 @@ const Profile = () => {
             <View style={styles.currencyContainer}>
               <TouchableOpacity
                 style={[styles.currencyButton, currency === '€' && styles.currencyButtonSelected]}
-                onPress={() => {{Vibration.vibrate(50); saveCurrency('€')}}}
-              >
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  saveCurrency('€');
+                }}>
                 <Text style={styles.currencyButtonText}>€</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[styles.currencyButton, currency === '£' && styles.currencyButtonSelected]}
-                onPress={() => saveCurrency('£')}
-              >
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  saveCurrency('£');
+                }}>
                 <Text style={styles.currencyButtonText}>£</Text>
               </TouchableOpacity>
             </View>
           </View>
-          <TouchableOpacity style={styles.settingItem} onPress={handleDeleteApp}>
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              handleDeleteApp();
+            }}>
             <Text style={[styles.settingText, styles.destructiveText]}>Delete App</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.settingItem} onPress={handleResetApp}>
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              handleResetApp();
+            }}>
             <Text style={[styles.settingText, styles.destructiveText]}>Reset App</Text>
           </TouchableOpacity>
         </View>

@@ -1,7 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Modal, TouchableWithoutFeedback, Vibration } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  Modal,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Colors } from '@/constants/Colors';
+
+import * as Haptics from 'expo-haptics';
 
 const ResultScreen: React.FC = () => {
   const { bmi, age, weight, height } = useLocalSearchParams<{
@@ -12,7 +22,10 @@ const ResultScreen: React.FC = () => {
   }>();
   const router = useRouter();
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalContent, setModalContent] = useState<{ title: string; content: string }>({ title: '', content: '' });
+  const [modalContent, setModalContent] = useState<{ title: string; content: string }>({
+    title: '',
+    content: '',
+  });
 
   const handleRetry = () => {
     router.push('/bmiScreen');
@@ -44,10 +57,14 @@ const ResultScreen: React.FC = () => {
   const bmiStatusColor = bmiValue < 18.5 ? 'red' : bmiValue <= 24.9 ? 'green' : 'red';
 
   const bmiInfo = {
-    Underweight: 'BMI is less than 18.5. This might indicate malnutrition, an eating disorder, or other health issues. It’s recommended to consult a healthcare provider.',
-    Normal: 'BMI is between 18.5 and 24.9. This range is considered healthy for most adults. Maintaining this BMI can help reduce the risk of serious health conditions.',
-    Overweight: 'BMI is between 25 and 29.9. This can increase the risk of cardiovascular diseases, diabetes, and other health conditions. Consider a balanced diet and regular physical activity.',
-    Obese: 'BMI is 30 or higher. This significantly increases the risk of many health issues including heart disease, diabetes, and certain cancers. Medical consultation is advised.'
+    Underweight:
+      'BMI is less than 18.5. This might indicate malnutrition, an eating disorder, or other health issues. It’s recommended to consult a healthcare provider.',
+    Normal:
+      'BMI is between 18.5 and 24.9. This range is considered healthy for most adults. Maintaining this BMI can help reduce the risk of serious health conditions.',
+    Overweight:
+      'BMI is between 25 and 29.9. This can increase the risk of cardiovascular diseases, diabetes, and other health conditions. Consider a balanced diet and regular physical activity.',
+    Obese:
+      'BMI is 30 or higher. This significantly increases the risk of many health issues including heart disease, diabetes, and certain cancers. Medical consultation is advised.',
   };
 
   return (
@@ -57,7 +74,11 @@ const ResultScreen: React.FC = () => {
         <View style={styles.resultCircle}>
           <Text style={styles.bmiValue}>{bmiValue}</Text>
           <Text style={[styles.bmiStatus, { color: bmiStatusColor }]}>{bmiStatus}</Text>
-          <TouchableOpacity onPress={() => {Vibration.vibrate(50);openModal(bmiStatus, bmiInfo[bmiStatus]);}}>
+          <TouchableOpacity
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              openModal(bmiStatus, bmiInfo[bmiStatus]);
+            }}>
             <Text style={styles.infoText}>Info</Text>
           </TouchableOpacity>
         </View>
@@ -76,7 +97,12 @@ const ResultScreen: React.FC = () => {
             <Text style={styles.infoValue}>{weight} kg</Text>
           </View>
         </View>
-        <TouchableOpacity style={styles.retryButton} onPress={handleRetry}>
+        <TouchableOpacity
+          style={styles.retryButton}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            handleRetry();
+          }}>
           <Text style={styles.retryButtonText}>Retry</Text>
         </TouchableOpacity>
       </View>
@@ -90,7 +116,12 @@ const ResultScreen: React.FC = () => {
             <View style={styles.modalContent}>
               <Text style={styles.modalTitle}>{modalContent.title}</Text>
               <Text style={styles.modalText}>{modalContent.content}</Text>
-              <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  closeModal();
+                }}>
                 <Text style={styles.closeButtonText}>Close</Text>
               </TouchableOpacity>
             </View>

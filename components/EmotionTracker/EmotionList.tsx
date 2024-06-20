@@ -15,7 +15,7 @@ import globalStyles from '@/constants/globalStyles';
 import EmotionCard from '@/components/EmotionTracker/EmotionCard';
 import { useProfile } from '@/components/ProfileContext';
 import PulsatingCircle from './PulsatingCircle';
-import { Vibration } from 'react-native';
+import * as Haptics from 'expo-haptics';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
@@ -42,7 +42,11 @@ const EmotionList: React.FC = () => {
   return (
     <View style={{ transform: [{ translateY: -20 }] }}>
       <View style={styles.EmotionListContent}>
-        <Text style={[globalStyles.textHeader, { fontWeight: 'bold', fontSize: 20, marginLeft: windowWidth * 0.05 }]}>
+        <Text
+          style={[
+            globalStyles.textHeader,
+            { fontWeight: 'bold', fontSize: 20, marginLeft: windowWidth * 0.05 },
+          ]}>
           Emotion Tracker
         </Text>
         {todayEmotion ? (
@@ -53,8 +57,7 @@ const EmotionList: React.FC = () => {
             snapToInterval={windowWidth}
             snapToAlignment="center"
             decelerationRate="fast"
-            pagingEnabled
-          >
+            pagingEnabled>
             <View style={styles.emotionCardWrapper}>
               <View style={styles.emotionCardContainer}>
                 <EmotionCard type="emotion" text={todayEmotion} />
@@ -67,13 +70,22 @@ const EmotionList: React.FC = () => {
             </View>
           </ScrollView>
         ) : (
-          <TouchableOpacity onPress={() => {{Vibration.vibrate(50); router.push('/messageScreen')}}} style={styles.checkInMessage}>
+          <TouchableOpacity
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              router.push('/messageScreen');
+            }}
+            style={styles.checkInMessage}>
             <View style={styles.checkInMessageContent}>
               <View style={styles.textAndCircleContainer}>
                 <Text style={styles.checkInText}>
-                  No emotion {'\n'}recorded today.{'\n'}{'\n'}Tap here to check in!
+                  No emotion {'\n'}recorded today.{'\n'}
+                  {'\n'}Tap here to check in!
                 </Text>
-                <PulsatingCircle colors={['#FF922E', '#303345', '#171621']} style={styles.circlContainer} />
+                <PulsatingCircle
+                  colors={['#FF922E', '#303345', '#171621']}
+                  style={styles.circlContainer}
+                />
               </View>
             </View>
           </TouchableOpacity>
@@ -88,13 +100,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
     alignContent: 'center',
-    width: "100%",
+    width: '100%',
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    
   },
   emotionCardWrapper: {
     width: windowWidth,
@@ -104,7 +115,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     // marginTop: 20,
-   
   },
   checkInMessage: {
     justifyContent: 'center',
@@ -118,7 +128,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.ButtonColor,
     width: windowWidth - 40,
     alignSelf: 'center',
-     overflow: "visible"
+    overflow: 'visible',
   },
   checkInMessageContent: {
     flexDirection: 'row',

@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Keyboard } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { Colors } from '@/constants/Colors';
-import { Vibration } from 'react-native';
+
+import * as Haptics from 'expo-haptics';
 
 const SearchBar = ({ placeholder = 'Search', onSearch }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -14,7 +15,7 @@ const SearchBar = ({ placeholder = 'Search', onSearch }) => {
     onSearch && onSearch('');
   };
 
-  const handleSearch = (query) => {
+  const handleSearch = query => {
     setSearchQuery(query);
     onSearch && onSearch(query);
   };
@@ -32,7 +33,12 @@ const SearchBar = ({ placeholder = 'Search', onSearch }) => {
         onBlur={() => setIsFocused(false)}
       />
       {searchQuery.length > 0 && (
-        <TouchableOpacity onPress={() => {{Vibration.vibrate(50);{handleClear}}}} style={styles.icon}>
+        <TouchableOpacity
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            handleClear();
+          }}
+          style={styles.icon}>
           <AntDesign name="closecircleo" size={20} color="orange" />
         </TouchableOpacity>
       )}

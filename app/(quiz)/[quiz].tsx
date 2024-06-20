@@ -6,7 +6,8 @@ import smokingQuestions from '@/components/Quiz/smokingQuestions';
 import drinkingQuestions from '@/components/Quiz/drinkingQuestions';
 import { Question } from '@/components/Quiz/IQuizQuestion';
 import { Colors } from '@/constants/Colors';
-import { Vibration } from 'react-native';
+
+import * as Haptics from 'expo-haptics';
 
 const questions: { [key: string]: Question[] } = {
   Smoking: smokingQuestions,
@@ -59,7 +60,10 @@ const QuizData: React.FC = () => {
       <TouchableOpacity
         key={index}
         style={styles.optionButton}
-        onPress={() => {{Vibration.vibrate(50); handleAnswer(option)}}}>
+        onPress={() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          handleAnswer(option);
+        }}>
         <Text style={styles.optionText}>{option}</Text>
       </TouchableOpacity>
     ));

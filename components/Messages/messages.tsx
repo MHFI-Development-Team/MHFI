@@ -1,11 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity, ScrollView, Image, Dimensions, TextInput, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  Dimensions,
+  TextInput,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Colors } from '@/constants/Colors';
 import { useProfile } from '@/components/ProfileContext';
 import UserIcon from '@/assets/svg/UserIcon';
-import { Vibration } from 'react-native';
+import * as Haptics from 'expo-haptics';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -23,7 +36,18 @@ interface Message {
 
 export default function Chatbot() {
   const [inputText, setInputText] = useState<string>('');
-  const { profilePicture, messages, setMessages, name: userName, setTodayEmotion, setTodayRecommendation, setEmotionColors, setRecommendationColors, setEmotionBackground, setRecommendationBackground } = useProfile();
+  const {
+    profilePicture,
+    messages,
+    setMessages,
+    name: userName,
+    setTodayEmotion,
+    setTodayRecommendation,
+    setEmotionColors,
+    setRecommendationColors,
+    setEmotionBackground,
+    setRecommendationBackground,
+  } = useProfile();
   const [conversationEnded, setConversationEnded] = useState<boolean>(false);
   const [userMessageCount, setUserMessageCount] = useState<number>(0);
   const scrollViewRef = useRef<ScrollView>(null);
@@ -76,7 +100,9 @@ export default function Chatbot() {
   }, []);
 
   const loadInitialMessage = () => {
-    const greetingText = userName ? `Hello ${userName}! How are you feeling today?` : "Hello! How are you feeling today?";
+    const greetingText = userName
+      ? `Hello ${userName}! How are you feeling today?`
+      : 'Hello! How are you feeling today?';
     const message: Message = {
       _id: 1,
       text: greetingText,
@@ -102,16 +128,22 @@ export default function Chatbot() {
         },
       };
 
-      setMessages((previousMessages) => [...previousMessages, userMessage]);
+      setMessages(previousMessages => [...previousMessages, userMessage]);
       setInputText('');
       setUserMessageCount(userMessageCount + 1);
 
       // Generate AI response
       const assistantMessage = await generateAIResponse([...messages, userMessage]);
-      setMessages((previousMessages) => [...previousMessages, assistantMessage]);
+      setMessages(previousMessages => [...previousMessages, assistantMessage]);
 
       // Check for end-of-conversation indicators
-      const endPhrases = ["goodbye", "i will talk to you tomorrow", "talk to you tomorrow" , "See you tomorrow,", "Take care of yourself"];
+      const endPhrases = [
+        'goodbye',
+        'i will talk to you tomorrow',
+        'talk to you tomorrow',
+        'See you tomorrow,',
+        'Take care of yourself',
+      ];
       if (endPhrases.some(phrase => assistantMessage.text.toLowerCase().includes(phrase))) {
         setConversationEnded(true);
         const endTime = new Date();
@@ -125,25 +157,33 @@ export default function Chatbot() {
     try {
       const formattedMessages = conversationHistory.map(message => ({
         role: message.user._id === 1 ? 'user' : 'assistant',
-        content: message.text
+        content: message.text,
       }));
 
-      const response = await axios.post('https://api.openai.com/v1/chat/completions', {
-        model: 'gpt-3.5-turbo',
-        messages: [
-          { role: 'system', content: "You are a helpful health therapist for men from the ages of 18-35, specifically catering to individuals in Ireland and the Nothern Ireland. Make the responses more human and open ended. Be honest and authentic, and don't provide any harmful advice or recommendations. Your goal is to check in on their health and emotions in a kind, masculine engaging manner. send a wide range of emojis but not too frequently and make sure they cant be misinterpreted, please dont send hearts or rainbows or unicorns. If users ask for health locations, General Practitioners etc tell them to navigate to the Geolocator in the Suggested Tools in the app to find their nearest health centers. If relevant let the user know they can take quizzes in app to test their knowledge. If users say they would like to read more and understand their health or something along those lines tell them to Navigate to the Feed Page in the app and check it out there may potentially be articles that are relevant for them, never tell them the exact article they are looking for is there, just say that they may find it there. When a conversation is finished with a user end it with 'I will talk to you tomorrow' all the time never anything else." },
-          ...formattedMessages,
-        ],
-        max_tokens: 150,
-        n: 1,
-        stop: null,
-        temperature: 0.9,
-      }, {
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
+      const response = await axios.post(
+        'https://api.openai.com/v1/chat/completions',
+        {
+          model: 'gpt-3.5-turbo',
+          messages: [
+            {
+              role: 'system',
+              content:
+                "You are a helpful health therapist for men from the ages of 18-35, specifically catering to individuals in Ireland and the Nothern Ireland. Make the responses more human and open ended. Be honest and authentic, and don't provide any harmful advice or recommendations. Your goal is to check in on their health and emotions in a kind, masculine engaging manner. send a wide range of emojis but not too frequently and make sure they cant be misinterpreted, please dont send hearts or rainbows or unicorns. If users ask for health locations, General Practitioners etc tell them to navigate to the Geolocator in the Suggested Tools in the app to find their nearest health centers. If relevant let the user know they can take quizzes in app to test their knowledge. If users say they would like to read more and understand their health or something along those lines tell them to Navigate to the Feed Page in the app and check it out there may potentially be articles that are relevant for them, never tell them the exact article they are looking for is there, just say that they may find it there. When a conversation is finished with a user end it with 'I will talk to you tomorrow' all the time never anything else.",
+            },
+            ...formattedMessages,
+          ],
+          max_tokens: 150,
+          n: 1,
+          stop: null,
+          temperature: 0.9,
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
       const aiText = response.data.choices[0].message.content.trim();
       return {
@@ -173,41 +213,54 @@ export default function Chatbot() {
     try {
       const formattedMessages = conversationHistory.map(message => ({
         role: message.user._id === 1 ? 'user' : 'assistant',
-        content: message.text
+        content: message.text,
       }));
-  
-      const response = await axios.post('https://api.openai.com/v1/chat/completions', {
-        model: 'gpt-3.5-turbo',
-        messages: [
-          {
-              "role": "system",
-              "content": "You are a helpful health therapist for men from the ages of 18-35, specifically catering to individuals in Ireland and the United Kingdom. Based on the conversation history, please provide today's emotion in the format: 'You are feeling [emotion] today' where [emotion] is a singular emotion like 'happy', 'sad', etc. Additionally, provide a concise one-sentence recommendation, ensuring the recommendation word count is around 10 words. Format the response in the following JSON structure: {\"Emotion\": \"You are feeling [emotion] today\", \"Recommendation\": \"recommendation\", \"EmotionColors\": [\"#color1\", \"#color2\", \"#color3\"], \"RecommendationColors\": [\"#color1\", \"#color2\", \"#color3\"], \"EmotionBackground\": \"#color\", \"RecommendationBackground\": \"#color\"}. The colors and background color should be dark tones to match the dark aesthetic of the app. The emotion and recommendation should have different colors."
-          },
-          ...formattedMessages,
-          {
-              "role": "user",
-              "content": "Please provide today's emotion in the format: 'You are feeling [emotion] today' where [emotion] is singular. Provide a concise one-sentence recommendation with around 10 words. Format the response in JSON: {\"Emotion\": \"You are feeling [emotion] today\", \"Recommendation\": \"recommendation\", \"EmotionColors\": [\"#color1\", \"#color2\", \"#color3\"], \"RecommendationColors\": [\"#color1\", \"#color2\", \"#color3\"], \"EmotionBackground\": \"#color\", \"RecommendationBackground\": \"#color\"}. Use different dark tones for emotion and recommendation."
-          }
-      ],
-        max_tokens: 150,
-        n: 1,
-        stop: null,
-        temperature: 0.7,
-      }, {
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
+
+      const response = await axios.post(
+        'https://api.openai.com/v1/chat/completions',
+        {
+          model: 'gpt-3.5-turbo',
+          messages: [
+            {
+              role: 'system',
+              content:
+                'You are a helpful health therapist for men from the ages of 18-35, specifically catering to individuals in Ireland and the United Kingdom. Based on the conversation history, please provide today\'s emotion in the format: \'You are feeling [emotion] today\' where [emotion] is a singular emotion like \'happy\', \'sad\', etc. Additionally, provide a concise one-sentence recommendation, ensuring the recommendation word count is around 10 words. Format the response in the following JSON structure: {"Emotion": "You are feeling [emotion] today", "Recommendation": "recommendation", "EmotionColors": ["#color1", "#color2", "#color3"], "RecommendationColors": ["#color1", "#color2", "#color3"], "EmotionBackground": "#color", "RecommendationBackground": "#color"}. The colors and background color should be dark tones to match the dark aesthetic of the app. The emotion and recommendation should have different colors.',
+            },
+            ...formattedMessages,
+            {
+              role: 'user',
+              content:
+                'Please provide today\'s emotion in the format: \'You are feeling [emotion] today\' where [emotion] is singular. Provide a concise one-sentence recommendation with around 10 words. Format the response in JSON: {"Emotion": "You are feeling [emotion] today", "Recommendation": "recommendation", "EmotionColors": ["#color1", "#color2", "#color3"], "RecommendationColors": ["#color1", "#color2", "#color3"], "EmotionBackground": "#color", "RecommendationBackground": "#color"}. Use different dark tones for emotion and recommendation.',
+            },
+          ],
+          max_tokens: 150,
+          n: 1,
+          stop: null,
+          temperature: 0.7,
         },
-      });
-  
+        {
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
       const responseText = response.data.choices[0].message.content.trim();
       console.log('Generated response:', responseText);
-  
+
       const parsedResponse = JSON.parse(responseText);
-  
+
       if (parsedResponse) {
-        const { Emotion, Recommendation, EmotionColors, RecommendationColors, EmotionBackground, RecommendationBackground } = parsedResponse;
-  
+        const {
+          Emotion,
+          Recommendation,
+          EmotionColors,
+          RecommendationColors,
+          EmotionBackground,
+          RecommendationBackground,
+        } = parsedResponse;
+
         await AsyncStorage.multiSet([
           ['TODAY_EMOTION_KEY', Emotion],
           ['TODAY_RECOMMENDATION_KEY', Recommendation],
@@ -216,14 +269,14 @@ export default function Chatbot() {
           ['EMOTION_BACKGROUND_KEY', EmotionBackground],
           ['RECOMMENDATION_BACKGROUND_KEY', RecommendationBackground],
         ]);
-  
+
         console.log('Set todayEmotion:', Emotion);
         console.log('Set todayRecommendation:', Recommendation);
         console.log('Set emotionColors:', EmotionColors);
         console.log('Set recommendationColors:', RecommendationColors);
         console.log('Set emotionBackground:', EmotionBackground);
         console.log('Set recommendationBackground:', RecommendationBackground);
-  
+
         setTodayEmotion(Emotion);
         setTodayRecommendation(Recommendation);
         setEmotionColors(EmotionColors);
@@ -234,7 +287,7 @@ export default function Chatbot() {
         console.error('Error parsing response:', responseText);
       }
     } catch (error) {
-      console.error('Error generating today\'s emotion and recommendation:', error);
+      console.error("Error generating today's emotion and recommendation:", error);
     }
   };
 
@@ -246,9 +299,15 @@ export default function Chatbot() {
     const isUser = message.user._id === 1;
     return (
       <View key={message._id} style={[styles.messageWrapper, isUser && styles.userMessageWrapper]}>
-        <View style={[styles.messageContainer, isUser ? styles.userMessage : styles.assistantMessage]}>
+        <View
+          style={[styles.messageContainer, isUser ? styles.userMessage : styles.assistantMessage]}>
           <Text style={styles.messageText}>{message.text}</Text>
-          <Text style={styles.timestamp}>{new Date(message.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+          <Text style={styles.timestamp}>
+            {new Date(message.createdAt).toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+          </Text>
         </View>
         {isUser ? (
           message.user.avatar ? (
@@ -265,14 +324,9 @@ export default function Chatbot() {
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 10 : 0}
-      >
-        <ScrollView 
-          style={styles.chat} 
-          ref={scrollViewRef}
-          onContentSizeChange={scrollToBottom}
-        >
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0}>
+        <ScrollView style={styles.chat} ref={scrollViewRef} onContentSizeChange={scrollToBottom}>
           <Text style={styles.date}>{new Date().toDateString()}</Text>
           {messages.map(message => renderMessage(message))}
         </ScrollView>
@@ -281,12 +335,18 @@ export default function Chatbot() {
             style={styles.input}
             value={inputText}
             onChangeText={setInputText}
-            placeholder={conversationEnded ? "Check back in tomorrow!" : "Type a message..."}
+            placeholder={conversationEnded ? 'Check back in tomorrow!' : 'Type a message...'}
             placeholderTextColor="#888"
             onFocus={scrollToBottom}
             editable={!conversationEnded}
           />
-          <TouchableOpacity style={styles.sendButton} onPress={() => {{Vibration.vibrate(50);{handleSend}}}} disabled={conversationEnded}>
+          <TouchableOpacity
+            style={styles.sendButton}
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              handleSend();
+            }}
+            disabled={conversationEnded}>
             <Text style={styles.sendButtonText}>Send</Text>
           </TouchableOpacity>
         </View>
@@ -359,7 +419,7 @@ const styles = StyleSheet.create({
     fontSize: windowHeight * 0.022,
   },
   sendButton: {
-    paddingVertical: windowHeight* 0.014,
+    paddingVertical: windowHeight * 0.014,
     marginLeft: windowWidth * 0.02,
     backgroundColor: '#FF922E',
     borderRadius: windowHeight * 0.004,

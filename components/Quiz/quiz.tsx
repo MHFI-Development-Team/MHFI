@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Colors } from '@/constants/Colors';
-import { Vibration } from 'react-native';
+import * as Haptics from 'expo-haptics';
 
 const Quiz = () => {
   const router = useRouter();
@@ -12,21 +12,26 @@ const Quiz = () => {
       <Text style={styles.title}>Choose a Quiz</Text>
       <TouchableOpacity
         style={[styles.button, { backgroundColor: Colors.ButtonColor }]}
-        onPress={() => {{Vibration.vibrate(50);
-          router.push({ pathname: '/(quiz)/[quiz]', params: { category: 'Smoking' } })
-        }}}>
+        onPress={() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          router.push({ pathname: '/(quiz)/[quiz]', params: { category: 'Smoking' } });
+        }}>
         <Text style={styles.buttonText}>Smoking</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.button, { backgroundColor: Colors.ButtonColor }]}
-        onPress={() => {{Vibration.vibrate(50);
-          router.push({ pathname: '/(quiz)/[quiz]', params: { category: 'Drinking' } })
-        }}}>
+        onPress={() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          router.push({ pathname: '/(quiz)/[quiz]', params: { category: 'Drinking' } });
+        }}>
         <Text style={styles.buttonText}>Drinking</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.button, { backgroundColor: Colors.ButtonColor }]}
-        onPress={() => {{Vibration.vibrate(50); router.push({ pathname: '/(quiz)/[quiz]', params: { category: 'Drugs' } })}}}>
+        onPress={() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          router.push({ pathname: '/(quiz)/[quiz]', params: { category: 'Drugs' } });
+        }}>
         <Text style={styles.buttonText}>Drugs</Text>
       </TouchableOpacity>
     </View>
@@ -38,7 +43,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.background, 
+    backgroundColor: Colors.background,
     padding: 20,
   },
   title: {

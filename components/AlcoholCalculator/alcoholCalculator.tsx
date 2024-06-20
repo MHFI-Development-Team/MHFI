@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Keyboard, TouchableOpacity, Dimensions, SafeAreaView, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Keyboard,
+  TouchableOpacity,
+  Dimensions,
+  SafeAreaView,
+  ScrollView,
+} from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { FontAwesome6 } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Colors } from '@/constants/Colors';
 import { useProfile } from '../ProfileContext';
+
+import * as Haptics from 'expo-haptics';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-import { Vibration } from 'react-native';
 
 type AlcoholType = 'spirits' | 'cans';
 type Period = 'weekly' | 'monthly' | 'yearly';
@@ -103,7 +115,8 @@ const AlcoholCalculator = () => {
         <View style={styles.descriptionContainer}>
           <Text style={styles.descriptionTitle}>What does this calculator do?</Text>
           <Text style={styles.descriptionText}>
-            Calculate the average amount of alcohol you consume on a weekly, monthly, and yearly basis based on your input.
+            Calculate the average amount of alcohol you consume on a weekly, monthly, and yearly
+            basis based on your input.
           </Text>
         </View>
         <Dropdown
@@ -149,8 +162,17 @@ const AlcoholCalculator = () => {
               onBlur={() => setIsDrinksInputFocused(false)}
             />
             {isDrinksInputFocused && (
-              <TouchableOpacity onPress={() => {{Vibration.vibrate(50); {handleDismiss}}}} style={styles.dismissIcon}>
-                <AntDesign name="checkcircleo" size={windowHeight * 0.03} color={Colors.ButtonColor} />
+              <TouchableOpacity
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  handleDismiss();
+                }}
+                style={styles.dismissIcon}>
+                <AntDesign
+                  name="checkcircleo"
+                  size={windowHeight * 0.03}
+                  color={Colors.ButtonColor}
+                />
               </TouchableOpacity>
             )}
           </View>
@@ -167,18 +189,35 @@ const AlcoholCalculator = () => {
                 onBlur={() => setIsVolumeInputFocused(false)}
               />
               {isVolumeInputFocused && (
-                <TouchableOpacity onPress={() => {{Vibration.vibrate(50);{handleDismiss}}}} style={styles.dismissIcon}>
-                  <AntDesign name="checkcircleo" size={windowHeight * 0.03} color={Colors.ButtonColor} />
+                <TouchableOpacity
+                  onPress={() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                    handleDismiss();
+                  }}
+                  style={styles.dismissIcon}>
+                  <AntDesign
+                    name="checkcircleo"
+                    size={windowHeight * 0.03}
+                    color={Colors.ButtonColor}
+                  />
                 </TouchableOpacity>
               )}
             </View>
           )}
         </View>
-        <TouchableOpacity style={styles.calculateButton} onPress={() => {{Vibration.vibrate(50);{calculateIntake}}}}>
+        <TouchableOpacity
+          style={styles.calculateButton}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            calculateIntake();
+          }}>
           <Text style={styles.calculateButtonText}>Calculate</Text>
         </TouchableOpacity>
         {results[value] && (
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.resultsContainer}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.resultsContainer}>
             <View style={styles.results}>
               {['weekly', 'monthly', 'yearly'].map(period => renderResult(value, period as Period))}
             </View>

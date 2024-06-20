@@ -3,7 +3,8 @@ import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-na
 import Slider from '@react-native-community/slider';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Colors } from '@/constants/Colors';
-import { Vibration } from 'react-native';
+
+import * as Haptics from 'expo-haptics';
 
 const bmiHeight: React.FC = () => {
   const { age, weight } = useLocalSearchParams<{ age: string; weight: string }>();
@@ -58,12 +59,18 @@ const bmiHeight: React.FC = () => {
         <View style={styles.unitSwitchContainer}>
           <TouchableOpacity
             style={[styles.unitButton, unit === 'cm' && styles.unitButtonActive]}
-            onPress={() => setUnit('cm')}>
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              setUnit('cm');
+            }}>
             <Text style={styles.unitButtonText}>CM</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.unitButton, unit === 'feet' && styles.unitButtonActive]}
-            onPress={() => setUnit('feet')}>
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+              setUnit('feet');
+            }}>
             <Text style={styles.unitButtonText}>Feet</Text>
           </TouchableOpacity>
         </View>
@@ -101,14 +108,19 @@ const bmiHeight: React.FC = () => {
                 value={heightInches}
                 onValueChange={setHeightInches}
                 minimumTrackTintColor="#FF922E"
-              maximumTrackTintColor="#3E3E3E"
-              thumbTintColor="#FF922E"
+                maximumTrackTintColor="#3E3E3E"
+                thumbTintColor="#FF922E"
               />
             </>
           )}
           <Text style={styles.heightIndicator}>{heightDisplay}</Text>
         </View>
-        <TouchableOpacity style={styles.nextButton} onPress={() => {Vibration.vibrate(50); handleNext(); }}>
+        <TouchableOpacity
+          style={styles.nextButton}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            handleNext();
+          }}>
           <Text style={styles.nextButtonText}>Next</Text>
         </TouchableOpacity>
       </View>

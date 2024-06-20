@@ -5,6 +5,8 @@ import SquareCard from '../SquareCard';
 import globalStyles from '@/constants/globalStyles';
 import suggestedTools from '@/components/SuggestTools/suggestToolsData';
 
+import * as Haptics from 'expo-haptics';
+
 const windowHeight = Dimensions.get('window').height;
 
 const SuggestedTools = () => {
@@ -23,7 +25,11 @@ const SuggestedTools = () => {
           <View style={{ flexDirection: 'row', gap: 25 }}>
             {suggestedTools.map((tool, index) => (
               <Link key={index} href={tool.href} asChild>
-                <TouchableOpacity style={{ flexDirection: 'column', alignItems: 'center' }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  }}
+                  style={{ flexDirection: 'column', alignItems: 'center' }}>
                   <SquareCard
                     imageUri={tool.image}
                     SvgComponent={tool.SvgComponent}

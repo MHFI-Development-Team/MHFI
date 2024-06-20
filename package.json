@@ -62,7 +62,8 @@
     "react-native-web": "~0.19.10",
     "react-vertical-timeline-component": "^3.6.0",
     "rn-mdx": "^0.0.7",
-    "simplex-noise": "^4.0.1"
+    "simplex-noise": "^4.0.1",
+    "expo-haptics": "~13.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Keyboard, TouchableOpacity, Dimensions, SafeAreaView, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Keyboard,
+  TouchableOpacity,
+  Dimensions,
+  SafeAreaView,
+  ScrollView,
+} from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { FontAwesome6 } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Colors } from '@/constants/Colors';
 import { useProfile } from '../ProfileContext';
-import { Vibration } from 'react-native';
-
+import * as Haptics from 'expo-haptics';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -80,7 +89,7 @@ const SmokingCalculator = () => {
   const formatCurrency = (amount: number): string => {
     return new Intl.NumberFormat('en-IE', {
       style: 'currency',
-      currency: currency === '£' ? 'GBP' : 'EUR'
+      currency: currency === '£' ? 'GBP' : 'EUR',
     }).format(amount);
   };
 
@@ -98,9 +107,7 @@ const SmokingCalculator = () => {
     return (
       <View style={styles.resultCard} key={period}>
         <Text style={styles.resultTitle}>{capitalizeFirstLetter(periodLabel)}</Text>
-        <Text style={styles.resultValue}>
-          {formatCurrency(amount)}
-        </Text>
+        <Text style={styles.resultValue}>{formatCurrency(amount)}</Text>
       </View>
     );
   };
@@ -120,7 +127,8 @@ const SmokingCalculator = () => {
         <View style={styles.descriptionContainer}>
           <Text style={styles.descriptionTitle}>What does this calculator do?</Text>
           <Text style={styles.descriptionText}>
-            Calculate the cost of your smoking habit on a weekly, monthly, and yearly basis based on your input.
+            Calculate the cost of your smoking habit on a weekly, monthly, and yearly basis based on
+            your input.
           </Text>
         </View>
         <Dropdown
@@ -166,8 +174,17 @@ const SmokingCalculator = () => {
               onBlur={() => setIsPacksInputFocused(false)}
             />
             {isPacksInputFocused && (
-              <TouchableOpacity onPress={() => {{Vibration.vibrate(50); {handleDismiss}}}} style={styles.dismissIcon}>
-                <AntDesign name="checkcircleo" size={windowHeight * 0.03} color={Colors.ButtonColor} />
+              <TouchableOpacity
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  handleDismiss();
+                }}
+                style={styles.dismissIcon}>
+                <AntDesign
+                  name="checkcircleo"
+                  size={windowHeight * 0.03}
+                  color={Colors.ButtonColor}
+                />
               </TouchableOpacity>
             )}
           </View>
@@ -183,19 +200,39 @@ const SmokingCalculator = () => {
               onBlur={() => setIsCostInputFocused(false)}
             />
             {isCostInputFocused && (
-              <TouchableOpacity onPress={() => {{Vibration.vibrate(50);handleDismiss}}} style={styles.dismissIcon}>
-                <AntDesign name="checkcircleo" size={windowHeight * 0.03} color={Colors.ButtonColor} />
+              <TouchableOpacity
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  handleDismiss();
+                }}
+                style={styles.dismissIcon}>
+                <AntDesign
+                  name="checkcircleo"
+                  size={windowHeight * 0.03}
+                  color={Colors.ButtonColor}
+                />
               </TouchableOpacity>
             )}
           </View>
         </View>
-        <TouchableOpacity style={styles.calculateButton} onPress={() => {{Vibration.vibrate(50);{calculateCost}}}}>
+        <TouchableOpacity
+          style={styles.calculateButton}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            calculateCost();
+          }}>
           <Text style={styles.calculateButtonText}>Calculate</Text>
         </TouchableOpacity>
         {results[value] && (
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.resultsContainer} style={{ overflow: "visible" }}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.resultsContainer}
+            style={{ overflow: 'visible' }}>
             <View style={styles.results}>
-              {['costPerWeek', 'costPerMonth', 'costPerYear', 'costOver5years'].map(period => renderResult(value, period as CostPeriod))}
+              {['costPerWeek', 'costPerMonth', 'costPerYear', 'costOver5years'].map(period =>
+                renderResult(value, period as CostPeriod)
+              )}
             </View>
           </ScrollView>
         )}

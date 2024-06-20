@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import Button from '../Button';
 import { Colors } from '@/constants/Colors';
-import { Vibration } from 'react-native';
+import * as Haptics from 'expo-haptics';
 
 type AlcoholType = 'spirits' | 'cans';
 
@@ -121,7 +121,10 @@ const AlcoholCalculator = () => {
                       <TouchableOpacity
                         activeOpacity={0.8}
                         style={styles.optionItem}
-                        onPress={() => {{Vibration.vibrate(50);{() => onSelect(item)}}}}>
+                        onPress={() => {
+                          onSelect(item);
+                          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                        }}>
                         <Text style={styles.text}>{item.label}</Text>
                       </TouchableOpacity>
                     )}
@@ -153,7 +156,10 @@ const AlcoholCalculator = () => {
       )}
       <Button
         title="Test"
-        onPress={() => {{Vibration.vibrate(50);{calculateIntake}}}}
+        onPress={() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          calculateIntake();
+        }}
         style={styles.customButton}
         textStyle={styles.customText}
       />

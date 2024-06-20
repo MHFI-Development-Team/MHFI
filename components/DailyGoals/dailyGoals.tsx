@@ -6,6 +6,7 @@ import globalStyles from '@/constants/globalStyles';
 import dailyGoalsTasks from '@/components/DailyGoals/dailyGoalsData';
 import { AntDesign } from '@expo/vector-icons';
 import { Colors } from '@/constants/Colors';
+import * as Haptics from 'expo-haptics';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -22,7 +23,11 @@ const DailyGoals = () => {
           <View style={{ flexDirection: 'row', gap: 25 }}>
             {dailyGoalsTasks.map((goal, index) => (
               <Link key={index} href="/dailyGoalsEdit" asChild>
-                <TouchableOpacity style={{ flexDirection: 'column' }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                  }}
+                  style={{ flexDirection: 'column' }}>
                   <CircularCard imageUri={goal.image} size={windowHeight * 0.125} />
                   <View style={{ marginTop: windowHeight * 0.005, alignItems: 'center' }}>
                     <Text style={[globalStyles.text, { fontWeight: '500' }]}>{goal.task}</Text>
@@ -34,7 +39,11 @@ const DailyGoals = () => {
               </Link>
             ))}
             <Link href="/dailyGoalsTasks" asChild>
-              <TouchableOpacity style={styles.addButton}>
+              <TouchableOpacity
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+                }}
+                style={styles.addButton}>
                 <View style={styles.iconWrapper}>
                   <AntDesign name="plus" size={windowHeight * 0.05} color={Colors.ButtonColor} />
                 </View>

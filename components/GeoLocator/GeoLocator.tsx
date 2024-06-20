@@ -6,7 +6,7 @@ import globalStyles from '@/constants/globalStyles';
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import * as Location from 'expo-location';
 import { getDistance } from 'geolib';
-import { Vibration } from 'react-native';
+import * as Haptics from 'expo-haptics';
 
 enum MapModes {
   List,
@@ -320,9 +320,10 @@ const ModeViewChange: React.FC<ModeViewChangeProps> = ({ state }) => {
         gap: 20,
       }}>
       <TouchableOpacity
-       onPress={() => {{Vibration.vibrate(50) 
+        onPress={() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
           setMapViewMode(mapViewMode === MapModes.List ? MapModes.Map : MapModes.List);
-        }}}
+        }}
         activeOpacity={0.9}
         style={{
           width: '100%',

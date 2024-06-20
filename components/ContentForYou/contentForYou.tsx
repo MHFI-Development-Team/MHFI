@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Dimensions,
   ActivityIndicator,
-  Vibration,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Articles } from '@/constants/types';
@@ -14,6 +13,7 @@ import globalStyles from '@/constants/globalStyles';
 import ContentCard from '@/components/ContentCard';
 import { Asset } from 'expo-asset';
 import * as FileSystem from 'expo-file-system';
+import * as Haptics from 'expo-haptics';
 import { styles } from 'rn-mdx';
 import { ArticleContext, ArticleContextType } from '../AcrticleContext';
 
@@ -59,7 +59,7 @@ const ContentForYou = () => {
                 key={index}
                 style={{ flexDirection: 'column' }}
                 onPress={() => {
-                  Vibration.vibrate(50);
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
                   router.push({
                     pathname: `/[id]`,
                     params: { content: article.content },

@@ -3,7 +3,8 @@ import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-na
 import Slider from '@react-native-community/slider';
 import { useRouter } from 'expo-router';
 import { Colors } from '@/constants/Colors';
-import { Vibration } from 'react-native';
+
+import * as Haptics from 'expo-haptics';
 
 const bmiScreen: React.FC = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -56,7 +57,12 @@ const bmiScreen: React.FC = () => {
           />
           <Text style={styles.indicatorText}>{weight}</Text>
         </View>
-        <TouchableOpacity style={styles.nextButton} onPress={() => {Vibration.vibrate(50); handleNext(); }}>
+        <TouchableOpacity
+          style={styles.nextButton}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            handleNext();
+          }}>
           <Text style={styles.nextButtonText}>Next</Text>
         </TouchableOpacity>
       </View>
