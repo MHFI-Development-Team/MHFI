@@ -12,7 +12,8 @@ interface EmotionCardProps {
 }
 
 const EmotionCard: React.FC<EmotionCardProps> = ({ type, text }) => {
-  const { emotionBackground, recommendationBackground, emotionColors, recommendationColors } = useProfile();
+  const { emotionBackground, recommendationBackground, emotionColors, recommendationColors } =
+    useProfile();
   const displayText = type === 'emotion' ? `${text}` : `Recommendation: ${text}`;
   const backgroundColor = type === 'emotion' ? emotionBackground : recommendationBackground;
   const colors = type === 'emotion' ? emotionColors : recommendationColors;
@@ -24,7 +25,7 @@ const EmotionCard: React.FC<EmotionCardProps> = ({ type, text }) => {
           <Text style={styles.cardText}>{displayText}</Text>
         </View>
         <View style={styles.animationContainer}>
-          <PulsatingCircle colors={colors}/>
+          <PulsatingCircle colors={colors} />
         </View>
       </View>
     </View>

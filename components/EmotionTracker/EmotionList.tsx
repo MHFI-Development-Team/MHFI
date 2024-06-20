@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: windowWidth * 0.04,
     flex: 1,
-    marginRight: windowHeight * 0.06,
+    marginRight: windowHeight * 0.09,
     textAlign: 'left',
   },
   circlContainer: {

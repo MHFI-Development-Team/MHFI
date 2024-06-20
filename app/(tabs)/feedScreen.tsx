@@ -34,9 +34,6 @@ export default function FeedScreen() {
 
   const { articles } = React.useContext(ArticleContext) as ArticleContextType;
 
-  // console.log(articles);
-
-  // const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   const handleSearch = (query: string) => {
@@ -70,11 +67,11 @@ export default function FeedScreen() {
   // }
 
   return (
-    <View style={[globalStyles.container,]}>
+    <View style={[globalStyles.container]}>
       <SafeAreaView edges={['right', 'left', 'top']}>
         <Header />
       </SafeAreaView>
-      <View style={[{flex: 1}, { paddingHorizontal: windowWidth * 0.05 }]}>
+      <View style={[{ flex: 1 }, { paddingHorizontal: windowWidth * 0.05 }]}>
         <SearchBar placeholder="Search articles, videos and more" onSearch={handleSearch} />
         <View>
           <ScrollView

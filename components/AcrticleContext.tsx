@@ -32,6 +32,10 @@ const ArticleProvider = ({ children }) => {
             const title: string = titles ? titles[0].replace('# ', '') : 'No title found';
 
             const tags = content.match(tag_regex);
+            // extract tags from content
+            // tags?.forEach(x => {
+            //   content = content.replace(x, '');
+            // });
 
             const images = content.match(image_regex);
             const extractedSources = images?.map(url => {
@@ -51,7 +55,7 @@ const ArticleProvider = ({ children }) => {
               })
               .filter(Boolean) as string[];
 
-            return [title, extractedTags, extractedSources];
+            return [title, extractedTags, extractedSources, content];
           };
 
           const [title, tags, sources] = seperateContent(response.data);
@@ -64,8 +68,6 @@ const ArticleProvider = ({ children }) => {
             content: response.data,
             id: key.replace('.mdx', ''),
           };
-
-          //   console.log(article);
 
           saveArticle(article);
         })

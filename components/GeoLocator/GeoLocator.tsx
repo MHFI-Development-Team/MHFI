@@ -289,6 +289,8 @@ const MapViewLayout = () => {
   return (
     <MapView
       style={{ width: '100%', height: '100%' }}
+      // showsMyLocationButton={true}
+
       //   provider={PROVIDER_GOOGLE}
       customMapStyle={mapStyle}>
       {gpp_data.map((data, index) => (

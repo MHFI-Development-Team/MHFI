@@ -44,7 +44,7 @@ const ContentForYou = () => {
 
   return (
     <>
-      <View style={{ transform: [{ translateY: -30 }] }}>
+      <View style={{ translateY: -30 }}>
         <View>
           <Text
             style={[globalStyles.textHeader, { fontWeight: 'bold', fontSize: windowWidth * 0.04 }]}>
@@ -74,7 +74,11 @@ const ContentForYou = () => {
                     alignItems: 'center',
                     maxWidth: 300,
                   }}>
-                  <Text style={[globalStyles.text, { fontWeight: '500', fontSize: 18 }]}>
+                  <Text
+                    style={[
+                      globalStyles.text,
+                      { fontWeight: '500', fontSize: windowWidth * 0.04 },
+                    ]}>
                     {article.title}
                   </Text>
                 </View>
