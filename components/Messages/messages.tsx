@@ -8,7 +8,7 @@ import UserIcon from '@/assets/svg/UserIcon';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const apikey = process.env.OPENAI_API_KEY;
+const apiKey = process.env.EXPO_PUBLIC_OPENAI_API_KEY;
 interface Message {
   _id: number | string;
   text: string;
@@ -139,7 +139,7 @@ export default function Chatbot() {
         temperature: 0.9,
       }, {
         headers: {
-          'Authorization': `Bearer ${apikey}`,
+          'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
         },
       });
@@ -188,7 +188,7 @@ export default function Chatbot() {
         temperature: 0.7,
       }, {
         headers: {
-          'Authorization': `Bearer ${apikey}`,
+          'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
         },
       });
