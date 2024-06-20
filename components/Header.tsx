@@ -105,7 +105,7 @@ export default function Header() {
   const { profilePicture, name } = useProfile();
 
   return (
-    <View style={styles.headerContainer}>
+    <View style={[styles.headerContainer]}>
       <View style={styles.greetingContainer}>
         <Text style={styles.greetingText}>
           {getGreeting()}

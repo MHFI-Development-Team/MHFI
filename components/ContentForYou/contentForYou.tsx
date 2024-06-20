@@ -28,7 +28,7 @@ const getArticle = async (requireNumber: number) => {
 
   const imageMatch = content.match(/<img src="([^"]+)" \/>/);
   const imageUrl = imageMatch ? imageMatch[1] : 'https://example.com/default-image.jpg';
-
+ 
   return {
     title,
     id: name,
@@ -43,9 +43,9 @@ const ContentForYou = () => {
 
   return (
     <>
-      <View style={{ transform: [{ translateY: -20 }] }}>
+      <View style={{ transform: [{ translateY: -30 }] }}>
         <View>
-          <Text style={[globalStyles.textHeader, { fontWeight: 'bold', fontSize: 20 }]}>
+          <Text style={[globalStyles.textHeader, { fontWeight: 'bold', fontSize: windowWidth * 0.04}]}>
             Content for you
           </Text>
         </View>

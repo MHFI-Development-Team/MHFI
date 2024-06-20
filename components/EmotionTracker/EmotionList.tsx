@@ -40,12 +40,12 @@ const EmotionList: React.FC = () => {
   }
 
   return (
-    <View style={{ transform: [{ translateY: -20 }] }}>
+    <View>
       <View style={styles.EmotionListContent}>
         <Text
           style={[
             globalStyles.textHeader,
-            { fontWeight: 'bold', fontSize: 20, marginLeft: windowWidth * 0.05 },
+            { fontWeight: 'bold', fontSize: windowWidth * 0.04, marginLeft: windowWidth * 0.05 },
           ]}>
           Emotion Tracker
         </Text>
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   },
   checkInText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: windowWidth * 0.04,
     flex: 1,
     marginRight: windowHeight * 0.06,
     textAlign: 'left',
