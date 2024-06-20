@@ -77,7 +77,9 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
         const storedEmotionColors = await AsyncStorage.getItem(EMOTION_COLORS_KEY);
         const storedRecommendationColors = await AsyncStorage.getItem(RECOMMENDATION_COLORS_KEY);
         const storedEmotionBackground = await AsyncStorage.getItem(EMOTION_BACKGROUND_KEY);
-        const storedRecommendationBackground = await AsyncStorage.getItem(RECOMMENDATION_BACKGROUND_KEY);
+        const storedRecommendationBackground = await AsyncStorage.getItem(
+          RECOMMENDATION_BACKGROUND_KEY
+        );
 
         if (storedProfilePicture) setProfilePicture(storedProfilePicture);
         if (storedName) setNameState(storedName);
@@ -86,9 +88,11 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
         if (storedTodayEmotion) setTodayEmotion(storedTodayEmotion);
         if (storedTodayRecommendation) setTodayRecommendation(storedTodayRecommendation);
         if (storedEmotionColors) setEmotionColors(JSON.parse(storedEmotionColors));
-        if (storedRecommendationColors) setRecommendationColors(JSON.parse(storedRecommendationColors));
+        if (storedRecommendationColors)
+          setRecommendationColors(JSON.parse(storedRecommendationColors));
         if (storedEmotionBackground) setEmotionBackground(storedEmotionBackground);
-        if (storedRecommendationBackground) setRecommendationBackground(storedRecommendationBackground);
+        if (storedRecommendationBackground)
+          setRecommendationBackground(storedRecommendationBackground);
       } catch (error) {
         console.error('Failed to load profile data', error);
       }
@@ -105,7 +109,16 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
   const resetProfile = async () => {
     try {
       await AsyncStorage.multiRemove([
-        PROFILE_PICTURE_KEY, USERNAME_KEY, CURRENCY_KEY, MESSAGES_KEY, TODAY_EMOTION_KEY, TODAY_RECOMMENDATION_KEY, EMOTION_COLORS_KEY, RECOMMENDATION_COLORS_KEY, EMOTION_BACKGROUND_KEY, RECOMMENDATION_BACKGROUND_KEY
+        PROFILE_PICTURE_KEY,
+        USERNAME_KEY,
+        CURRENCY_KEY,
+        MESSAGES_KEY,
+        TODAY_EMOTION_KEY,
+        TODAY_RECOMMENDATION_KEY,
+        EMOTION_COLORS_KEY,
+        RECOMMENDATION_COLORS_KEY,
+        EMOTION_BACKGROUND_KEY,
+        RECOMMENDATION_BACKGROUND_KEY,
       ]);
       setProfilePicture(null);
       setNameState('');
@@ -151,11 +164,30 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
   }, [recommendationBackground]);
 
   return (
-    <ProfileContext.Provider value={{
-      profilePicture, setProfilePicture, name, setName, currency, setCurrency,
-      messages, setMessages, todayEmotion, setTodayEmotion, todayRecommendation, setTodayRecommendation,
-      emotionColors, setEmotionColors, recommendationColors, setRecommendationColors, emotionBackground, setEmotionBackground, recommendationBackground, setRecommendationBackground, resetProfile
-    }}>
+    <ProfileContext.Provider
+      value={{
+        profilePicture,
+        setProfilePicture,
+        name,
+        setName,
+        currency,
+        setCurrency,
+        messages,
+        setMessages,
+        todayEmotion,
+        setTodayEmotion,
+        todayRecommendation,
+        setTodayRecommendation,
+        emotionColors,
+        setEmotionColors,
+        recommendationColors,
+        setRecommendationColors,
+        emotionBackground,
+        setEmotionBackground,
+        recommendationBackground,
+        setRecommendationBackground,
+        resetProfile,
+      }}>
       {children}
     </ProfileContext.Provider>
   );

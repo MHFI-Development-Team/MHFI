@@ -3,7 +3,6 @@ import Header from '@/components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import globalStyles from '@/constants/globalStyles';
 import ContentForYou from '@/components/ContentForYou/contentForYou';
-import DailyGoals from '@/components/DailyGoals/dailyGoals';
 import SuggestedTools from '@/components/SuggestTools/suggestTools';
 import { View } from 'react-native';
 import EmotionList from '@/components/EmotionTracker/EmotionList';
@@ -19,11 +18,9 @@ const homeScreen = () => {
     >
       <Header />
       <View style={{ justifyContent: 'space-evenly', flex: 1 }}>
-      <View
-      style={{paddingHorizontal: windowWidth * 0.05}} 
-    >
-        <ContentForYou />
-        <SuggestedTools />
+        <View style={{ paddingHorizontal: windowWidth * 0.05 }}>
+          <ContentForYou />
+          <SuggestedTools />
         </View>
         <EmotionList />
       </View>

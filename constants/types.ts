@@ -22,10 +22,10 @@ export type ContentForYou = {
   link: typeof Link;
 };
 
-export type Articles = {
+export type Article = {
   title: string;
   id: string;
   content: string;
-  image: string;
-  tags: string[];
+  thumbnail?: string;
+  tags?: string[] | null;
 };

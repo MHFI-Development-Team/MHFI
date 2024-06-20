@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Dimensions,
   ActivityIndicator,
+  Vibration,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Articles } from '@/constants/types';
@@ -14,7 +15,7 @@ import ContentCard from '@/components/ContentCard';
 import { Asset } from 'expo-asset';
 import * as FileSystem from 'expo-file-system';
 import { styles } from 'rn-mdx';
-import { Vibration } from 'react-native';
+import { ArticleContext, ArticleContextType } from '../AcrticleContext';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -37,25 +38,8 @@ const getArticle = async (requireNumber: number) => {
 };
 
 const ContentForYou = () => {
-  const [contentForYou, setContentForYou] = useState<Articles[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { articles } = React.useContext(ArticleContext) as ArticleContextType;
   const router = useRouter();
-  const windowWidth = Dimensions.get("window").width;
-  useEffect(() => {
-    const getArticles = async () => {
-      const articles: number[] = require('../../assets/articles/generated-articles.js');
-      const content = await Promise.all(articles.map(a => getArticle(a)));
-
-      setContentForYou(content!);
-      setLoading(false);
-    };
-
-    getArticles();
-  }, []);
-
-  if (loading) {
-    return <ActivityIndicator size="large" color="#FF922E" />;
-  }
 
   return (
     <>
@@ -70,25 +54,26 @@ const ContentForYou = () => {
           showsHorizontalScrollIndicator={false}
           style={{ marginTop: 10, overflow: 'visible' }}>
           <View style={{ flexDirection: 'row', gap: 25 }}>
-            {contentForYou.map((content, index) => (
+            {articles.map((article, index) => (
               <TouchableOpacity
                 key={index}
                 style={{ flexDirection: 'column' }}
-                onPress={() => {{Vibration.vibrate(50);
+                onPress={() => {
+                  Vibration.vibrate(50);
                   router.push({
                     pathname: `/[id]`,
-                    params: { content: content.content },
-                  })}}
-                }>
-                <ContentCard imageUri={content.image} size={0} />
+                    params: { content: article.content },
+                  });
+                }}>
+                <ContentCard imageUri={article.thumbnail} size={0} />
                 <View
                   style={{
                     marginTop: windowHeight * 0.005,
                     alignItems: 'center',
                     maxWidth: 300,
                   }}>
-                  <Text style={[globalStyles.text, { fontWeight: '500', fontSize: windowWidth * 0.04 }]}>
-                    {content.title}
+                  <Text style={[globalStyles.text, { fontWeight: '500', fontSize: 18 }]}>
+                    {article.title}
                   </Text>
                 </View>
               </TouchableOpacity>
