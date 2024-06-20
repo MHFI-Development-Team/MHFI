@@ -7,6 +7,7 @@ import { Colors } from '@/constants/Colors';
 import { useProfile } from '../ProfileContext';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+import { Vibration } from 'react-native';
 
 type AlcoholType = 'spirits' | 'cans';
 type Period = 'weekly' | 'monthly' | 'yearly';
@@ -148,7 +149,7 @@ const AlcoholCalculator = () => {
               onBlur={() => setIsDrinksInputFocused(false)}
             />
             {isDrinksInputFocused && (
-              <TouchableOpacity onPress={handleDismiss} style={styles.dismissIcon}>
+              <TouchableOpacity onPress={() => {{Vibration.vibrate(50); {handleDismiss}}}} style={styles.dismissIcon}>
                 <AntDesign name="checkcircleo" size={windowHeight * 0.03} color={Colors.ButtonColor} />
               </TouchableOpacity>
             )}
@@ -166,14 +167,14 @@ const AlcoholCalculator = () => {
                 onBlur={() => setIsVolumeInputFocused(false)}
               />
               {isVolumeInputFocused && (
-                <TouchableOpacity onPress={handleDismiss} style={styles.dismissIcon}>
+                <TouchableOpacity onPress={() => {{Vibration.vibrate(50);{handleDismiss}}}} style={styles.dismissIcon}>
                   <AntDesign name="checkcircleo" size={windowHeight * 0.03} color={Colors.ButtonColor} />
                 </TouchableOpacity>
               )}
             </View>
           )}
         </View>
-        <TouchableOpacity style={styles.calculateButton} onPress={calculateIntake}>
+        <TouchableOpacity style={styles.calculateButton} onPress={() => {{Vibration.vibrate(50);{calculateIntake}}}}>
           <Text style={styles.calculateButtonText}>Calculate</Text>
         </TouchableOpacity>
         {results[value] && (

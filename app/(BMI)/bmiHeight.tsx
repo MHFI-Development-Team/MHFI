@@ -108,7 +108,7 @@ const bmiHeight: React.FC = () => {
           )}
           <Text style={styles.heightIndicator}>{heightDisplay}</Text>
         </View>
-        <TouchableOpacity style={styles.nextButton} onPress={() => {Vibration.vibrate(100); handleNext(); }}>
+        <TouchableOpacity style={styles.nextButton} onPress={() => {Vibration.vibrate(50); handleNext(); }}>
           <Text style={styles.nextButtonText}>Next</Text>
         </TouchableOpacity>
       </View>

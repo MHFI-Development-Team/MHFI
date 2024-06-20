@@ -6,6 +6,7 @@ import smokingQuestions from '@/components/Quiz/smokingQuestions';
 import drinkingQuestions from '@/components/Quiz/drinkingQuestions';
 import { Question } from '@/components/Quiz/IQuizQuestion';
 import { Colors } from '@/constants/Colors';
+import { Vibration } from 'react-native';
 
 const questions: { [key: string]: Question[] } = {
   Smoking: smokingQuestions,
@@ -58,7 +59,7 @@ const QuizData: React.FC = () => {
       <TouchableOpacity
         key={index}
         style={styles.optionButton}
-        onPress={() => handleAnswer(option)}>
+        onPress={() => {{Vibration.vibrate(50); handleAnswer(option)}}}>
         <Text style={styles.optionText}>{option}</Text>
       </TouchableOpacity>
     ));

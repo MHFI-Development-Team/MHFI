@@ -14,6 +14,7 @@ import ContentCard from '@/components/ContentCard';
 import { Asset } from 'expo-asset';
 import * as FileSystem from 'expo-file-system';
 import { styles } from 'rn-mdx';
+import { Vibration } from 'react-native';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -73,11 +74,11 @@ const ContentForYou = () => {
               <TouchableOpacity
                 key={index}
                 style={{ flexDirection: 'column' }}
-                onPress={() =>
+                onPress={() => {{Vibration.vibrate(50);
                   router.push({
                     pathname: `/[id]`,
                     params: { content: content.content },
-                  })
+                  })}}
                 }>
                 <ContentCard imageUri={content.image} size={0} />
                 <View

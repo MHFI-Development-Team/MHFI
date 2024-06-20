@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
-
+import { Vibration } from 'react-native';
 type ButtonProps = {
   title: string;
   onPress: () => void;
@@ -10,7 +10,7 @@ type ButtonProps = {
 
 const Button: React.FC<ButtonProps> = ({ title, onPress, style, textStyle }) => {
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
+    <TouchableOpacity onPress={() => {{Vibration.vibrate(50);{onPress}}}} style={[styles.button, style]}>
       <Text style={[styles.text, textStyle]}>{title}</Text>
     </TouchableOpacity>
   );
