@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   StyleSheet,
@@ -16,55 +16,26 @@ import { Colors } from '@/constants/Colors';
 import { FrontmatterAttributes } from '@/components/FrontMatterAttributes';
 import { useRouter } from 'expo-router';
 import fm from 'front-matter';
-import { Articles } from '@/constants/types';
+import { Article } from '@/constants/types';
 import { Asset } from 'expo-asset';
 import * as FileSystem from 'expo-file-system';
 import { Dimensions } from 'react-native';
+import { ArticleContext, ArticleContextType } from '@/components/AcrticleContext';
 
-const windowWidth = Dimensions.get("window").width;
-
-const getArticle = async (requireNumber: number) => {
-  const [{ name, localUri }] = await Asset.loadAsync(requireNumber);
-  const content = await FileSystem.readAsStringAsync(localUri!);
-
-  const parsedContent = fm<FrontmatterAttributes>(content);
-  const frontmatter = parsedContent.attributes;
-
-  const tags = frontmatter.tags || [];
-  const titleMatch = content.match(/^# (.+)/);
-  const title = frontmatter.title || (titleMatch ? titleMatch[1] : name);
-
-  const imageMatch = content.match(/<img src="([^"]+)" \/>/);
-  const imageUrl = imageMatch ? imageMatch[1] : 'https://example.com/default-image.jpg';
-
-  return {
-    title,
-    id: name,
-    content,
-    image: imageUrl,
-    tags,
-  } as Articles;
-};
+const windowWidth = Dimensions.get('window').width;
 
 export default function FeedScreen() {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
-  const [contentForYou, setContentForYou] = useState<Articles[]>([]);
-  const [filteredContent, setFilteredContent] = useState<Articles[]>([]);
-  const [loading, setLoading] = useState(true);
+
+  const [contentForYou, setContentForYou] = useState<Article[]>([]);
+  const [filteredContent, setFilteredContent] = useState<Article[]>([]);
+
+  const { articles } = React.useContext(ArticleContext) as ArticleContextType;
+
+  // console.log(articles);
+
+  // const [loading, setLoading] = useState(true);
   const router = useRouter();
-
-  useEffect(() => {
-    const getArticles = async () => {
-      const articles: number[] = require('../../assets/articles/generated-articles.js');
-      const content = await Promise.all(articles.map(a => getArticle(a)));
-
-      setContentForYou(content!);
-      setFilteredContent(content!);
-      setLoading(false);
-    };
-
-    getArticles();
-  }, []);
 
   const handleSearch = (query: string) => {
     if (query) {
@@ -92,9 +63,9 @@ export default function FeedScreen() {
 
   const allTags = [...new Set(contentForYou.flatMap(article => article.tags))];
 
-  if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" />;
-  }
+  // if (loading) {
+  //   return <ActivityIndicator size="large" color="#0000ff" />;
+  // }
 
   return (
     <View style={[globalStyles.container, { paddingHorizontal: windowWidth * 0.05 }]}>
@@ -126,16 +97,16 @@ export default function FeedScreen() {
         </View>
         <ScrollView style={{ marginTop: 20 }} showsVerticalScrollIndicator={false}>
           <View style={styles.cardContainer}>
-            {filteredContent.map((content, index) => (
+            {articles.map((article, index) => (
               <CardComponent
                 key={index}
-                image={content.image}
-                title={content.title}
-                description={content.content.substring(376, 450) + '...'}
+                image={article.thumbnail}
+                title={article.title}
+                description={article.content.substring(376, 450) + '...'}
                 onPress={() =>
                   router.push({
-                    pathname: `/${content.id}`,
-                    params: { content: content.content },
+                    pathname: `/${article.id}`,
+                    params: { content: article.content },
                   })
                 }
               />

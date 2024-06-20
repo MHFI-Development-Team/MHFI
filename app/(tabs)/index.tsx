@@ -14,16 +14,13 @@ const windowWidth = Dimensions.get('window').width;
 const homeScreen = () => {
   return (
     <SafeAreaView
-      style={[globalStyles.container, {paddingTop: 0 }]} 
-      edges={['right', 'left', 'top']}
-    >
+      style={[globalStyles.container, { paddingTop: 0 }]}
+      edges={['right', 'left', 'top']}>
       <Header />
       <View style={{ justifyContent: 'space-evenly', flex: 1 }}>
-      <View
-      style={{paddingHorizontal: windowWidth * 0.05}} 
-    >
-        <ContentForYou />
-        <SuggestedTools />
+        <View style={{ paddingHorizontal: windowWidth * 0.05 }}>
+          <ContentForYou />
+          <SuggestedTools />
         </View>
         <EmotionList />
       </View>
