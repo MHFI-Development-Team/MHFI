@@ -6,13 +6,14 @@ import globalStyles from '@/constants/globalStyles';
 import suggestedTools from '@/components/SuggestTools/suggestToolsData';
 
 const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 
 const SuggestedTools = () => {
   return (
     <>
-      <View style={{ transform: [{ translateY: -20 }] }}>
+      <View>
         <View>
-          <Text style={[globalStyles.textHeader, { fontWeight: 'bold', fontSize: 20 }]}>
+          <Text style={[globalStyles.textHeader, { fontWeight: 'bold', fontSize: windowWidth * 0.04 }]}>
             Suggested tools
           </Text>
         </View>

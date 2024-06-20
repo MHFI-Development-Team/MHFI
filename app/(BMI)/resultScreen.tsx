@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Modal, TouchableWithoutFeedback, Vibration } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Colors } from '@/constants/Colors';
-
+import { Dimensions } from 'react-native';
+const windowWidth = Dimensions.get('window').width;
 const ResultScreen: React.FC = () => {
+  
   const { bmi, age, weight, height } = useLocalSearchParams<{
     bmi: string;
     age: string;
@@ -49,6 +51,7 @@ const ResultScreen: React.FC = () => {
     Overweight: 'BMI is between 25 and 29.9. This can increase the risk of cardiovascular diseases, diabetes, and other health conditions. Consider a balanced diet and regular physical activity.',
     Obese: 'BMI is 30 or higher. This significantly increases the risk of many health issues including heart disease, diabetes, and certain cancers. Medical consultation is advised.'
   };
+
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -176,7 +179,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   retryButtonText: {
-    fontSize: 20,
+    fontSize: windowWidth * 0.02,
     color: 'black',
     textAlign: 'center',
     paddingVertical: 15,

@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
+import { Dimensions } from 'react-native';
 
+const windowHeight = Dimensions.get("window").height;
 export default StyleSheet.create({
   container: {
     backgroundColor: '#171621',
@@ -9,7 +11,7 @@ export default StyleSheet.create({
   textHeader: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: windowHeight * 0.02,
   },
   text: {
     color: 'white',

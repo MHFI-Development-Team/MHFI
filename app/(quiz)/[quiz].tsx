@@ -7,7 +7,10 @@ import drinkingQuestions from '@/components/Quiz/drinkingQuestions';
 import { Question } from '@/components/Quiz/IQuizQuestion';
 import { Colors } from '@/constants/Colors';
 import { Vibration } from 'react-native';
+import { Dimensions } from 'react-native';
 
+
+const windowWidth = Dimensions.get("window").width;
 const questions: { [key: string]: Question[] } = {
   Smoking: smokingQuestions,
   Drinking: drinkingQuestions,
@@ -122,7 +125,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   question: {
-    fontSize: 20,
+    fontSize: windowWidth * 0.02,
     marginBottom: 20,
     color: 'white',
     textAlign: 'center',

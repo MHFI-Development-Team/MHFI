@@ -98,11 +98,11 @@ export default function FeedScreen() {
   }
 
   return (
-    <View style={[globalStyles.container, { paddingHorizontal: windowWidth * 0.05 }]}>
+    <View style={[globalStyles.container,]}>
       <SafeAreaView edges={['right', 'left', 'top']}>
         <Header />
       </SafeAreaView>
-      <View style={{ flex: 1 }}>
+      <View style={[{flex: 1}, { paddingHorizontal: windowWidth * 0.05 }]}>
         <SearchBar placeholder="Search articles, videos and more" onSearch={handleSearch} />
         <View>
           <ScrollView

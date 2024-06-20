@@ -14,7 +14,7 @@ const windowWidth = Dimensions.get('window').width;
 const homeScreen = () => {
   return (
     <SafeAreaView
-      style={[globalStyles.container, {paddingTop: 0 }]} 
+      style={[globalStyles.container]} 
       edges={['right', 'left', 'top']}
     >
       <Header />
