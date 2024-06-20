@@ -15,6 +15,7 @@ import globalStyles from '@/constants/globalStyles';
 import EmotionCard from '@/components/EmotionTracker/EmotionCard';
 import { useProfile } from '@/components/ProfileContext';
 import PulsatingCircle from './PulsatingCircle';
+import { Vibration } from 'react-native';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
@@ -66,13 +67,13 @@ const EmotionList: React.FC = () => {
             </View>
           </ScrollView>
         ) : (
-          <TouchableOpacity onPress={() => router.push('/messageScreen')} style={styles.checkInMessage}>
+          <TouchableOpacity onPress={() => {{Vibration.vibrate(50); router.push('/messageScreen')}}} style={styles.checkInMessage}>
             <View style={styles.checkInMessageContent}>
-              <View style={styles.textAndTriangleContainer}>
+              <View style={styles.textAndCircleContainer}>
                 <Text style={styles.checkInText}>
                   No emotion {'\n'}recorded today.{'\n'}{'\n'}Tap here to check in!
                 </Text>
-                <PulsatingCircle colors={['#FF922E', '#303345', '#171621']} style={styles.triangleContainer} />
+                <PulsatingCircle colors={['#FF922E', '#303345', '#171621']} style={styles.circlContainer} />
               </View>
             </View>
           </TouchableOpacity>
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
   emotionCardContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
+    // marginTop: 20,
    
   },
   checkInMessage: {
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
-  textAndTriangleContainer: {
+  textAndCircleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
     marginRight: windowHeight * 0.06,
     textAlign: 'left',
   },
-  triangleContainer: {
+  circlContainer: {
     marginTop: windowHeight * 0.02,
   },
   scrollViewContent: {

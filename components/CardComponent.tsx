@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Colors } from '@/constants/Colors';
+import { Vibration } from 'react-native';
 
 interface CardComponentProps {
   image: string;
@@ -11,7 +12,7 @@ interface CardComponentProps {
 
 const CardComponent: React.FC<CardComponentProps> = ({ image, title, description, onPress }) => {
   return (
-    <TouchableOpacity onPress={onPress} style={styles.cardWrapper}>
+    <TouchableOpacity onPress={() => {{Vibration.vibrate(50);{onPress}}}} style={styles.cardWrapper}>
       <Image source={{ uri: image }} style={styles.image} />
       <View style={styles.textContainer}>
         <Text style={styles.title}>{title}</Text>

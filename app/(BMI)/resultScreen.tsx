@@ -15,18 +15,15 @@ const ResultScreen: React.FC = () => {
   const [modalContent, setModalContent] = useState<{ title: string; content: string }>({ title: '', content: '' });
 
   const handleRetry = () => {
-    Vibration.vibrate();
     router.push('/bmiScreen');
   };
 
   const openModal = (title: string, content: string) => {
-    Vibration.vibrate();
     setModalContent({ title, content });
     setModalVisible(true);
   };
 
   const closeModal = () => {
-    Vibration.vibrate();
     setModalVisible(false);
   };
 
@@ -60,7 +57,7 @@ const ResultScreen: React.FC = () => {
         <View style={styles.resultCircle}>
           <Text style={styles.bmiValue}>{bmiValue}</Text>
           <Text style={[styles.bmiStatus, { color: bmiStatusColor }]}>{bmiStatus}</Text>
-          <TouchableOpacity onPress={() => {Vibration.vibrate(100);openModal(bmiStatus, bmiInfo[bmiStatus]);}}>
+          <TouchableOpacity onPress={() => {Vibration.vibrate(50);openModal(bmiStatus, bmiInfo[bmiStatus]);}}>
             <Text style={styles.infoText}>Info</Text>
           </TouchableOpacity>
         </View>

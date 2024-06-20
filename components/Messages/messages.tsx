@@ -4,12 +4,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Colors } from '@/constants/Colors';
 import { useProfile } from '@/components/ProfileContext';
-import { OPENAI_API_KEY } from '@env';
 import UserIcon from '@/assets/svg/UserIcon';
+import { Vibration } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-
+const apiKey = process.env.EXPO_PUBLIC_OPENAI_API_KEY;
 interface Message {
   _id: number | string;
   text: string;
@@ -140,7 +140,7 @@ export default function Chatbot() {
         temperature: 0.9,
       }, {
         headers: {
-          'Authorization': `Bearer ${OPENAI_API_KEY}`,
+          'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
         },
       });
@@ -159,7 +159,7 @@ export default function Chatbot() {
       console.error('Error generating AI response:', error);
       return {
         _id: Math.random().toString(),
-        text: "I'm sorry, I'm having trouble understanding right now. Please try again later.",
+        text: "I'm sorry, I'm having connecting with you right now. Please try again later.",
         createdAt: new Date(),
         user: {
           _id: 2,
@@ -179,17 +179,23 @@ export default function Chatbot() {
       const response = await axios.post('https://api.openai.com/v1/chat/completions', {
         model: 'gpt-3.5-turbo',
         messages: [
-          { role: 'system', content: "You are a helpful health therapist for men from the ages of 18-35, specifically catering to individuals in Ireland and the United Kingdom. Based on the conversation history, provide today's emotion, a concise one-sentence recommendation, and corresponding colors in #hex format with dark tones. Additionally, provide a matching background color for each set of colors in JSON format." },
+          {
+              "role": "system",
+              "content": "You are a helpful health therapist for men from the ages of 18-35, specifically catering to individuals in Ireland and the United Kingdom. Based on the conversation history, please provide today's emotion in the format: 'You are feeling [emotion] today' where [emotion] is a singular emotion like 'happy', 'sad', etc. Additionally, provide a concise one-sentence recommendation, ensuring the recommendation word count is around 10 words. Format the response in the following JSON structure: {\"Emotion\": \"You are feeling [emotion] today\", \"Recommendation\": \"recommendation\", \"EmotionColors\": [\"#color1\", \"#color2\", \"#color3\"], \"RecommendationColors\": [\"#color1\", \"#color2\", \"#color3\"], \"EmotionBackground\": \"#color\", \"RecommendationBackground\": \"#color\"}. The colors and background color should be dark tones to match the dark aesthetic of the app. The emotion and recommendation should have different colors."
+          },
           ...formattedMessages,
-          { role: 'user', content: "Please provide today's emotion, a concise one-sentence recommendation, and corresponding colors and background colors in the following JSON format: {\"Emotion\": \"You are feeling emotion today\", make sure the emotion is singular so you are feeling sad today, happy today \"Recommendation\": \"recommendation\", \"EmotionColors\": [\"#color1\", \"#color2\", \"#color3\"], \"RecommendationColors\": [\"#color1\", \"#color2\", \"#color3\"], \"EmotionBackground\": \"#color\", \"RecommendationBackground\": \"#color\"}, also ensure that the recommendation word count of around 10 words, and the colors and background color should be different for the but relevant for both emotion and recommendation. The colors you provide for the background, emotion and recommendation should be dark tones to match the dark aesthetic of the app. let the emotions and recommendations be different colors."}
-        ],
+          {
+              "role": "user",
+              "content": "Please provide today's emotion in the format: 'You are feeling [emotion] today' where [emotion] is singular. Provide a concise one-sentence recommendation with around 10 words. Format the response in JSON: {\"Emotion\": \"You are feeling [emotion] today\", \"Recommendation\": \"recommendation\", \"EmotionColors\": [\"#color1\", \"#color2\", \"#color3\"], \"RecommendationColors\": [\"#color1\", \"#color2\", \"#color3\"], \"EmotionBackground\": \"#color\", \"RecommendationBackground\": \"#color\"}. Use different dark tones for emotion and recommendation."
+          }
+      ],
         max_tokens: 150,
         n: 1,
         stop: null,
         temperature: 0.7,
       }, {
         headers: {
-          'Authorization': `Bearer ${OPENAI_API_KEY}`,
+          'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
         },
       });
@@ -280,7 +286,7 @@ export default function Chatbot() {
             onFocus={scrollToBottom}
             editable={!conversationEnded}
           />
-          <TouchableOpacity style={styles.sendButton} onPress={handleSend} disabled={conversationEnded}>
+          <TouchableOpacity style={styles.sendButton} onPress={() => {{Vibration.vibrate(50);{handleSend}}}} disabled={conversationEnded}>
             <Text style={styles.sendButtonText}>Send</Text>
           </TouchableOpacity>
         </View>

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Dimensions,
   ActivityIndicator,
+  Vibration,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Articles } from '@/constants/types';
@@ -57,12 +58,13 @@ const ContentForYou = () => {
               <TouchableOpacity
                 key={index}
                 style={{ flexDirection: 'column' }}
-                onPress={() =>
+                onPress={() => {
+                  Vibration.vibrate(50);
                   router.push({
                     pathname: `/[id]`,
                     params: { content: article.content },
-                  })
-                }>
+                  });
+                }}>
                 <ContentCard imageUri={article.thumbnail} size={0} />
                 <View
                   style={{

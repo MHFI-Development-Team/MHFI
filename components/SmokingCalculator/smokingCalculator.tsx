@@ -5,6 +5,8 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Colors } from '@/constants/Colors';
 import { useProfile } from '../ProfileContext';
+import { Vibration } from 'react-native';
+
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -164,7 +166,7 @@ const SmokingCalculator = () => {
               onBlur={() => setIsPacksInputFocused(false)}
             />
             {isPacksInputFocused && (
-              <TouchableOpacity onPress={handleDismiss} style={styles.dismissIcon}>
+              <TouchableOpacity onPress={() => {{Vibration.vibrate(50); {handleDismiss}}}} style={styles.dismissIcon}>
                 <AntDesign name="checkcircleo" size={windowHeight * 0.03} color={Colors.ButtonColor} />
               </TouchableOpacity>
             )}
@@ -181,13 +183,13 @@ const SmokingCalculator = () => {
               onBlur={() => setIsCostInputFocused(false)}
             />
             {isCostInputFocused && (
-              <TouchableOpacity onPress={handleDismiss} style={styles.dismissIcon}>
+              <TouchableOpacity onPress={() => {{Vibration.vibrate(50);handleDismiss}}} style={styles.dismissIcon}>
                 <AntDesign name="checkcircleo" size={windowHeight * 0.03} color={Colors.ButtonColor} />
               </TouchableOpacity>
             )}
           </View>
         </View>
-        <TouchableOpacity style={styles.calculateButton} onPress={calculateCost}>
+        <TouchableOpacity style={styles.calculateButton} onPress={() => {{Vibration.vibrate(50);{calculateCost}}}}>
           <Text style={styles.calculateButtonText}>Calculate</Text>
         </TouchableOpacity>
         {results[value] && (

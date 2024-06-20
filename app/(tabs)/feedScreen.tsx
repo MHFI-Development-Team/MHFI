@@ -21,6 +21,7 @@ import { Asset } from 'expo-asset';
 import * as FileSystem from 'expo-file-system';
 import { Dimensions } from 'react-native';
 import { ArticleContext, ArticleContextType } from '@/components/AcrticleContext';
+import { Vibration } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -82,7 +83,12 @@ export default function FeedScreen() {
             {allTags.map(tag => (
               <TouchableOpacity
                 key={tag}
-                onPress={() => handleTagPress(tag)}
+                onPress={() => {
+                  {
+                    Vibration.vibrate(50);
+                    handleTagPress(tag);
+                  }
+                }}
                 style={[styles.tagButton, selectedTag === tag && styles.selectedTagButton]}>
                 <Text
                   style={[
@@ -103,12 +109,14 @@ export default function FeedScreen() {
                 image={article.thumbnail}
                 title={article.title}
                 description={article.content.substring(376, 450) + '...'}
-                onPress={() =>
+                onPress={() => {
+                  Vibration.vibrate(50);
+
                   router.push({
                     pathname: `/${article.id}`,
                     params: { content: article.content },
-                  })
-                }
+                  });
+                }}
               />
             ))}
           </View>

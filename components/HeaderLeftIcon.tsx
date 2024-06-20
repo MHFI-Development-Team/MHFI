@@ -3,13 +3,14 @@ import { Link } from 'expo-router';
 import TabBarIcon from '@/components/Navigation/TabBarIcon';
 import { View, TouchableOpacity, Vibration } from 'react-native';
 
+
 const HeaderLeftIcon: React.FC = () => {
   const handlePress = () => {
-    Vibration.vibrate(100);
+    Vibration.vibrate(50);
   };
 
   return (
-    <TouchableOpacity onPress={handlePress}>
+    <TouchableOpacity onPress={() => {{Vibration.vibrate(50); {handlePress}}}}>
       <Link href="(tabs)">
         <View>
           <TabBarIcon name="leftcircleo" color="white" />

@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Colors } from '@/constants/Colors';
+import { Vibration } from 'react-native';
 
 const Quiz = () => {
   const router = useRouter();
@@ -11,21 +12,21 @@ const Quiz = () => {
       <Text style={styles.title}>Choose a Quiz</Text>
       <TouchableOpacity
         style={[styles.button, { backgroundColor: Colors.ButtonColor }]}
-        onPress={() =>
+        onPress={() => {{Vibration.vibrate(50);
           router.push({ pathname: '/(quiz)/[quiz]', params: { category: 'Smoking' } })
-        }>
+        }}}>
         <Text style={styles.buttonText}>Smoking</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.button, { backgroundColor: Colors.ButtonColor }]}
-        onPress={() =>
+        onPress={() => {{Vibration.vibrate(50);
           router.push({ pathname: '/(quiz)/[quiz]', params: { category: 'Drinking' } })
-        }>
+        }}}>
         <Text style={styles.buttonText}>Drinking</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.button, { backgroundColor: Colors.ButtonColor }]}
-        onPress={() => router.push({ pathname: '/(quiz)/[quiz]', params: { category: 'Drugs' } })}>
+        onPress={() => {{Vibration.vibrate(50); router.push({ pathname: '/(quiz)/[quiz]', params: { category: 'Drugs' } })}}}>
         <Text style={styles.buttonText}>Drugs</Text>
       </TouchableOpacity>
     </View>

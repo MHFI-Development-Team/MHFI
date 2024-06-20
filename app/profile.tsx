@@ -16,6 +16,7 @@ import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '@/constants/Colors';
 import { useProfile } from '@/components/ProfileContext';
+import { Vibration } from 'react-native';
 import UserIcon from '@/assets/svg/UserIcon';
 
 const windowWidth = Dimensions.get('window').width;
@@ -118,7 +119,7 @@ const Profile = () => {
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.header}>Profile</Text>
         <View style={styles.profileSection}>
-          <TouchableOpacity onPress={pickImage}>
+          <TouchableOpacity onPress={() => {{Vibration.vibrate(50); {pickImage}}}}>
             {profilePicture ? (
               <Image
                 source={{ uri: profilePicture }}
@@ -157,7 +158,7 @@ const Profile = () => {
             <View style={styles.currencyContainer}>
               <TouchableOpacity
                 style={[styles.currencyButton, currency === '€' && styles.currencyButtonSelected]}
-                onPress={() => saveCurrency('€')}
+                onPress={() => {{Vibration.vibrate(50); saveCurrency('€')}}}
               >
                 <Text style={styles.currencyButtonText}>€</Text>
               </TouchableOpacity>

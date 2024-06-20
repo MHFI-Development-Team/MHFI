@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import Button from '../Button';
 import { Colors } from '@/constants/Colors';
+import { Vibration } from 'react-native';
 
 type AlcoholType = 'spirits' | 'cans';
 
@@ -120,7 +121,7 @@ const AlcoholCalculator = () => {
                       <TouchableOpacity
                         activeOpacity={0.8}
                         style={styles.optionItem}
-                        onPress={() => onSelect(item)}>
+                        onPress={() => {{Vibration.vibrate(50);{() => onSelect(item)}}}}>
                         <Text style={styles.text}>{item.label}</Text>
                       </TouchableOpacity>
                     )}
@@ -152,7 +153,7 @@ const AlcoholCalculator = () => {
       )}
       <Button
         title="Test"
-        onPress={calculateIntake}
+        onPress={() => {{Vibration.vibrate(50);{calculateIntake}}}}
         style={styles.customButton}
         textStyle={styles.customText}
       />

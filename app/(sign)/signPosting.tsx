@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Linking, TouchableOpacity } from 'react-native';
 import { signPostLinks } from './signPostingData';
 import { Colors } from '@/constants/Colors';
+import { Vibration } from 'react-native';
 
 const SignPosting = () => {
   return (
@@ -10,7 +11,7 @@ const SignPosting = () => {
       {signPostLinks.map((link, index) => (
         <TouchableOpacity
           key={index}
-          onPress={() => Linking.openURL(link.href)}
+          onPress={() => {{Vibration.vibrate(50);  Linking.openURL(link.href)}}}
           style={styles.linkContainer}>
           <Text style={styles.linkText}>{link.name}</Text>
         </TouchableOpacity>
