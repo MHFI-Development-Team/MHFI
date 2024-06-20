@@ -326,7 +326,11 @@ export default function Chatbot() {
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0}>
-        <ScrollView style={styles.chat} ref={scrollViewRef} onContentSizeChange={scrollToBottom}>
+        <ScrollView
+          keyboardDismissMode="on-drag"
+          style={styles.chat}
+          ref={scrollViewRef}
+          onContentSizeChange={scrollToBottom}>
           <Text style={styles.date}>{new Date().toDateString()}</Text>
           {messages.map(message => renderMessage(message))}
         </ScrollView>

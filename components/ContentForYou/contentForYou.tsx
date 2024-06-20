@@ -18,6 +18,7 @@ import { styles } from 'rn-mdx';
 import { ArticleContext, ArticleContextType } from '../AcrticleContext';
 
 const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 
 const getArticle = async (requireNumber: number) => {
   const [{ name, localUri }] = await Asset.loadAsync(requireNumber);
@@ -28,7 +29,7 @@ const getArticle = async (requireNumber: number) => {
 
   const imageMatch = content.match(/<img src="([^"]+)" \/>/);
   const imageUrl = imageMatch ? imageMatch[1] : 'https://example.com/default-image.jpg';
- 
+
   return {
     title,
     id: name,
@@ -45,7 +46,8 @@ const ContentForYou = () => {
     <>
       <View style={{ transform: [{ translateY: -30 }] }}>
         <View>
-          <Text style={[globalStyles.textHeader, { fontWeight: 'bold', fontSize: windowWidth * 0.04}]}>
+          <Text
+            style={[globalStyles.textHeader, { fontWeight: 'bold', fontSize: windowWidth * 0.04 }]}>
             Content for you
           </Text>
         </View>

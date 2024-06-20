@@ -7,11 +7,14 @@ import {
   TouchableOpacity,
   Modal,
   TouchableWithoutFeedback,
+  Dimensions,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 
 import * as Haptics from 'expo-haptics';
+
+const windowWidth = Dimensions.get('window').width;
 
 const ResultScreen: React.FC = () => {
   const { bmi, age, weight, height } = useLocalSearchParams<{
