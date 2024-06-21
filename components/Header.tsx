@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
   profileSection: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingRight: windowWidth * 0.05,
   },
   profilePicture: {
     width: 40,
