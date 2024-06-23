@@ -68,18 +68,29 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
   useEffect(() => {
     const loadProfileData = async () => {
       try {
-        const storedProfilePicture = await AsyncStorage.getItem(PROFILE_PICTURE_KEY);
-        const storedName = await AsyncStorage.getItem(USERNAME_KEY);
-        const storedCurrency = await AsyncStorage.getItem(CURRENCY_KEY);
-        const storedMessages = await AsyncStorage.getItem(MESSAGES_KEY);
-        const storedTodayEmotion = await AsyncStorage.getItem(TODAY_EMOTION_KEY);
-        const storedTodayRecommendation = await AsyncStorage.getItem(TODAY_RECOMMENDATION_KEY);
-        const storedEmotionColors = await AsyncStorage.getItem(EMOTION_COLORS_KEY);
-        const storedRecommendationColors = await AsyncStorage.getItem(RECOMMENDATION_COLORS_KEY);
-        const storedEmotionBackground = await AsyncStorage.getItem(EMOTION_BACKGROUND_KEY);
-        const storedRecommendationBackground = await AsyncStorage.getItem(
-          RECOMMENDATION_BACKGROUND_KEY
-        );
+        const [
+          storedProfilePicture,
+          storedName,
+          storedCurrency,
+          storedMessages,
+          storedTodayEmotion,
+          storedTodayRecommendation,
+          storedEmotionColors,
+          storedRecommendationColors,
+          storedEmotionBackground,
+          storedRecommendationBackground,
+        ] = await Promise.all([
+          AsyncStorage.getItem(PROFILE_PICTURE_KEY),
+          AsyncStorage.getItem(USERNAME_KEY),
+          AsyncStorage.getItem(CURRENCY_KEY),
+          AsyncStorage.getItem(MESSAGES_KEY),
+          AsyncStorage.getItem(TODAY_EMOTION_KEY),
+          AsyncStorage.getItem(TODAY_RECOMMENDATION_KEY),
+          AsyncStorage.getItem(EMOTION_COLORS_KEY),
+          AsyncStorage.getItem(RECOMMENDATION_COLORS_KEY),
+          AsyncStorage.getItem(EMOTION_BACKGROUND_KEY),
+          AsyncStorage.getItem(RECOMMENDATION_BACKGROUND_KEY),
+        ]);
 
         if (storedProfilePicture) setProfilePicture(storedProfilePicture);
         if (storedName) setNameState(storedName);
@@ -93,6 +104,8 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
         if (storedEmotionBackground) setEmotionBackground(storedEmotionBackground);
         if (storedRecommendationBackground)
           setRecommendationBackground(storedRecommendationBackground);
+
+        console.log('Profile data loaded successfully');
       } catch (error) {
         console.error('Failed to load profile data', error);
       }
@@ -130,37 +143,72 @@ export const ProfileProvider: React.FC<ProfileProviderProps> = ({ children }) =>
       setRecommendationColors([]);
       setEmotionBackground('');
       setRecommendationBackground('');
+      console.log('Profile reset successfully');
     } catch (error) {
       console.error('Failed to reset profile', error);
     }
   };
 
   useEffect(() => {
-    AsyncStorage.setItem(MESSAGES_KEY, JSON.stringify(messages));
+    if (messages.length > 0) {
+      AsyncStorage.setItem(MESSAGES_KEY, JSON.stringify(messages)).catch(error =>
+        console.error('Failed to save messages', error)
+      );
+    }
   }, [messages]);
 
   useEffect(() => {
-    AsyncStorage.setItem(TODAY_EMOTION_KEY, todayEmotion);
+    if (todayEmotion) {
+      AsyncStorage.setItem(TODAY_EMOTION_KEY, todayEmotion).catch(error =>
+        console.error('Failed to save todayEmotion', error)
+      );
+      console.log(`Saved todayEmotion: ${todayEmotion}`);
+    }
   }, [todayEmotion]);
 
   useEffect(() => {
-    AsyncStorage.setItem(TODAY_RECOMMENDATION_KEY, todayRecommendation);
+    if (todayRecommendation) {
+      AsyncStorage.setItem(TODAY_RECOMMENDATION_KEY, todayRecommendation).catch(error =>
+        console.error('Failed to save todayRecommendation', error)
+      );
+      console.log(`Saved todayRecommendation: ${todayRecommendation}`);
+    }
   }, [todayRecommendation]);
 
   useEffect(() => {
-    AsyncStorage.setItem(EMOTION_COLORS_KEY, JSON.stringify(emotionColors));
+    if (emotionColors.length > 0) {
+      AsyncStorage.setItem(EMOTION_COLORS_KEY, JSON.stringify(emotionColors)).catch(error =>
+        console.error('Failed to save emotionColors', error)
+      );
+      console.log(`Saved emotionColors: ${JSON.stringify(emotionColors)}`);
+    }
   }, [emotionColors]);
 
   useEffect(() => {
-    AsyncStorage.setItem(RECOMMENDATION_COLORS_KEY, JSON.stringify(recommendationColors));
+    if (recommendationColors.length > 0) {
+      AsyncStorage.setItem(RECOMMENDATION_COLORS_KEY, JSON.stringify(recommendationColors)).catch(
+        error => console.error('Failed to save recommendationColors', error)
+      );
+      console.log(`Saved recommendationColors: ${JSON.stringify(recommendationColors)}`);
+    }
   }, [recommendationColors]);
 
   useEffect(() => {
-    AsyncStorage.setItem(EMOTION_BACKGROUND_KEY, emotionBackground);
+    if (emotionBackground) {
+      AsyncStorage.setItem(EMOTION_BACKGROUND_KEY, emotionBackground).catch(error =>
+        console.error('Failed to save emotionBackground', error)
+      );
+      console.log(`Saved emotionBackground: ${emotionBackground}`);
+    }
   }, [emotionBackground]);
 
   useEffect(() => {
-    AsyncStorage.setItem(RECOMMENDATION_BACKGROUND_KEY, recommendationBackground);
+    if (recommendationBackground) {
+      AsyncStorage.setItem(RECOMMENDATION_BACKGROUND_KEY, recommendationBackground).catch(error =>
+        console.error('Failed to save recommendationBackground', error)
+      );
+      console.log(`Saved recommendationBackground: ${recommendationBackground}`);
+    }
   }, [recommendationBackground]);
 
   return (

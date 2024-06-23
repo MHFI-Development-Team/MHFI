@@ -23,6 +23,7 @@ import * as Haptics from 'expo-haptics';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const apiKey = process.env.EXPO_PUBLIC_OPENAI_API_KEY;
+
 interface Message {
   _id: number | string;
   text: string;
@@ -33,6 +34,13 @@ interface Message {
     avatar?: string | null;
   };
 }
+
+const TODAY_EMOTION_KEY = 'TODAY_EMOTION_KEY';
+const TODAY_RECOMMENDATION_KEY = 'TODAY_RECOMMENDATION_KEY';
+const EMOTION_COLORS_KEY = 'EMOTION_COLORS_KEY';
+const RECOMMENDATION_COLORS_KEY = 'RECOMMENDATION_COLORS_KEY';
+const EMOTION_BACKGROUND_KEY = 'EMOTION_BACKGROUND_KEY';
+const RECOMMENDATION_BACKGROUND_KEY = 'RECOMMENDATION_BACKGROUND_KEY';
 
 export default function Chatbot() {
   const [inputText, setInputText] = useState<string>('');
@@ -62,6 +70,22 @@ export default function Chatbot() {
       }
     };
 
+    const loadEmotionData = async () => {
+      const emotion = await AsyncStorage.getItem(TODAY_EMOTION_KEY);
+      const recommendation = await AsyncStorage.getItem(TODAY_RECOMMENDATION_KEY);
+      const emotionColors = await AsyncStorage.getItem(EMOTION_COLORS_KEY);
+      const recommendationColors = await AsyncStorage.getItem(RECOMMENDATION_COLORS_KEY);
+      const emotionBackground = await AsyncStorage.getItem(EMOTION_BACKGROUND_KEY);
+      const recommendationBackground = await AsyncStorage.getItem(RECOMMENDATION_BACKGROUND_KEY);
+
+      if (emotion) setTodayEmotion(emotion);
+      if (recommendation) setTodayRecommendation(recommendation);
+      if (emotionColors) setEmotionColors(JSON.parse(emotionColors));
+      if (recommendationColors) setRecommendationColors(JSON.parse(recommendationColors));
+      if (emotionBackground) setEmotionBackground(emotionBackground);
+      if (recommendationBackground) setRecommendationBackground(recommendationBackground);
+    };
+
     const checkConversationStatus = async () => {
       const endTime = await AsyncStorage.getItem('conversationEndTime');
       if (endTime) {
@@ -69,7 +93,7 @@ export default function Chatbot() {
         const currentTime = new Date();
         const timeDifference = currentTime.getTime() - endTimeDate.getTime();
         const hoursDifference = timeDifference / (1000 * 3600);
-        if (hoursDifference >= 0.01) {
+        if (hoursDifference >= 24) {
           setConversationEnded(false);
           loadInitialMessage();
           await AsyncStorage.removeItem('conversationEndTime');
@@ -79,7 +103,10 @@ export default function Chatbot() {
       }
     };
 
-    loadMessages().then(checkConversationStatus);
+    loadMessages().then(() => {
+      loadEmotionData();
+      checkConversationStatus();
+    });
   }, []);
 
   useEffect(() => {
@@ -199,7 +226,7 @@ export default function Chatbot() {
       console.error('Error generating AI response:', error);
       return {
         _id: Math.random().toString(),
-        text: "I'm sorry, I'm having connecting with you right now. Please try again later.",
+        text: "I'm sorry, I'm having trouble connecting with you right now. Please try again later.",
         createdAt: new Date(),
         user: {
           _id: 2,
@@ -215,7 +242,7 @@ export default function Chatbot() {
         role: message.user._id === 1 ? 'user' : 'assistant',
         content: message.text,
       }));
-
+  
       const response = await axios.post(
         'https://api.openai.com/v1/chat/completions',
         {
@@ -245,12 +272,12 @@ export default function Chatbot() {
           },
         }
       );
-
+  
       const responseText = response.data.choices[0].message.content.trim();
       console.log('Generated response:', responseText);
-
+  
       const parsedResponse = JSON.parse(responseText);
-
+  
       if (parsedResponse) {
         const {
           Emotion,
@@ -260,23 +287,23 @@ export default function Chatbot() {
           EmotionBackground,
           RecommendationBackground,
         } = parsedResponse;
-
+  
         await AsyncStorage.multiSet([
-          ['TODAY_EMOTION_KEY', Emotion],
-          ['TODAY_RECOMMENDATION_KEY', Recommendation],
-          ['EMOTION_COLORS_KEY', JSON.stringify(EmotionColors)],
-          ['RECOMMENDATION_COLORS_KEY', JSON.stringify(RecommendationColors)],
-          ['EMOTION_BACKGROUND_KEY', EmotionBackground],
-          ['RECOMMENDATION_BACKGROUND_KEY', RecommendationBackground],
+          [TODAY_EMOTION_KEY, Emotion],
+          [TODAY_RECOMMENDATION_KEY, Recommendation],
+          [EMOTION_COLORS_KEY, JSON.stringify(EmotionColors)],
+          [RECOMMENDATION_COLORS_KEY, JSON.stringify(RecommendationColors)],
+          [EMOTION_BACKGROUND_KEY, EmotionBackground],
+          [RECOMMENDATION_BACKGROUND_KEY, RecommendationBackground],
         ]);
-
+  
         console.log('Set todayEmotion:', Emotion);
         console.log('Set todayRecommendation:', Recommendation);
         console.log('Set emotionColors:', EmotionColors);
         console.log('Set recommendationColors:', RecommendationColors);
         console.log('Set emotionBackground:', EmotionBackground);
         console.log('Set recommendationBackground:', RecommendationBackground);
-
+  
         setTodayEmotion(Emotion);
         setTodayRecommendation(Recommendation);
         setEmotionColors(EmotionColors);
@@ -328,6 +355,7 @@ export default function Chatbot() {
         keyboardVerticalOffset={Platform.OS === 'ios' ? 10 : 0}>
         <ScrollView
           keyboardDismissMode="on-drag"
+          showsVerticalScrollIndicator = {false}
           style={styles.chat}
           ref={scrollViewRef}
           onContentSizeChange={scrollToBottom}>
@@ -354,11 +382,11 @@ export default function Chatbot() {
             <Text style={styles.sendButtonText}>Send</Text>
           </TouchableOpacity>
         </View>
-     
+      
       </KeyboardAvoidingView>
       <Text style={styles.reminderText}>
-  Remember, this is an AI chatbot made to understand your emotions. {"\n"}To conclude the conversation, simply say "goodbye".
-</Text>
+          Remember, this is an AI chatbot made to understand your emotions. {"\n"}To conclude the conversation, simply say "goodbye".
+        </Text>
     </SafeAreaView>
   );
 }
