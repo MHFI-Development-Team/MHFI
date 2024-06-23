@@ -8,9 +8,43 @@ import globalStyles from '@/constants/globalStyles';
 import { ProfileProvider, useProfile } from '@/contexts/ProfileContext';
 import { ArticleProvider } from '@/components/ArticleContext';
 
-export default function RootLayout() {
+const NotificationSetup = () => {
   const router = useRouter();
+  const { name } = useProfile();
 
+  useEffect(() => {
+    const delay = 3000; // Delay in milliseconds (e.g., 3000ms = 3 seconds)
+
+    const setupNotifications = async () => {
+      await registerForPushNotificationsAsync();
+      console.log('Scheduling notifications with name:', name);
+      await scheduleNotifications(name);
+    };
+
+    const timeoutId = setTimeout(setupNotifications, delay);
+
+    const notificationListener = Notifications.addNotificationReceivedListener(notification => {
+      console.log(notification);
+    });
+
+    const responseListener = Notifications.addNotificationResponseReceivedListener(response => {
+      const screen = response.notification.request.content.data.screen;
+      if (screen) {
+        router.push(screen);
+      }
+    });
+
+    return () => {
+      clearTimeout(timeoutId);
+      Notifications.removeNotificationSubscription(notificationListener);
+      Notifications.removeNotificationSubscription(responseListener);
+    };
+  }, [name]);
+
+  return null;
+};
+
+export default function RootLayout() {
   return (
     <ProfileProvider>
       <ArticleProvider>
@@ -80,35 +114,3 @@ export default function RootLayout() {
     </ProfileProvider>
   );
 }
-
-const NotificationSetup = () => {
-  const router = useRouter();
-  const { name } = useProfile();
-
-  useEffect(() => {
-    async function setupNotifications() {
-      await registerForPushNotificationsAsync();
-      await scheduleNotifications(name);
-    }
-
-    setupNotifications();
-
-    const notificationListener = Notifications.addNotificationReceivedListener(notification => {
-      console.log(notification);
-    });
-
-    const responseListener = Notifications.addNotificationResponseReceivedListener(response => {
-      const screen = response.notification.request.content.data.screen;
-      if (screen) {
-        router.push(screen);
-      }
-    });
-
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener);
-      Notifications.removeNotificationSubscription(responseListener);
-    };
-  }, [name]);
-
-  return null;
-};

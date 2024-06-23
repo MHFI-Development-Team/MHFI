@@ -2,6 +2,9 @@ import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import Constants from 'expo-constants';
 import { Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const CONVERSATION_END_TIME_KEY = 'conversationEndTime';
 
 // Set notification handler
 Notifications.setNotificationHandler({
@@ -64,22 +67,39 @@ export async function scheduleNotifications(username: string) {
 
   console.log('Scheduling notifications for username:', username);
 
-  // Daily notification
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      title: `Hi ${username}!`,
-      body: "Check in to track your emotion today.",
-      data: { screen: 'profile' },
-    },
-    trigger: { seconds: 60, repeats: true },
-  });
+  // Check conversation status
+  const endTime = await AsyncStorage.getItem(CONVERSATION_END_TIME_KEY);
+  let canMessage = true;
+  if (endTime) {
+    const endTimeDate = new Date(endTime);
+    const currentTime = new Date();
+    const timeDifference = currentTime.getTime() - endTimeDate.getTime();
+    const hoursDifference = timeDifference / (1000 * 3600);
+
+    // If the conversation can be restarted, schedule the daily notification
+    canMessage = hoursDifference >= 24;
+  }
+
+  if (canMessage) {
+    // Daily notification
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: `Hi ${username}!`,
+        body: "Check in to track your emotion today.",
+        data: { screen: 'messageScreen' },
+      },
+      trigger: { seconds: 24 * 60 * 60, repeats: true },
+    });
+  } else {
+    console.log('User cannot message yet. No daily notification scheduled.');
+  }
 
   // Bi-daily notification
   await Notifications.scheduleNotificationAsync({
     content: {
       title: "Reminder",
       body: "Read a new article today.",
-      data: { screen: 'feed' },
+      data: { screen: 'feedScreen' },
     },
     trigger: { seconds: 2 * 24 * 60 * 60, repeats: true },
   });
