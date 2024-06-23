@@ -20,7 +20,7 @@ import { Article } from '@/constants/types';
 import { Asset } from 'expo-asset';
 import * as FileSystem from 'expo-file-system';
 import { Dimensions } from 'react-native';
-import { ArticleContext, ArticleContextType } from '@/components/AcrticleContext';
+import { ArticleContext, ArticleContextType } from '@/components/ArticleContext';
 
 import * as Haptics from 'expo-haptics';
 

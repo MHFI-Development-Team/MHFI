@@ -15,7 +15,7 @@ import {
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Colors } from '@/constants/Colors';
-import { useProfile } from '@/components/ProfileContext';
+import { useProfile } from '@/contexts/ProfileContext';
 import * as Haptics from 'expo-haptics';
 import UserIcon from '@/assets/svg/UserIcon';
 

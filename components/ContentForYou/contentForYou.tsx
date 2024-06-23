@@ -11,7 +11,7 @@ import { Article } from '@/constants/types';
 import globalStyles from '@/constants/globalStyles';
 import ContentCard from '@/components/ContentCard';
 import * as Haptics from 'expo-haptics';
-import { ArticleContext, ArticleContextType } from '../AcrticleContext';
+import { ArticleContext, ArticleContextType } from '../ArticleContext';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;

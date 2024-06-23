@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Dimensions, Text, Image } from 'react-native';
 import { Link } from 'expo-router';
-import { useProfile } from './ProfileContext';
+import { useProfile } from '../contexts/ProfileContext';
 import UserIcon from '@/assets/svg/UserIcon'; // Make sure this path is correct
 
 import * as Haptics from 'expo-haptics';

@@ -14,7 +14,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { FontAwesome6 } from '@expo/vector-icons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Colors } from '@/constants/Colors';
-import { useProfile } from '../ProfileContext';
+import { useProfile } from '../../contexts/ProfileContext';
 import * as Haptics from 'expo-haptics';
 
 const windowWidth = Dimensions.get('window').width;

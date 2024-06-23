@@ -13,7 +13,7 @@ import { useRouter } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import globalStyles from '@/constants/globalStyles';
 import EmotionCard from '@/components/EmotionTracker/EmotionCard';
-import { useProfile } from '@/components/ProfileContext';
+import { useProfile } from '@/contexts/ProfileContext';
 import PulsatingCircle from './PulsatingCircle';
 import * as Haptics from 'expo-haptics';
 

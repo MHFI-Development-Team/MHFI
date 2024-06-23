@@ -16,7 +16,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Colors } from '@/constants/Colors';
-import { useProfile } from '@/components/ProfileContext';
+import { useProfile } from '@/contexts/ProfileContext';
 import UserIcon from '@/assets/svg/UserIcon';
 import * as Haptics from 'expo-haptics';
 

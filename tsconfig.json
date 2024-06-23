@@ -19,5 +19,5 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "components/DailyGoals/DailyGoals.d.ts"
-  ]
+, "contexts/ProfileContext.tsx"  ]
 }

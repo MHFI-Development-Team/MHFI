@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import { useProfile } from '../ProfileContext';
+import { useProfile } from '../../contexts/ProfileContext';
 import PulsatingCircle from './PulsatingCircle';
 
 const windowWidth = Dimensions.get('window').width;
