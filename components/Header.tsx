@@ -90,6 +90,26 @@ const motivationalPhrases = [
   'You are capable of greatness!',
   'Inspire others with your actions!',
   'Stay focused and driven!',
+  "Remember, small steps lead to big achievements!",
+  "Face today's challenges with courage!",
+  "Turn today's efforts into tomorrow's successes!",
+  "Believe in the power of persistence!",
+  "Harness your energy for maximum impact!",
+  "Confidence and hard work are your allies!",
+  "Make each task a step toward your dreams!",
+  "Embrace the grind; success is near!",
+  "Consistency is key to achieving greatness!",
+  "Every effort you make moves you forward!",
+  "Let your actions speak louder than words!",
+  "Take control of your day and own it!",
+  "Your determination defines your path!",
+  "Stay relentless in your pursuit of excellence!",
+  "Let go of doubts and embrace confidence!",
+  "Channel your inner strength and succeed!",
+  "Elevate your mindset, elevate your life!",
+  "Transform obstacles into opportunities!",
+  "Be the hero of your own story today!",
+  "Your journey to greatness starts now!"
 ];
 
 const getDailyPhrase = () => {
