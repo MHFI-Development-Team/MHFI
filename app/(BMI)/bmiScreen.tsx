@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Dimensions } from 'react-native';
 import Slider from '@react-native-community/slider';
 import { useRouter } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 
 import * as Haptics from 'expo-haptics';
 
+
+import { Vibration } from 'react-native';
+const windowWidth = Dimensions.get("window").width;
 const bmiScreen: React.FC = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [age, setAge] = useState(28);
@@ -21,7 +24,10 @@ const bmiScreen: React.FC = () => {
     });
   };
 
+
+
   return (
+    
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
@@ -91,7 +97,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#FFF',
-    fontSize: 24,
+    fontSize: windowWidth * 0.06,
     fontWeight: 'bold',
     textAlign: 'center',
   },

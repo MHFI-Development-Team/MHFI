@@ -166,6 +166,7 @@ const Profile = () => {
             <Text style={styles.settingText}>Currency</Text>
             <View style={styles.currencyContainer}>
               <TouchableOpacity
+              activeOpacity={0.8}
                 style={[styles.currencyButton, currency === '€' && styles.currencyButtonSelected]}
                 onPress={() => {
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -174,6 +175,7 @@ const Profile = () => {
                 <Text style={styles.currencyButtonText}>€</Text>
               </TouchableOpacity>
               <TouchableOpacity
+              activeOpacity={0.8}
                 style={[styles.currencyButton, currency === '£' && styles.currencyButtonSelected]}
                 onPress={() => {
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);

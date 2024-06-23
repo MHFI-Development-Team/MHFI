@@ -24,23 +24,23 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 18,
     fontWeight: '700',
-    paddingLeft: windowWidth * 0.05,
+
   },
   subText: {
     color: '#FFF',
     fontSize: 14,
     fontWeight: '300',
-    paddingLeft: windowWidth * 0.05,
+
   },
   profileSection: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingRight: windowWidth * 0.05,
   },
   profilePicture: {
     width: 40,
     height: 40,
     borderRadius: 20,
+   
   },
   profileName: {
     color: '#FFF',
@@ -106,7 +106,7 @@ export default function Header() {
   const { profilePicture, name } = useProfile();
 
   return (
-    <View style={[styles.headerContainer]}>
+    <View style={[styles.headerContainer, {paddingHorizontal: windowWidth * 0.05,}]}>
       <View style={styles.greetingContainer}>
         <Text style={styles.greetingText}>
           {getGreeting()}
@@ -115,6 +115,7 @@ export default function Header() {
         <Text style={styles.subText}>{getDailyPhrase()}</Text>
       </View>
       <TouchableOpacity
+      activeOpacity={0.8}
         style={styles.profileSection}
         onPress={() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);

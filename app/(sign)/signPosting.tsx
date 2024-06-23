@@ -11,6 +11,7 @@ const SignPosting = () => {
       <Text style={styles.header}>Links Directory</Text>
       {signPostLinks.map((link, index) => (
         <TouchableOpacity
+        activeOpacity={0.8}
           key={index}
           onPress={() => {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);

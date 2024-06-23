@@ -105,7 +105,7 @@ const AlcoholCalculator = () => {
         </TouchableOpacity>
         {expanded ? (
           <Modal visible={expanded} transparent>
-            <TouchableWithoutFeedback onPress={() => setExpanded(false)}>
+            <TouchableOpacity activeOpacity={0.8}  onPress={() => setExpanded(false)}>
               <View style={styles.backdrop}>
                 <View
                   style={[

@@ -58,6 +58,7 @@ const bmiHeight: React.FC = () => {
         <Text style={styles.title}>Select Your Height</Text>
         <View style={styles.unitSwitchContainer}>
           <TouchableOpacity
+          activeOpacity={0.8}
             style={[styles.unitButton, unit === 'cm' && styles.unitButtonActive]}
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -66,6 +67,7 @@ const bmiHeight: React.FC = () => {
             <Text style={styles.unitButtonText}>CM</Text>
           </TouchableOpacity>
           <TouchableOpacity
+          activeOpacity={0.8}
             style={[styles.unitButton, unit === 'feet' && styles.unitButtonActive]}
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -116,6 +118,7 @@ const bmiHeight: React.FC = () => {
           <Text style={styles.heightIndicator}>{heightDisplay}</Text>
         </View>
         <TouchableOpacity
+        activeOpacity={0.8}
           style={styles.nextButton}
           onPress={() => {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);

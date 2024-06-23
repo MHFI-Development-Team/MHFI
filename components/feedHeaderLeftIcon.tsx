@@ -6,6 +6,7 @@ import * as Haptics from 'expo-haptics';
 
 const feedHeaderLeftIcon = () => (
   <TouchableOpacity
+  activeOpacity={0.8}
     onPress={() => {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     }}>

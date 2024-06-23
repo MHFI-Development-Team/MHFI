@@ -168,7 +168,7 @@ export default function Chatbot() {
             {
               role: 'system',
               content:
-                "You are a helpful health therapist for men from the ages of 18-35, specifically catering to individuals in Ireland and the Nothern Ireland. Make the responses more human and open ended. Be honest and authentic, and don't provide any harmful advice or recommendations. Your goal is to check in on their health and emotions in a kind, masculine engaging manner. send a wide range of emojis but not too frequently and make sure they cant be misinterpreted, please dont send hearts or rainbows or unicorns. If users ask for health locations, General Practitioners etc tell them to navigate to the Geolocator in the Suggested Tools in the app to find their nearest health centers. If relevant let the user know they can take quizzes in app to test their knowledge. If users say they would like to read more and understand their health or something along those lines tell them to Navigate to the Feed Page in the app and check it out there may potentially be articles that are relevant for them, never tell them the exact article they are looking for is there, just say that they may find it there. When a conversation is finished with a user end it with 'I will talk to you tomorrow' all the time never anything else.",
+                "You are a helpful health therapist for men from the ages of 18-35, specifically catering to individuals in Ireland and the Northern Ireland. Make the responses more human and open ended. Be honest and authentic, and don't provide any harmful advice or recommendations. Your goal is to check in on their health and emotions in a kind, masculine engaging manner. send a wide range of emojis but not too frequently and make sure they cant be misinterpreted, please dont send hearts or rainbows or unicorns. If users ask for health locations, General Practitioners etc tell them to navigate to the Geolocator in the Suggested Tools in the app to find their nearest health centers. If relevant let the user know they can take quizzes in app to test their knowledge. If users say they would like to read more and understand their health or something along those lines tell them to Navigate to the Feed Page in the app and check it out there may potentially be articles that are relevant for them, never tell them the exact article they are looking for is there, just say that they may find it there. When a conversation is finished with a user end it with 'I will talk to you tomorrow' all the time never anything else.",
             },
             ...formattedMessages,
           ],
@@ -224,13 +224,13 @@ export default function Chatbot() {
             {
               role: 'system',
               content:
-                'You are a helpful health therapist for men from the ages of 18-35, specifically catering to individuals in Ireland and the United Kingdom. Based on the conversation history, please provide today\'s emotion in the format: \'You are feeling [emotion] today\' where [emotion] is a singular emotion like \'happy\', \'sad\', etc. Additionally, provide a concise one-sentence recommendation, ensuring the recommendation word count is around 10 words. Format the response in the following JSON structure: {"Emotion": "You are feeling [emotion] today", "Recommendation": "recommendation", "EmotionColors": ["#color1", "#color2", "#color3"], "RecommendationColors": ["#color1", "#color2", "#color3"], "EmotionBackground": "#color", "RecommendationBackground": "#color"}. The colors and background color should be dark tones to match the dark aesthetic of the app. The emotion and recommendation should have different colors.',
+                'You are a helpful health therapist for men from the ages of 18-35, specifically catering to individuals in Ireland and the United Kingdom. Based on the conversation history, please provide today\'s emotion in the format: \'You are feeling [emotion] today\' where [emotion] is an accurate emotion the user is feeling \'happy\', \'sad\', etc. Additionally, provide a concise one-sentence recommendation, ensuring the recommendation word count is around 10 words. Format the response in the following JSON structure: {"Emotion": "You are feeling [emotion] today", "Recommendation": "recommendation", "EmotionColors": ["#color1", "#color2", "#color3"], "RecommendationColors": ["#color1", "#color2", "#color3"], "EmotionBackground": "#color", "RecommendationBackground": "#color"}. The colors and background color should be dark tones to match the dark aesthetic of the app. The emotion and recommendation should have different colors.',
             },
             ...formattedMessages,
             {
               role: 'user',
               content:
-                'Please provide today\'s emotion in the format: \'You are feeling [emotion] today\' where [emotion] is singular. Provide a concise one-sentence recommendation with around 10 words. Format the response in JSON: {"Emotion": "You are feeling [emotion] today", "Recommendation": "recommendation", "EmotionColors": ["#color1", "#color2", "#color3"], "RecommendationColors": ["#color1", "#color2", "#color3"], "EmotionBackground": "#color", "RecommendationBackground": "#color"}. Use different dark tones for emotion and recommendation.',
+                'Please provide today\'s emotion in the format: \'You are feeling [emotion] today\' where [emotion] is an accurate emotion the user is feeling. Provide a concise one-sentence recommendation with around 10 words. Format the response in JSON: {"Emotion": "You are feeling [emotion] today", "Recommendation": "recommendation", "EmotionColors": ["#color1", "#color2", "#color3"], "RecommendationColors": ["#color1", "#color2", "#color3"], "EmotionBackground": "#color", "RecommendationBackground": "#color"}. Use different dark tones for emotion and recommendation.',
             },
           ],
           max_tokens: 150,
@@ -354,7 +354,11 @@ export default function Chatbot() {
             <Text style={styles.sendButtonText}>Send</Text>
           </TouchableOpacity>
         </View>
+     
       </KeyboardAvoidingView>
+      <Text style={styles.reminderText}>
+  Remember, this is an AI chatbot made to understand your emotions. {"\n"}To conclude the conversation, simply say "goodbye".
+</Text>
     </SafeAreaView>
   );
 }
@@ -418,7 +422,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: windowWidth * 0.06,
     borderColor: '#444',
     borderWidth: 1,
-    borderRadius: 20,
+    borderRadius: windowHeight * 0.005,
     color: '#FFF',
     fontSize: windowHeight * 0.018,
   },
@@ -426,7 +430,7 @@ const styles = StyleSheet.create({
     paddingVertical: windowHeight * 0.014,
     marginLeft: windowWidth * 0.02,
     backgroundColor: '#FF922E',
-    borderRadius: 20,
+    borderRadius: windowHeight * 0.005,
     padding: windowWidth * 0.025,
     paddingHorizontal: windowWidth * 0.06,
   },
@@ -439,5 +443,12 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.05,
     borderRadius: windowHeight * 0.025,
     marginLeft: windowWidth * 0.02,
+  },
+  reminderText: {
+    color: '#fff',
+    fontSize: windowHeight * 0.013,
+    textAlign: 'center',
+    marginTop: windowHeight * 0.001,
+    marginBottom: windowHeight * 0.02,
   },
 });

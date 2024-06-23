@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Keyboard } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { Colors } from '@/constants/Colors';
+import { Dimensions } from 'react-native';
 
 import * as Haptics from 'expo-haptics';
+
+const windowHeight = Dimensions.get("window").height;
 
 const SearchBar = ({ placeholder = 'Search', onSearch }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -34,6 +37,7 @@ const SearchBar = ({ placeholder = 'Search', onSearch }) => {
       />
       {searchQuery.length > 0 && (
         <TouchableOpacity
+        activeOpacity={0.8}
           onPress={() => {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
             handleClear();
@@ -50,7 +54,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 20,
+    borderRadius: windowHeight * 0.005,
     paddingHorizontal: 10,
     backgroundColor: Colors.secondary,
   },

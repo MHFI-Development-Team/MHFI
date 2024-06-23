@@ -42,13 +42,21 @@ const EmotionList: React.FC = () => {
   return (
     <View>
       <View style={styles.EmotionListContent}>
-        <Text
-          style={[
-            globalStyles.textHeader,
-            { fontWeight: 'bold', fontSize: windowWidth * 0.04, marginLeft: windowWidth * 0.05 },
-          ]}>
-          Emotion Tracker
-        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text
+            style={[
+              globalStyles.textHeader,
+              { fontWeight: 'bold', fontSize: windowWidth * 0.04, marginLeft: windowWidth * 0.05 },
+            ]}
+          >
+            Emotion Tracker
+          </Text>
+          {todayEmotion && (
+            <Text style={styles.swipeText}>
+              {" "} Swipe for today's recommendation
+            </Text>
+          )}
+        </View>
         {todayEmotion ? (
           <ScrollView
             horizontal
@@ -57,7 +65,8 @@ const EmotionList: React.FC = () => {
             snapToInterval={windowWidth}
             snapToAlignment="center"
             decelerationRate="fast"
-            pagingEnabled>
+            pagingEnabled
+          >
             <View style={styles.emotionCardWrapper}>
               <View style={styles.emotionCardContainer}>
                 <EmotionCard type="emotion" text={todayEmotion} />
@@ -71,11 +80,13 @@ const EmotionList: React.FC = () => {
           </ScrollView>
         ) : (
           <TouchableOpacity
+            activeOpacity={0.8}
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
               router.push('/messageScreen');
             }}
-            style={styles.checkInMessage}>
+            style={styles.checkInMessage}
+          >
             <View style={styles.checkInMessageContent}>
               <View style={styles.textAndCircleContainer}>
                 <Text style={styles.checkInText}>
@@ -124,7 +135,7 @@ const styles = StyleSheet.create({
     padding: 20,
     margin: 10,
     height: windowHeight * 0.2,
-    borderWidth: 1,
+    borderWidth: 0.2,
     borderColor: Colors.ButtonColor,
     width: windowWidth - 40,
     alignSelf: 'center',
@@ -144,7 +155,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: windowWidth * 0.04,
     flex: 1,
-    marginRight: windowHeight * 0.09,
+    marginRight: windowHeight * 0.03,
     textAlign: 'left',
   },
   circlContainer: {
@@ -152,6 +163,11 @@ const styles = StyleSheet.create({
   },
   scrollViewContent: {
     alignItems: 'center',
+  },
+  swipeText: {
+    color: '#fff',
+    fontSize: windowWidth * 0.028,
+    marginLeft: windowWidth * 0.02,
   },
 });
 

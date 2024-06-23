@@ -25,7 +25,7 @@ import { ArticleContext, ArticleContextType } from '@/components/AcrticleContext
 import * as Haptics from 'expo-haptics';
 
 const windowWidth = Dimensions.get('window').width;
-
+const windowHeight = Dimensions.get('window').height;
 export default function FeedScreen() {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
@@ -80,6 +80,7 @@ export default function FeedScreen() {
             style={styles.tagScrollView}>
             {allTags.map(tag => (
               <TouchableOpacity
+              activeOpacity={0.8}
                 key={tag}
                 onPress={() => {
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -97,8 +98,8 @@ export default function FeedScreen() {
             ))}
           </ScrollView>
         </View>
-        <ScrollView style={{ marginTop: 20 }} showsVerticalScrollIndicator={false}>
-          <View style={styles.cardContainer}>
+        <ScrollView style={{}} showsVerticalScrollIndicator={false}>
+          <View style={[styles.cardContainer]}>
             {articles.map((article, index) => (
               <CardComponent
                 key={index}
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
   },
   tagButton: {
     backgroundColor: Colors.ButtonColor,
-    borderRadius: 20,
+    borderRadius: windowHeight * 0.005,
     marginHorizontal: 5,
     alignItems: 'center',
     justifyContent: 'center',

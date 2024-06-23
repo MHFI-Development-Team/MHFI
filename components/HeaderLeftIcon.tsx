@@ -8,6 +8,7 @@ import * as Haptics from 'expo-haptics';
 const HeaderLeftIcon: React.FC = () => {
   return (
     <TouchableOpacity
+    activeOpacity={0.8}
       onPress={() => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
       }}>

@@ -322,11 +322,12 @@ const ModeViewChange: React.FC<ModeViewChangeProps> = ({ state }) => {
         gap: 20,
       }}>
       <TouchableOpacity
+      
         onPress={() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
           setMapViewMode(mapViewMode === MapModes.List ? MapModes.Map : MapModes.List);
         }}
-        activeOpacity={0.9}
+        activeOpacity={0.8}
         style={{
           width: '100%',
           paddingVertical: 18,

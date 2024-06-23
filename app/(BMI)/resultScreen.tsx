@@ -78,6 +78,7 @@ const ResultScreen: React.FC = () => {
           <Text style={styles.bmiValue}>{bmiValue}</Text>
           <Text style={[styles.bmiStatus, { color: bmiStatusColor }]}>{bmiStatus}</Text>
           <TouchableOpacity
+          activeOpacity={0.8}
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
               openModal(bmiStatus, bmiInfo[bmiStatus]);
@@ -101,6 +102,7 @@ const ResultScreen: React.FC = () => {
           </View>
         </View>
         <TouchableOpacity
+        activeOpacity={0.8}
           style={styles.retryButton}
           onPress={() => {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -114,12 +116,13 @@ const ResultScreen: React.FC = () => {
         transparent={true}
         visible={modalVisible}
         onRequestClose={closeModal}>
-        <TouchableWithoutFeedback onPress={closeModal}>
+        <TouchableOpacity activeOpacity={0.8} onPress={closeModal}>
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
               <Text style={styles.modalTitle}>{modalContent.title}</Text>
               <Text style={styles.modalText}>{modalContent.content}</Text>
               <TouchableOpacity
+              activeOpacity={0.8}
                 style={styles.closeButton}
                 onPress={() => {
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -129,7 +132,7 @@ const ResultScreen: React.FC = () => {
               </TouchableOpacity>
             </View>
           </View>
-        </TouchableWithoutFeedback>
+        </TouchableOpacity>
       </Modal>
     </SafeAreaView>
   );
@@ -206,15 +209,16 @@ const styles = StyleSheet.create({
   },
   retryButton: {
     backgroundColor: Colors.ButtonColor,
-    borderRadius: 20,
+    borderRadius: 10,
     marginTop: 30,
   },
   retryButtonText: {
-    fontSize: windowWidth * 0.02,
+    fontSize: windowWidth * 0.045,
     color: 'black',
     textAlign: 'center',
     paddingVertical: 15,
     paddingHorizontal: 30,
+    fontWeight: "700",
   },
   modalOverlay: {
     flex: 1,
@@ -241,16 +245,18 @@ const styles = StyleSheet.create({
     color: '#FFF',
     textAlign: 'center',
     marginBottom: 20,
+    
   },
   closeButton: {
     backgroundColor: Colors.ButtonColor,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    borderRadius: 20,
+    borderRadius: 10,
   },
   closeButtonText: {
-    fontSize: 18,
+    fontSize: windowWidth * 0.045,
     color: 'black',
+    fontWeight: "700"
   },
 });
 

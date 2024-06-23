@@ -6,7 +6,7 @@ type ContentCardProps = {
   size: number;
 };
 
-const radiusSize = 25;
+const radiusSize =10;
 
 const styles = () =>
   StyleSheet.create({

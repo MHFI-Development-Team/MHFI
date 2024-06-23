@@ -13,6 +13,7 @@ interface CardComponentProps {
 const CardComponent: React.FC<CardComponentProps> = ({ image, title, description, onPress }) => {
   return (
     <TouchableOpacity
+    activeOpacity={0.8}
       onPress={() => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         onPress();

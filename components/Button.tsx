@@ -13,6 +13,7 @@ type ButtonProps = {
 const Button: React.FC<ButtonProps> = ({ title, onPress, style, textStyle }) => {
   return (
     <TouchableOpacity
+    activeOpacity={0.8}
       onPress={() => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         onPress();

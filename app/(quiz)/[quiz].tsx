@@ -60,6 +60,7 @@ const QuizData: React.FC = () => {
   const renderOptions = () => {
     return currentQuestion.options.map((option: string, index: number) => (
       <TouchableOpacity
+      activeOpacity={0.8}
         key={index}
         style={styles.optionButton}
         onPress={() => {
@@ -128,7 +129,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   question: {
-    fontSize: windowWidth * 0.02,
+    fontSize: windowWidth * 0.05,
     marginBottom: 20,
     color: 'white',
     textAlign: 'center',

@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import * as Haptics from 'expo-haptics';
 
+const windowWidth = Dimensions.get("window").width;
 const Quiz = () => {
   const router = useRouter();
 
@@ -11,6 +12,7 @@ const Quiz = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Choose a Quiz</Text>
       <TouchableOpacity
+      activeOpacity={0.8}
         style={[styles.button, { backgroundColor: Colors.ButtonColor }]}
         onPress={() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -19,6 +21,7 @@ const Quiz = () => {
         <Text style={styles.buttonText}>Smoking</Text>
       </TouchableOpacity>
       <TouchableOpacity
+      activeOpacity={0.8}
         style={[styles.button, { backgroundColor: Colors.ButtonColor }]}
         onPress={() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -27,6 +30,7 @@ const Quiz = () => {
         <Text style={styles.buttonText}>Drinking</Text>
       </TouchableOpacity>
       <TouchableOpacity
+      activeOpacity={0.8}
         style={[styles.button, { backgroundColor: Colors.ButtonColor }]}
         onPress={() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -48,7 +52,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: 'white',
-    fontSize: 32,
+    fontSize: windowWidth * 0.06,
     marginBottom: 40,
     fontWeight: 'bold',
     textAlign: 'center',

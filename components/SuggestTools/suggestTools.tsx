@@ -27,6 +27,7 @@ const SuggestedTools = () => {
             {suggestedTools.map((tool, index) => (
               <Link key={index} href={tool.href} asChild>
                 <TouchableOpacity
+                activeOpacity={0.8}
                   onPress={() => {
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
                   }}

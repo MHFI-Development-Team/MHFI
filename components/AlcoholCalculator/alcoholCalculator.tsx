@@ -163,6 +163,7 @@ const AlcoholCalculator = () => {
             />
             {isDrinksInputFocused && (
               <TouchableOpacity
+              activeOpacity={0.8}
                 onPress={() => {
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
                   handleDismiss();
@@ -190,6 +191,7 @@ const AlcoholCalculator = () => {
               />
               {isVolumeInputFocused && (
                 <TouchableOpacity
+                activeOpacity={0.8}
                   onPress={() => {
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
                     handleDismiss();
@@ -206,6 +208,7 @@ const AlcoholCalculator = () => {
           )}
         </View>
         <TouchableOpacity
+        activeOpacity={0.8}
           style={styles.calculateButton}
           onPress={() => {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
@@ -249,7 +252,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: '#FFF',
-    fontSize: 24,
+    fontSize: windowWidth * 0.06,
     fontWeight: 'bold',
     textAlign: 'center',
   },
